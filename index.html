@@ -206,7 +206,7 @@ footer a:hover{opacity:.55;color:var(--ink)}
 </section>
 
 <section class="end">
-  <a class="release" id="relLink" href="https://runwithfun.github.io/FITA-Releases/" target="_blank" rel="noopener">
+  <a class="release" id="relLink" href="https://releases.appfita.ru/" target="_blank" rel="noopener">
     <img id="relBanner" src="https://raw.githubusercontent.com/runwithfun/FITA-Releases/main/assets/banner.jpg" alt="FITA — текущий релиз">
     <span class="rl"><span id="relTag">RELEASE</span><b>Скачать →</b></span>
   </a>
@@ -2940,7 +2940,7 @@ document.getElementById('linkArt').innerHTML = `
       var linkEl=document.getElementById('relLink');
       var banner=document.getElementById('relBanner');
       if(tag&&tagEl)tagEl.textContent='RELEASE · '+tag.toUpperCase();
-      if(d.html_url&&linkEl)linkEl.href=d.html_url;
+      if(tag&&linkEl)linkEl.href='https://releases.appfita.ru/#'+tag;
       if(tag&&banner){
         var url='https://raw.githubusercontent.com/'+REPO+'/main/assets/banners/'+tag+'.jpg';
         var probe=new Image();
