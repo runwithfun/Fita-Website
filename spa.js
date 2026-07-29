@@ -1,11 +1,13 @@
 /**
  * FITA site router (History API / BrowserRouter-style).
- * Routes: /, /privacy, /consent — everything else → 404 view.
+ * Routes: /, /space, /privacy, /consent — everything else → 404 view.
  */
 (function () {
   var ROUTES = {
     '/': 'view-home',
     '/index.html': 'view-home',
+    '/space': 'view-space',
+    '/space.html': 'view-space',
     '/privacy': 'view-privacy',
     '/privacy.html': 'view-privacy',
     '/consent': 'view-consent',
@@ -14,6 +16,7 @@
 
   var CANONICAL = {
     '/index.html': '/',
+    '/space.html': '/space',
     '/privacy.html': '/privacy',
     '/consent.html': '/consent'
   };
@@ -50,7 +53,8 @@
     var active = document.getElementById(resolved.viewId);
     document.title = (active && active.getAttribute('data-title')) || 'FITA';
     document.body.classList.toggle('route-home', resolved.viewId === 'view-home');
-    document.body.classList.toggle('route-doc', resolved.viewId !== 'view-home');
+    document.body.classList.toggle('route-space', resolved.viewId === 'view-space');
+    document.body.classList.toggle('route-doc', resolved.viewId !== 'view-home' && resolved.viewId !== 'view-space');
 
     if (opts.scroll !== false) {
       window.scrollTo(0, 0);
