@@ -1,6 +1,6 @@
 /**
  * FITA site router (History API / BrowserRouter-style).
- * Routes: /, /space, /privacy, /consent — everything else → 404 view.
+ * Routes: /, /space, /privacy, /consent, /terms — everything else → 404 view.
  */
 (function () {
   var ROUTES = {
@@ -11,14 +11,17 @@
     '/privacy': 'view-privacy',
     '/privacy.html': 'view-privacy',
     '/consent': 'view-consent',
-    '/consent.html': 'view-consent'
+    '/consent.html': 'view-consent',
+    '/terms': 'view-terms',
+    '/terms.html': 'view-terms'
   };
 
   var CANONICAL = {
     '/index.html': '/',
     '/space.html': '/space',
     '/privacy.html': '/privacy',
-    '/consent.html': '/consent'
+    '/consent.html': '/consent',
+    '/terms.html': '/terms'
   };
 
   function normalizePath(pathname) {
