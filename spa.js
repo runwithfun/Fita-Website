@@ -26,7 +26,11 @@
 
   function normalizePath(pathname) {
     if (!pathname) return '/';
-    var p = pathname.replace(/\/+$/, '') || '/';
+    // Query и hash отрезаем: render() зовётся с location.pathname + search +
+    // hash, и без этого «/?utm_source=telegram» не совпадал ни с одним
+    // маршрутом и открывал страницу «не найдено». То есть любая ссылка с
+    // меткой из рассылки вела в 404.
+    var p = pathname.split('#')[0].split('?')[0].replace(/\/+$/, '') || '/';
     return p;
   }
 
@@ -35,7 +39,9 @@
     if (CANONICAL[path]) {
       path = CANONICAL[path];
     }
-    var id = ROUTES[path] || ROUTES[pathname];
+    // Только по нормализованному пути: сырой pathname тут снова притащил бы
+    // query и hash, ради которых нормализация и делается.
+    var id = ROUTES[path];
     return { path: path, viewId: id || 'view-404', known: !!id };
   }
 
