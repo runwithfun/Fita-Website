@@ -569,6 +569,11 @@ body.route-home,body.route-space{background:#fff}
 .wg-tiles{display:flex;gap:12px;flex-wrap:wrap;width:100%}
 .wg-tiles>div{width:171px;flex:0 0 auto}
 @media(max-width:680px){
+  /* На узких экранах возвращаем прежний трек: с minmax(min(100%,330px),362px)
+     подгонка содержимого карточки считала ширину 354 px при карточке 327 и
+     выдавала 7 px горизонтального скролла на 375. Замысел правки — растянуть
+     галерею на широких мониторах, здесь он не нужен. */
+  .wg-grid{grid-template-columns:repeat(auto-fill,min(100%,362px))}
   .wg-tiles{gap:10px}
   .wg-tiles>div{width:calc((100% - 10px)/2);min-width:0}
   .wg-tiles>div>*{width:100%!important}
