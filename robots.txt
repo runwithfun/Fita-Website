@@ -1,5 +1,15 @@
+# appfita.ru — ФИТА, ИИ-компаньон здоровья.
+#
+# Сайт открыт для всех: поисковиков (Яндекс, Google, Bing) и ИИ-роботов.
+# Ботов обучения (GPTBot, ClaudeBot, Google-Extended, CCBot) закрывать НЕ надо:
+# ИИ-ассистенты часто отвечают «из памяти», а память берётся из обучения.
+# Поисковые ИИ-боты (OAI-SearchBot, Claude-SearchBot, PerplexityBot,
+# YandexAdditional) приводят Фиту в ответы ChatGPT, Claude, Perplexity и Алисы.
+
 User-agent: *
 Allow: /
-Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&gclid
+
+# Яндекс: метки и служебные параметры не плодят дубли страниц.
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&utm_id&yclid&ysclid&gclid&fbclid&_openstat
 
 Sitemap: https://appfita.ru/sitemap.xml

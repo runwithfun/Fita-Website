@@ -12,6 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const Babel = require('@babel/standalone');
@@ -99,7 +100,9 @@ fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), {
   recursive: true,
   filter: (f) => path.basename(f) !== '.DS_Store',
 });
-for (const f of ['CNAME', '.nojekyll', 'robots.txt', 'llms.txt']) {
+// <ключ>.txt в корне — подтверждение ключа IndexNow (см. scripts/indexnow.mjs).
+const indexNowKeyFile = fs.readdirSync(ROOT).filter((f) => /^[0-9a-f]{32}\.txt$/.test(f));
+for (const f of ['CNAME', '.nojekyll', 'robots.txt', 'llms.txt', 'favicon.ico', ...indexNowKeyFile]) {
   fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
 }
 
@@ -196,7 +199,7 @@ function jsonLd() {
         description:
           'ИИ-компаньон здоровья: разбирает сон, пульс, HRV, стресс и тренировочную нагрузку по данным Apple Watch, Garmin, Oura, Whoop и Fitbit, собирает домашний экран под пользователя и подключается к ИИ-ассистентам через MCP.',
         applicationCategory: 'HealthApplication',
-        operatingSystem: 'iOS, Android',
+        operatingSystem: 'iOS, Android, Windows, macOS, Linux',
         inLanguage: 'ru',
         url: `${SITE}/`,
         downloadUrl: 'https://releases.appfita.ru/',
@@ -264,9 +267,24 @@ for (const page of PAGES) {
 fs.copyFileSync(path.join(ROOT, 'spa.js'), path.join(OUT, 'spa.js'));
 
 // ── 6. sitemap.xml ─────────────────────────────────────────────────────
+// lastmod должен меняться, только когда меняется страница: дату сборки
+// Google считает недостоверной и перестаёт учитывать lastmod у всего сайта.
+// Правовые страницы берут дату из «Редакция от ДД.ММ.ГГГГ», остальные —
+// из последнего коммита, который трогал их исходники (в CI нужен fetch-depth: 0).
 const today = new Date().toISOString().slice(0, 10);
+function gitDate(paths) {
+  try {
+    return execFileSync('git', ['log', '-1', '--format=%cI', '--', ...paths], { cwd: ROOT, encoding: 'utf8' }).trim() || today;
+  } catch {
+    return today;
+  }
+}
+function lastmod(page) {
+  const m = views[page.view].match(/Редакция от (\d{2})\.(\d{2})\.(\d{4})/);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : gitDate(['index.html', 'spa.js', 'assets']);
+}
 const urls = PAGES.filter((p) => p.path)
-  .map((p) => `  <url><loc>${SITE}${p.path}</loc><lastmod>${today}</lastmod></url>`)
+  .map((p) => `  <url><loc>${SITE}${p.path}</loc><lastmod>${lastmod(p)}</lastmod></url>`)
   .join('\n');
 fs.writeFileSync(
   path.join(OUT, 'sitemap.xml'),

@@ -17,9 +17,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        # Полная история: lastmod в sitemap берётся из дат коммитов.
+        with: { fetch-depth: 0 }
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
       - run: npm ci
+      # Текущий sitemap с сайта — чтобы после деплоя отправить в IndexNow
+      # только изменившиеся страницы.
+      - run: curl -fsS https://appfita.ru/sitemap.xml -o prev-sitemap.xml || true
       # Собирает _site/: отдельный HTML на каждую страницу, JSX скомпилирован,
       # sitemap.xml. Публикуется только _site, а не весь репозиторий.
       - run: npm run build
@@ -28,3 +33,6 @@ jobs:
         with: { path: "_site" }
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: IndexNow (Яндекс, Bing)
+        continue-on-error: true
+        run: node scripts/indexnow.mjs prev-sitemap.xml _site/sitemap.xml
