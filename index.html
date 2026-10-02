@@ -827,11 +827,11 @@ body.route-home,body.route-space{background:#fff}
   <div class="scene">
     <div class="phone">
       <div class="watch" id="watch">
-        <div class="wv" data-w="APPLE WATCH"><img src="assets/devices/apple-watch.png" alt="Apple Watch"></div>
-        <div class="wv" data-w="GARMIN"><img src="assets/devices/garmin.png" alt="Garmin"></div>
-        <div class="wv" data-w="WHOOP"><img src="assets/devices/whoop.png" alt="Whoop"></div>
-        <div class="wv" data-w="FITBIT"><img src="assets/devices/fitbit.png" alt="Fitbit"></div>
-        <div class="wv" data-w="OURA"><img src="assets/devices/oura.png" alt="Oura"></div>
+        <div class="wv" data-w="APPLE WATCH"><img src="assets/devices/apple-watch.webp" alt="Apple Watch"></div>
+        <div class="wv" data-w="GARMIN"><img src="assets/devices/garmin.webp" alt="Garmin"></div>
+        <div class="wv" data-w="WHOOP"><img src="assets/devices/whoop.webp" alt="Whoop"></div>
+        <div class="wv" data-w="FITBIT"><img src="assets/devices/fitbit.webp" alt="Fitbit"></div>
+        <div class="wv" data-w="OURA"><img src="assets/devices/oura.webp" alt="Oura"></div>
       </div>
       <div class="phone-3d"><div id="phoneRoot"></div><div class="phone-glow"></div></div>
     </div>
@@ -2724,7 +2724,7 @@ function TrainingCalendar() {
 function Greeting({ onProfile }) {
   return <div style={{ padding: '0 4px 4px' }}>
     <Eyebrow>Четверг · 4 июня</Eyebrow>
-    <h1 onClick={onProfile} style={{ margin: '6px 0 0', fontFamily: SERIF, fontStyle: 'italic', fontWeight: 500, fontSize: 37, lineHeight: 1.05, color: P.ink, letterSpacing: '-0.5px', cursor: onProfile ? 'pointer' : 'default', whiteSpace: 'nowrap' }}>Доброе утро,<br />Андрей.</h1>
+    <div onClick={onProfile} style={{ margin: '6px 0 0', fontFamily: SERIF, fontStyle: 'italic', fontWeight: 500, fontSize: 37, lineHeight: 1.05, color: P.ink, letterSpacing: '-0.5px', cursor: onProfile ? 'pointer' : 'default', whiteSpace: 'nowrap' }}>Доброе утро,<br />Андрей.</div>
   </div>;
 }
 function MetricGrid() {

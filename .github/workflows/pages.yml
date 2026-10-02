@@ -17,8 +17,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      # Собирает _site/: отдельный HTML на каждую страницу, JSX скомпилирован,
+      # sitemap.xml. Публикуется только _site, а не весь репозиторий.
+      - run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
-        with: { path: "." }
+        with: { path: "_site" }
       - id: deployment
         uses: actions/deploy-pages@v4

@@ -1,6 +1,11 @@
 /**
  * FITA site router (History API / BrowserRouter-style).
  * Routes: /, /space, /privacy, /consent, /terms — everything else → 404 view.
+ *
+ * Сборка (scripts/build.mjs) кладёт каждую страницу в свой HTML, и в нём есть
+ * только часть view: на главной и в «Пространстве» — они обе, у правовых
+ * страниц — только своя. Если нужного view на странице нет, переходим обычной
+ * загрузкой, а не подменой view.
  */
 (function () {
   var ROUTES = {
@@ -70,7 +75,16 @@
     }
   }
 
+  function hasView(pathname) {
+    return !!document.getElementById(resolve(pathname).viewId);
+  }
+
   function navigate(path, replace) {
+    if (!hasView(path)) {
+      if (replace) location.replace(path);
+      else location.assign(path);
+      return;
+    }
     var url = path;
     if (replace) history.replaceState(null, '', url);
     else history.pushState(null, '', url);
@@ -96,11 +110,16 @@
     var a = e.target.closest && e.target.closest('a');
     if (!a || !isInternalLink(a)) return;
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (!hasView(a.pathname)) return;
     e.preventDefault();
     navigate(a.pathname + a.search + a.hash);
   });
 
   window.addEventListener('popstate', function () {
+    if (!hasView(location.pathname)) {
+      location.reload();
+      return;
+    }
     render(location.pathname + location.search + location.hash, { scroll: true });
   });
 
