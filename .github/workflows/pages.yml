@@ -6,9 +6,12 @@ permissions:
   contents: read
   pages: write
   id-token: write
+# Идущий деплой не отменяем (так советует GitHub для Pages): пусть дойдёт
+# до конца вместе с IndexNow, а следующий пуш встанет в очередь. При отмене
+# IndexNow мог не отправиться, и Яндекс узнал бы об изменениях позже.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   deploy:
     runs-on: ubuntu-latest

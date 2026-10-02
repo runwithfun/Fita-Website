@@ -3,9 +3,8 @@
  * Routes: /, /space, /privacy, /consent, /terms — everything else → 404 view.
  *
  * Сборка (scripts/build.mjs) кладёт каждую страницу в свой HTML, и в нём есть
- * только часть view: на главной и в «Пространстве» — они обе, у правовых
- * страниц — только своя. Если нужного view на странице нет, переходим обычной
- * загрузкой, а не подменой view.
+ * только её собственный view. Если нужного view на странице нет, переходим
+ * обычной загрузкой, а не подменой view.
  */
 (function () {
   var ROUTES = {
@@ -55,8 +54,14 @@
     var resolved = resolve(pathname);
     var path = resolved.path;
 
-    if (opts.replaceCanonical && CANONICAL[normalizePath(pathname)]) {
-      history.replaceState(null, '', path);
+    // /space.html → /space и /space/ → /space: в адресной строке остаётся
+    // канонический адрес. На GitHub Pages /space/ отдаёт 404.html, и тот сам
+    // уводит на адрес без слэша; здесь — для остальных хостингов и превью.
+    if (opts.replaceCanonical && resolved.known) {
+      var raw = location.pathname;
+      if (CANONICAL[normalizePath(raw)] || (raw !== path && raw.replace(/\/+$/, '') === path)) {
+        history.replaceState(null, '', path + location.search + location.hash);
+      }
     }
 
     var views = document.querySelectorAll('.view');
