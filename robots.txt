@@ -1,12 +1,38 @@
 # appfita.ru — ФИТА, ИИ-компаньон здоровья.
 #
-# Сайт открыт для всех: поисковиков (Яндекс, Google, Bing) и ИИ-роботов.
-# Ботов обучения (GPTBot, ClaudeBot, Google-Extended, CCBot) закрывать НЕ надо:
-# ИИ-ассистенты часто отвечают «из памяти», а память берётся из обучения.
-# Поисковые ИИ-боты (OAI-SearchBot, Claude-SearchBot, PerplexityBot,
-# YandexAdditional) приводят Фиту в ответы ChatGPT, Claude, Perplexity и Алисы.
+# Сайт открыт для ВСЕХ роботов: поисковиков, ИИ-поиска и ботов обучения моделей.
+# Это осознанное решение, не закрывать. ИИ-ассистенты часто отвечают «из памяти»,
+# а память берётся из обучения; ИИ-поиск приводит Фиту в ответы ChatGPT, Claude,
+# Perplexity, Gemini и Алисы. Ниже известные боты перечислены явно — на случай,
+# если кто-то из них ждёт персонального разрешения.
 
 User-agent: *
+User-agent: Yandex
+User-agent: YandexBot
+User-agent: YandexAdditional
+User-agent: YandexAdditionalBot
+User-agent: Googlebot
+User-agent: Google-Extended
+User-agent: GoogleOther
+User-agent: Bingbot
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: CCBot
+User-agent: Meta-ExternalAgent
+User-agent: Amazonbot
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+User-agent: cohere-ai
+User-agent: Bytespider
 Allow: /
 
 # Яндекс: метки и служебные параметры не плодят дубли страниц.
