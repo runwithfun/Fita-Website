@@ -33,6 +33,7 @@ User-agent: DuckAssistBot
 User-agent: MistralAI-User
 User-agent: cohere-ai
 User-agent: Bytespider
+User-agent: Bravebot
 Allow: /
 
 # Яндекс: метки и служебные параметры не плодят дубли страниц.

@@ -100,9 +100,13 @@ fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), {
   recursive: true,
   filter: (f) => path.basename(f) !== '.DS_Store',
 });
-// <ключ>.txt в корне — подтверждение ключа IndexNow (см. scripts/indexnow.mjs).
-const indexNowKeyFile = fs.readdirSync(ROOT).filter((f) => /^[0-9a-f]{32}\.txt$/.test(f));
-for (const f of ['CNAME', '.nojekyll', 'robots.txt', 'llms.txt', 'favicon.ico', ...indexNowKeyFile]) {
+// <ключ>.txt в корне — подтверждение ключа IndexNow (см. scripts/indexnow.mjs);
+// google*.html и yandex_*.html — подтверждение прав в Search Console и Вебмастере.
+// Удалять их нельзя: консоли периодически перепроверяют права.
+const verificationFiles = fs
+  .readdirSync(ROOT)
+  .filter((f) => /^[0-9a-f]{32}\.txt$/.test(f) || /^(google[0-9a-f]+|yandex_[0-9a-f]+)\.html$/.test(f));
+for (const f of ['CNAME', '.nojekyll', 'robots.txt', 'llms.txt', 'favicon.ico', ...verificationFiles]) {
   fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
 }
 
