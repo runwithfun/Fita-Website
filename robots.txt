@@ -36,7 +36,7 @@ User-agent: Bytespider
 User-agent: Bravebot
 Allow: /
 
-# Яндекс: метки и служебные параметры не плодят дубли страниц.
-Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&utm_id&yclid&ysclid&gclid&fbclid&_openstat
+# Яндекс: метки, коды приглашений (ref) и служебные параметры не плодят дубли страниц.
+Clean-param: ref&utm_source&utm_medium&utm_campaign&utm_content&utm_term&utm_id&yclid&ysclid&gclid&fbclid&_openstat
 
 Sitemap: https://appfita.ru/sitemap.xml

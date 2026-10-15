@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
       - run: npm ci
+      # analytics.js / referral.js: что уходит в аналитику и как ведёт себя /r
+      - run: npm test
       # Текущий sitemap с сайта — чтобы после деплоя отправить в IndexNow
       # только изменившиеся страницы.
       - run: curl -fsS https://appfita.ru/sitemap.xml -o prev-sitemap.xml || true

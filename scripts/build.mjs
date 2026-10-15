@@ -14,15 +14,48 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
+import { CYR, translateHtml, babelTranslate, checkTranslation } from './i18n.mjs';
 
 const require = createRequire(import.meta.url);
 const Babel = require('@babel/standalone');
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const OUT = path.join(ROOT, '_site');
-const SITE = 'https://appfita.ru';
-const APP_STORE = 'https://apps.apple.com/ru/app/fita/id6794848328';
+// Язык сборки. FITA_LOCALE=en (npm run build:en) собирает английскую версию
+// для fita.fit в _site-en: тот же index.html, строки заменяются по словарю
+// i18n/en.json (см. scripts/i18n.mjs). Русская сборка от этого не меняется.
+const LOCALE = process.env.FITA_LOCALE || 'ru';
+if (!['ru', 'en'].includes(LOCALE)) throw new Error(`FITA_LOCALE: ru или en, а не ${LOCALE}`);
+const EN = LOCALE === 'en';
+const RU_SITE = 'https://appfita.ru';
+const EN_SITE = 'https://fita.fit';
+const OUT = path.join(ROOT, EN ? '_site-en' : '_site');
+const SITE = EN ? EN_SITE : RU_SITE;
+// Русская версия ведёт в российский App Store. Английская — на ссылку без
+// страны: Apple сам откроет витрину пользователя (будет ли там приложение,
+// решают настройки доступности в App Store Connect, не сайт).
+const RU_APP_STORE = 'https://apps.apple.com/ru/app/fita/id6794848328';
+const APP_STORE = EN ? 'https://apps.apple.com/app/fita/id6794848328' : RU_APP_STORE;
+// hreflang между appfita.ru и fita.fit. В английской сборке всегда; в русской —
+// только с FITA_HREFLANG=1, когда fita.fit уже открывается: иначе ссылка в никуда.
+const HREFLANG = EN || process.env.FITA_HREFLANG === '1';
 const APP_STORE_ID = '6794848328';
+
+// Аналитика и приглашения (analytics.js, referral.js). Настраивается окружением:
+//   FITA_API_ORIGIN — ядро FITA, куда идут события и resolve кода приглашения;
+//   FITA_ANALYTICS=0 — собрать без отправки событий (превью, локальная проверка);
+//   FITA_APP_REFERRAL_LINK — шаблон ссылки «Открыть в приложении»,
+//     https://link.appfita.ru/r/{code}. По умолчанию выключено: включать только
+//     после выхода версии приложения, которая разбирает /r/<code>, и после
+//     обновления AASA/assetlinks в ядре. Иначе кнопка открывает приложение,
+//     которое ссылку не понимает, или возвращает браузер обратно на сайт.
+// Даже со включённой отправкой analytics.js молчит не на боевых хостах.
+const API_ORIGIN = process.env.FITA_API_ORIGIN || 'https://api.appfita.ru';
+const COLLECT = process.env.FITA_ANALYTICS !== '0';
+const APP_REFERRAL_LINK = process.env.FITA_APP_REFERRAL_LINK || '';
+if (!/^https:\/\/[a-z0-9.-]+(:\d+)?$/.test(API_ORIGIN)) throw new Error(`FITA_API_ORIGIN: нужен https-origin без пути, а не ${API_ORIGIN}`);
+if (APP_REFERRAL_LINK && !/^https:\/\/[^"<>\s?#]+\{code\}$/.test(APP_REFERRAL_LINK)) {
+  throw new Error('FITA_APP_REFERRAL_LINK: нужен https-шаблон, оканчивающийся на {code}, без query');
+}
 
 // keep — какие view попадают в HTML страницы. Раньше на / и /space лежали оба
 // view (главная и «Пространство»): у обеих страниц был одинаковый текст и два
@@ -36,10 +69,18 @@ const PAGES = [
     keep: ['view-home'],
     app: true,
     fonts: 'app',
+    track: true,
+    referral: true,
     title: 'ФИТА — ИИ-компаньон здоровья: сон, пульс, восстановление',
     description:
       'Фита разбирает сон, пульс, HRV и нагрузку по данным Apple Watch, Garmin, Oura и Whoop и подсказывает, когда тренироваться, а когда восстановиться.',
     jsonld: true,
+    alt: true,
+    en: {
+      title: 'FITA — AI health companion: sleep, heart rate, recovery',
+      description:
+        'FITA reads your sleep, heart rate, HRV and training load from Apple Watch, Garmin, Oura and Whoop and tells you when to train and when to recover.',
+    },
   },
   {
     file: 'space.html',
@@ -48,9 +89,16 @@ const PAGES = [
     keep: ['view-space'],
     app: true,
     fonts: 'app',
+    track: true,
     title: 'Пространство Фиты — экран, который собирается под тебя',
     description:
       'Виджеты, темы и чат с памятью: Фита собирает домашний экран под твой ритм и помнит прошлые разговоры. Соберите свой экран прямо на сайте.',
+    alt: true,
+    en: {
+      title: 'FITA Space — a home screen that builds itself around you',
+      description:
+        'Widgets, themes and a chat with memory: FITA builds your home screen around your rhythm and remembers past conversations. Build your own screen right on the site.',
+    },
   },
   {
     file: 'privacy.html',
@@ -58,6 +106,8 @@ const PAGES = [
     view: 'view-privacy',
     keep: ['view-privacy'],
     fonts: 'doc',
+    legal: true,
+    en: { title: 'Privacy Policy (in Russian) — FITA', description: 'FITA privacy policy: how the app processes and protects personal and health data. The document is available in Russian.' },
     title: 'Политика конфиденциальности — ФИТА',
     description:
       'Как приложение ФИТА обрабатывает и защищает персональные данные и данные о здоровье: состав данных, цели, сроки хранения и права пользователя.',
@@ -68,6 +118,8 @@ const PAGES = [
     view: 'view-consent',
     keep: ['view-consent'],
     fonts: 'doc',
+    legal: true,
+    en: { title: 'Consent to personal data processing (in Russian) — FITA', description: 'Consent to personal data processing for FITA app users. The document is available in Russian.' },
     title: 'Согласие на обработку персональных данных — ФИТА',
     description:
       'Текст согласия на обработку персональных данных пользователей приложения ФИТА: перечень данных, цели, действия с ними и порядок отзыва.',
@@ -78,6 +130,8 @@ const PAGES = [
     view: 'view-terms',
     keep: ['view-terms'],
     fonts: 'doc',
+    legal: true,
+    en: { title: 'Terms of Use (in Russian) — FITA', description: 'FITA terms of use and community rules. The document is available in Russian.' },
     title: 'Условия использования — ФИТА',
     description:
       'Условия использования приложения ФИТА и правила сообщества: клубы, события, контент пользователей и ответственность сторон.',
@@ -91,8 +145,34 @@ const PAGES = [
     title: 'Страница не найдена — ФИТА',
     description: 'Такой страницы нет.',
     noindex: true,
+    en: { title: 'Page not found — FITA', description: 'This page does not exist.' },
   },
 ];
+
+const T = (page) => (EN ? page.en : page);
+
+// Словарь перевода. Нет строки в словаре — сборка падает и пишет недостающие
+// в i18n/en.missing.json: так в английской версии не останется русского.
+const DICT = EN ? JSON.parse(fs.readFileSync(path.join(ROOT, 'i18n', 'en.json'), 'utf8')) : null;
+const missing = new Set();
+const used = new Set();
+const badMarkup = [];
+// optional: ключ, которого может не быть (массив целиком) — тогда перевод поэлементно.
+function tr(key, kind, optional) {
+  if (!EN) return null;
+  if (!Object.hasOwn(DICT, key)) {
+    if (!optional) missing.add(key);
+    return null;
+  }
+  used.add(key);
+  const err = checkTranslation(key, DICT[key], kind);
+  if (err) {
+    badMarkup.push(`${err}: ${key.slice(0, 60)}`);
+    return null;
+  }
+  return DICT[key];
+}
+const enPlugins = EN ? [babelTranslate(tr)] : [];
 
 const VIEW_IDS = ['view-home', 'view-space', 'view-privacy', 'view-consent', 'view-terms', 'view-404'];
 
@@ -119,8 +199,23 @@ fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), {
 const verificationFiles = fs
   .readdirSync(ROOT)
   .filter((f) => /^[0-9a-f]{32}\.txt$/.test(f) || /^(google[0-9a-f]+|yandex_[0-9a-f]+)\.html$/.test(f));
-for (const f of ['CNAME', '.nojekyll', 'robots.txt', 'llms.txt', 'favicon.ico', ...verificationFiles]) {
-  fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
+if (!EN) {
+  for (const f of ['CNAME', '.nojekyll', 'robots.txt', 'llms.txt', 'favicon.ico', ...verificationFiles]) {
+    fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
+  }
+} else {
+  // fita.fit: без CNAME/подтверждений appfita.ru; robots тот же, без русских
+  // комментариев и со своим sitemap; llms.txt — английский.
+  fs.copyFileSync(path.join(ROOT, 'favicon.ico'), path.join(OUT, 'favicon.ico'));
+  fs.copyFileSync(path.join(ROOT, 'i18n', 'llms.en.txt'), path.join(OUT, 'llms.txt'));
+  const robots = fs
+    .readFileSync(path.join(ROOT, 'robots.txt'), 'utf8')
+    .split('\n')
+    .filter((l) => !l.startsWith('#'))
+    .join('\n')
+    .replace(`${RU_SITE}/sitemap.xml`, `${EN_SITE}/sitemap.xml`)
+    .replace(/^\n+/, '');
+  fs.writeFileSync(path.join(OUT, 'robots.txt'), `# fita.fit — FITA, AI health companion. Open to all crawlers.\n\n${robots}`);
 }
 
 let src = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
@@ -169,6 +264,7 @@ const FONT_PRELOAD = {
   doc: [],
 };
 
+const residualErrors = [];
 const fontUrl = new Map(); // имя файла fontsource → опубликованный путь
 function fontFaces(set) {
   const out = [];
@@ -230,7 +326,7 @@ src = src.replace(/data:image\/(png|jpeg|webp|gif|svg\+xml);base64,([A-Za-z0-9+/
 const BABEL_OPTS = {
   filename: 'Inline Babel script',
   presets: ['react', ['env', { targets: { chrome: '64', edge: '79', firefox: '67', safari: '12', ios: '12', samsung: '9' }, bugfixes: true }]],
-  plugins: ['transform-block-scoping', 'transform-flow-strip-types'],
+  plugins: ['transform-block-scoping', 'transform-flow-strip-types', ...enPlugins],
   // без пробелов и комментариев: исходник читаемый лежит в index.html
   minified: true,
   comments: false,
@@ -256,6 +352,13 @@ const vendor = [
 // скрипты уже отработали. defer в конце body даёт тот же порядок.
 const appTags = [...vendor, ...appScripts].map((s) => `<script src="${s}" defer></script>`).join('\n');
 
+// analytics.js и referral.js — обычные скрипты в корне, как spa.js; здесь
+// только без комментариев и с хешем в имени. Настройки — атрибутами тега.
+const minifyJs = (code) => Babel.transform(code, { minified: true, comments: false, sourceMaps: false, plugins: enPlugins }).code;
+const ownScript = (file) => writeHashed('assets/js', path.basename(file, '.js'), 'js', minifyJs(fs.readFileSync(path.join(ROOT, file), 'utf8')));
+const analyticsTag = `<script src="${ownScript('analytics.js')}" data-api="${API_ORIGIN}"${COLLECT ? ' data-collect="1"' : ''} defer></script>`;
+const referralTag = `<script src="${ownScript('referral.js')}"${APP_REFERRAL_LINK ? ` data-app-link="${esc(APP_REFERRAL_LINK)}"` : ''} defer></script>`;
+
 // Восстановление пути после старого 404-редиректа больше не нужно.
 src = src.replace(/<script>\s*\/\* Restore path after GitHub Pages 404[\s\S]*?<\/script>\s*/, '');
 
@@ -278,9 +381,37 @@ starts.forEach(([id, i], n) => {
   views[id] = src.slice(i, n + 1 < starts.length ? starts[n + 1][1] : footerStart);
 });
 
-const head = src.slice(0, bodyOpen);
-const footer = src.slice(footerStart, scriptsStart);
-const tailScripts = src.slice(scriptsStart, bodyEnd);
+let head = src.slice(0, bodyOpen);
+let footer = src.slice(footerStart, scriptsStart);
+let tailScripts = src.slice(scriptsStart, bodyEnd);
+
+// Английская версия: перевод всего, кроме текста правовых документов — они
+// остаются русскими с пометкой на английском (lang="ru" у блока документа).
+const LEGAL_VIEWS = PAGES.filter((p) => p.legal).map((p) => p.view);
+if (EN) {
+  // комментарии HTML и CSS — русские пояснения для разработчиков, на fita.fit им не место
+  const noComments = (s) =>
+    s.replace(/<!--(?!FONTS-->)[\s\S]*?-->\s*/g, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/g, (css) => css.replace(/\/\*[\s\S]*?\*\//g, ''));
+  head = translateHtml(noComments(head).replace('<html lang="ru">', '<html lang="en">'), tr);
+  if (!head.includes('<html lang="en">')) throw new Error('index.html: нет <html lang="ru">');
+  footer = translateHtml(noComments(footer), tr).replace('</nav>', '  <a href="https://appfita.ru/" hreflang="ru">Russian version</a>\n  </nav>');
+  if (!footer.includes('hreflang="ru"')) throw new Error('index.html: нет </nav> в подвале');
+  tailScripts = tailScripts.replace(/<script>([\s\S]*?)<\/script>/g, (m, code) => `<script>${minifyJs(code)}</script>`);
+  for (const id of VIEW_IDS) {
+    const v = noComments(views[id]);
+    if (!LEGAL_VIEWS.includes(id)) {
+      views[id] = translateHtml(v, tr);
+      continue;
+    }
+    // текст документа — дословно из исходника, переводится только шапка
+    const end = views[id].indexOf('</header>') + '</header>'.length;
+    if (end < '</header>'.length) throw new Error(`#${id}: нет <header>`);
+    views[id] =
+      translateHtml(noComments(views[id].slice(0, end)), tr).replace(`<div id="${id}" `, `<div id="${id}" lang="ru" `) +
+      '\n<p class="lang-note" lang="en" style="margin:8px 24px 0;align-self:center;max-width:720px;padding:10px 16px;border:1px solid var(--rule);border-radius:12px;font-family:var(--mono);font-size:12.5px;line-height:1.6;color:var(--ink2);text-align:center">This document is available in Russian only. The Russian text below is the official version.</p>\n' +
+      views[id].slice(end);
+  }
+}
 
 // ── 5. head для каждой страницы ────────────────────────────────────────
 const decode = (s) =>
@@ -308,8 +439,8 @@ function jsonLd() {
       {
         '@type': 'Organization',
         '@id': `${SITE}/#org`,
-        name: 'ФИТА',
-        alternateName: ['FITA', 'Фита'],
+        name: EN ? 'FITA' : 'ФИТА',
+        alternateName: EN ? ['Fita'] : ['FITA', 'Фита'],
         url: `${SITE}/`,
         logo: `${SITE}/assets/fita-logo.jpg`,
         email: 'support@appfita.ru',
@@ -318,17 +449,18 @@ function jsonLd() {
         '@type': 'WebSite',
         '@id': `${SITE}/#website`,
         url: `${SITE}/`,
-        name: 'ФИТА',
-        inLanguage: 'ru-RU',
+        name: EN ? 'FITA' : 'ФИТА',
+        inLanguage: EN ? 'en' : 'ru-RU',
         publisher: { '@id': `${SITE}/#org` },
       },
       {
         '@type': 'MobileApplication',
         '@id': `${SITE}/#app`,
-        name: 'ФИТА',
-        alternateName: 'FITA',
-        description:
-          'ИИ-компаньон здоровья: разбирает сон, пульс, HRV, стресс и тренировочную нагрузку по данным Apple Watch, Garmin, Oura, Whoop и Fitbit, собирает домашний экран под пользователя и подключается к ИИ-ассистентам через MCP.',
+        name: EN ? 'FITA' : 'ФИТА',
+        alternateName: EN ? 'Fita' : 'FITA',
+        description: EN
+          ? 'AI health companion: reads sleep, heart rate, HRV, stress and training load from Apple Watch, Garmin, Oura, Whoop and Fitbit, builds a home screen around the user and connects to AI assistants via MCP. The app interface is in Russian.'
+          : 'ИИ-компаньон здоровья: разбирает сон, пульс, HRV, стресс и тренировочную нагрузку по данным Apple Watch, Garmin, Oura, Whoop и Fitbit, собирает домашний экран под пользователя и подключается к ИИ-ассистентам через MCP.',
         applicationCategory: 'HealthApplication',
         operatingSystem: 'iOS 16+, Android, Windows, macOS, Linux',
         inLanguage: 'ru',
@@ -344,7 +476,7 @@ function jsonLd() {
       {
         '@type': 'FAQPage',
         '@id': `${SITE}/#faq`,
-        inLanguage: 'ru-RU',
+        inLanguage: EN ? 'en' : 'ru-RU',
         mainEntity: faq.map(({ q, a }) => ({
           '@type': 'Question',
           name: q,
@@ -357,23 +489,34 @@ function jsonLd() {
 }
 
 // GitHub Pages не знает /space/ (со слэшем) и отдаёт 404. Для известных
-// страниц 404.html сразу уводит на адрес без слэша.
+// страниц 404.html сразу уводит на адрес без слэша. Приглашение —
+// appfita.ru/?ref=<code> (так его выдаёт ядро); короткий вариант /r/<code>
+// статический хостинг отдаёт как 404, поэтому отсюда — на /?ref=<code>.
 const known = PAGES.filter((p) => p.path && p.path !== '/').map((p) => p.path);
-const slashRedirect = `<script>(function(){var k=${JSON.stringify(known)},p=location.pathname.replace(/\\/+$/,'');if(p!==location.pathname&&k.indexOf(p)>=0)location.replace(p+location.search+location.hash);})();</script>`;
+const slashRedirect = `<script>(function(){var k=${JSON.stringify(known)},p=location.pathname.replace(/\\/+$/,''),r=p.match(/^\\/r\\/([A-Za-z0-9]{4,16})$/);if(r)location.replace('/?ref='+r[1]);else if(p!==location.pathname&&k.indexOf(p)>=0)location.replace(p+location.search+location.hash);})();</script>`;
 
 function headFor(page) {
-  const url = page.path ? `${SITE}${page.path}` : null;
+  // Правовые документы английской версии — копия русских: canonical на appfita.ru.
+  const url = page.path ? `${EN && page.legal ? RU_SITE : SITE}${page.path}` : null;
+  const { title, description } = T(page);
   const meta = [
-    `<title>${esc(page.title)}</title>`,
-    `<meta name="description" content="${esc(page.description)}">`,
+    `<title>${esc(title)}</title>`,
+    `<meta name="description" content="${esc(description)}">`,
     page.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${url}">`,
+    ...(HREFLANG && page.alt
+      ? [
+          `<link rel="alternate" hreflang="ru" href="${RU_SITE}${page.path}">`,
+          `<link rel="alternate" hreflang="en" href="${EN_SITE}${page.path}">`,
+          `<link rel="alternate" hreflang="x-default" href="${RU_SITE}${page.path}">`,
+        ]
+      : []),
     page.noindex ? slashRedirect : '',
     page.app ? `<meta name="apple-itunes-app" content="app-id=${APP_STORE_ID}">` : '',
     '<meta property="og:type" content="website">',
-    '<meta property="og:site_name" content="ФИТА">',
-    '<meta property="og:locale" content="ru_RU">',
-    `<meta property="og:title" content="${esc(page.title)}">`,
-    `<meta property="og:description" content="${esc(page.description)}">`,
+    `<meta property="og:site_name" content="${EN ? 'FITA' : 'ФИТА'}">`,
+    `<meta property="og:locale" content="${EN ? 'en_US' : 'ru_RU'}">`,
+    `<meta property="og:title" content="${esc(title)}">`,
+    `<meta property="og:description" content="${esc(description)}">`,
     url ? `<meta property="og:url" content="${url}">` : '',
     `<meta property="og:image" content="${SITE}/assets/og.jpg">`,
     '<meta property="og:image:width" content="1200">',
@@ -400,14 +543,17 @@ for (const page of PAGES) {
       if (id === page.view) v = v.replace(/class="view ([^"]*)"/, 'class="view $1 is-active"');
       // spa.js берёт document.title из data-title при переходах внутри страницы.
       const p = PAGES.find((x) => x.view === id);
-      return v.replace(/data-title="[^"]*"/, `data-title="${esc(p.title)}"`);
+      return v.replace(/data-title="[^"]*"/, `data-title="${esc(T(p).title)}"`);
     })
     .join('');
 
-  // Правовые страницы и 404 — чистый текст, скрипты им не нужны.
-  const scripts = page.app ? `${tailScripts}${appTags}\n` : '';
+  // Правовые страницы и 404 — чистый текст, скрипты им не нужны (и аналитики там нет).
+  const scripts =
+    (page.app ? `${tailScripts}${appTags}\n` : '') +
+    (page.track ? `${analyticsTag}\n` : '') +
+    (page.referral ? `${referralTag}\n` : '');
 
-  const html =
+  let html =
     headFor(page) +
     `<body class="${bodyClass(page.view)}">\n` +
     body +
@@ -416,10 +562,33 @@ for (const page of PAGES) {
     '</body>\n</html>\n';
   const h1 = (html.match(/<h1[\s>]/g) || []).length;
   if (h1 !== 1) throw new Error(`${page.file}: h1 должен быть ровно один, а их ${h1}`);
+  if (EN) html = html.replaceAll(RU_APP_STORE, APP_STORE);
+  if (EN) residual(page.file, html.replace(/<div id="view-[a-z]+" lang="ru"[\s\S]*?(?=<footer class="site-footer">)/, ''));
   fs.writeFileSync(path.join(OUT, page.file), html);
 }
 
-fs.copyFileSync(path.join(ROOT, 'spa.js'), path.join(OUT, 'spa.js'));
+if (EN) fs.writeFileSync(path.join(OUT, 'spa.js'), minifyJs(fs.readFileSync(path.join(ROOT, 'spa.js'), 'utf8')));
+else fs.copyFileSync(path.join(ROOT, 'spa.js'), path.join(OUT, 'spa.js'));
+
+// Английская версия: ни одной непереведённой строки — ни в HTML (кроме
+// текста правовых документов), ни в собранных скриптах.
+function residual(name, text) {
+  const left = text.replace(/data:[a-z/+]+;base64,[A-Za-z0-9+/=]+/g, '').match(/[^<>"'`]*[А-Яа-яЁё][^<>"'`]*/g);
+  if (left) residualErrors.push(`${name}: ${left.slice(0, 5).map((s) => s.trim().slice(0, 80)).join(' | ')}`);
+}
+if (EN) {
+  for (const f of fs.readdirSync(path.join(OUT, 'assets', 'js'))) residual(`assets/js/${f}`, fs.readFileSync(path.join(OUT, 'assets', 'js', f), 'utf8'));
+  for (const f of ['spa.js', 'robots.txt', 'llms.txt']) residual(f, fs.readFileSync(path.join(OUT, f), 'utf8'));
+  if (missing.size) {
+    fs.writeFileSync(path.join(ROOT, 'i18n', 'en.missing.json'), JSON.stringify([...missing].sort(), null, 1) + '\n');
+    throw new Error(`i18n/en.json: нет перевода для ${missing.size} строк, список — i18n/en.missing.json`);
+  }
+  fs.rmSync(path.join(ROOT, 'i18n', 'en.missing.json'), { force: true });
+  if (badMarkup.length) throw new Error(`i18n/en.json: перевод не прошёл проверку:\n${[...new Set(badMarkup)].slice(0, 10).join('\n')}`);
+  if (residualErrors.length) throw new Error(`в английской сборке остался русский текст:\n${residualErrors.join('\n')}`);
+  const unused = Object.keys(DICT).filter((k) => !used.has(k));
+  if (unused.length) console.warn(`i18n/en.json: не используются ${unused.length} строк: ${unused.slice(0, 10).join(' | ')}`);
+}
 
 // ── 7. sitemap.xml ─────────────────────────────────────────────────────
 // lastmod должен меняться, только когда меняется страница: дату сборки
@@ -475,7 +644,7 @@ async function lastmod(page) {
 }
 
 const urls = [];
-for (const p of PAGES.filter((x) => x.path)) {
+for (const p of PAGES.filter((x) => x.path && !(EN && x.legal))) {
   const mod = await lastmod(p);
   urls.push(`  <url><loc>${SITE}${p.path}</loc><lastmod>${mod}</lastmod></url>`);
   console.log(`sitemap ${p.path}: ${mod}`);

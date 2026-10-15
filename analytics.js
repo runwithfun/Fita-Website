@@ -1,0 +1,239 @@
+/**
+ * FITA — лёгкая аналитика сайта (свой код, без Umami-скрипта и сторонних доменов).
+ *
+ * События уходят в ядро FITA: POST {api}/v1/analytics/public, оттуда сервер
+ * сам пересылает их в приватный Umami. Отправляем только:
+ *   page_view, download_clicked, referral_link_opened;
+ *   path — нормализованный pathname известной маркетинговой страницы (без query/hash);
+ *   source/medium/campaign — utm_* этой загрузки, только slug;
+ *   referrer_host — хост внешнего referrer, без пути;
+ *   referral_code — код приглашения из ?ref= (appfita.ru/?ref=CODE), только A-Z0-9.
+ * Ни email, ни текста, ни данных здоровья здесь нет и быть не должно.
+ *
+ * Всё best effort: ошибки сети, CORS и хранилища глотаются, на клики
+ * и загрузки (переход в App Store, на релизы) скрипт никогда не влияет.
+ * Публичные события не засчитывают приглашение: это делает только ядро
+ * по факту регистрации в приложении.
+ *
+ * Настройка — атрибуты тега, их ставит scripts/build.mjs:
+ *   data-api="https://api.appfita.ru"  — ядро (нужно и referral.js: resolve кода);
+ *   data-collect="1"                   — включить отправку (в превью-сборке нет).
+ * Плюс отправка идёт только с боевых хостов (HOSTS): localhost и превью молчат.
+ */
+(function (w) {
+  'use strict';
+  // Второй экземпляр скрипта не вешает второй слушатель кликов.
+  if (w.FITA_ANALYTICS) return;
+
+  var d = w.document;
+  var tag = d.currentScript;
+  var API = (tag && tag.getAttribute('data-api')) || '';
+  var COLLECT = !!tag && tag.getAttribute('data-collect') === '1';
+
+  var HOSTS = ['appfita.ru', 'www.appfita.ru', 'fita.fit', 'www.fita.fit'];
+  // Только маркетинговые страницы; правовые, 404 и всё прочее — никогда.
+  var PAGES = { '/': '/', '/index.html': '/', '/space': '/space', '/space.html': '/space' };
+  var DOWNLOAD_HOSTS = ['apps.apple.com', 'releases.appfita.ru'];
+  // Те же шаблоны, что проверяет сервер (server/app/routes/analytics.py).
+  var CODE = /^[A-Za-z0-9]{4,16}$/;
+  var SLUG = /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/;
+  var HOST = /^[a-z0-9]([a-z0-9-]{0,62}\.)+[a-z]{2,63}$/;
+  var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
+  var MAX_QUEUE = 50; // больше за одну загрузку страницы не бывает; лишнее отбрасываем
+  var BATCH = 20; // лимит сервера на запрос
+  var MAX_FAILURES = 3; // подряд — дальше молчим до следующей загрузки
+  var REF_TTL = 7 * 864e5; // временная атрибуция на сайте, не в приложении
+  var VID_KEY = 'fita_vid';
+  var REF_KEY = 'fita_ref';
+
+  function get(k) {
+    try { return w.localStorage.getItem(k); } catch (e) { return null; }
+  }
+  function put(k, v) {
+    try {
+      if (v == null) w.localStorage.removeItem(k);
+      else w.localStorage.setItem(k, v);
+    } catch (e) {}
+  }
+
+  function uuid() {
+    var c = w.crypto;
+    try { if (c && c.randomUUID) return c.randomUUID(); } catch (e) {}
+    var b = new Uint8Array(16), i, s = '';
+    if (c && c.getRandomValues) c.getRandomValues(b);
+    else for (i = 0; i < 16; i++) b[i] = (Math.random() * 256) | 0;
+    b[6] = (b[6] & 15) | 64;
+    b[8] = (b[8] & 63) | 128;
+    for (i = 0; i < 16; i++) s += (b[i] + 256).toString(16).slice(1) + (i === 3 || i === 5 || i === 7 || i === 9 ? '-' : '');
+    return s;
+  }
+
+  // Без localStorage (приватный режим, запрет cookies) id живёт до конца загрузки страницы.
+  var memVid = null;
+  function visitorId() {
+    var v = get(VID_KEY);
+    if (v && UUID.test(v)) return v;
+    v = memVid || uuid();
+    memVid = v;
+    put(VID_KEY, v);
+    return v;
+  }
+
+  function pagePath(pathname) {
+    return PAGES[String(pathname || '/').replace(/\/+$/, '') || '/'] || null;
+  }
+
+  function normCode(c) {
+    return typeof c === 'string' && CODE.test(c) ? c.toUpperCase() : null;
+  }
+
+  function params(search) {
+    try { return new w.URLSearchParams(search || ''); } catch (e) { return { get: function () { return null; } }; }
+  }
+
+  function refFromUrl(loc) {
+    return normCode(params(loc.search).get('ref'));
+  }
+
+  function storedRef(now) {
+    try {
+      var r = JSON.parse(get(REF_KEY) || 'null');
+      if (r && normCode(r.c) && now - r.t >= 0 && now - r.t < REF_TTL) return r.c;
+    } catch (e) {}
+    put(REF_KEY, null);
+    return null;
+  }
+
+  function referrerHost(ref, ownHost) {
+    try {
+      var h = new w.URL(ref).hostname.toLowerCase();
+      return h !== ownHost && HOSTS.indexOf(h) < 0 && HOST.test(h) ? h : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Свойства этой загрузки страницы: одинаковые для всех её событий.
+  function context(loc, referrer, ref) {
+    var q = params(loc.search), out = {}, keys = ['source', 'medium', 'campaign'], v, i;
+    for (i = 0; i < keys.length; i++) {
+      v = q.get('utm_' + keys[i]);
+      v = v && v.toLowerCase();
+      if (v && SLUG.test(v)) out[keys[i]] = v;
+    }
+    v = referrerHost(referrer, String(loc.hostname || '').toLowerCase());
+    if (v) out.referrer_host = v;
+    if (ref) out.referral_code = ref;
+    return out;
+  }
+
+  // ── состояние ────────────────────────────────────────────────────────
+  var loc = w.location;
+  var now = Date.now();
+  var urlRef = refFromUrl(loc);
+  if (urlRef) put(REF_KEY, JSON.stringify({ c: urlRef, t: now }));
+  var ref = urlRef || storedRef(now);
+  var path = pagePath(loc.pathname);
+  var enabled = COLLECT && /^https:\/\/[^/]+$/.test(API) && !!path && HOSTS.indexOf(loc.hostname) >= 0 && typeof w.fetch === 'function';
+  var hasVisitor = enabled; // enabled гаснет после сбоев сети, а id для приложения остаётся
+  var ctx = context(loc, d.referrer, ref);
+  var queue = [];
+  var timer = null;
+  var busy = false;
+  var failures = 0;
+  var lastDownload = { href: '', at: 0 };
+
+  function track(name) {
+    if (!enabled || queue.length >= MAX_QUEUE) return;
+    var props = {}, k;
+    for (k in ctx) props[k] = ctx[k];
+    queue.push({ event_id: uuid(), name: name, path: path, properties: props });
+    schedule(1000);
+  }
+
+  function schedule(ms) {
+    if (timer) return;
+    timer = w.setTimeout(function () {
+      timer = null;
+      flush(false);
+    }, ms);
+  }
+
+  function send(batch, final) {
+    var body = JSON.stringify({ visitor_id: visitorId(), events: batch });
+    function done(retry) {
+      if (!final) busy = false;
+      if (retry && ++failures < MAX_FAILURES) {
+        queue = batch.concat(queue).slice(0, MAX_QUEUE);
+        if (!final) schedule(2000 * failures);
+        return;
+      }
+      if (retry) {
+        enabled = false; // сервер лежит — не долбим его с каждой страницы дальше
+        queue = [];
+        return;
+      }
+      failures = 0;
+      if (queue.length && !final) schedule(0);
+    }
+    try {
+      // Строка уходит как text/plain — простой запрос без CORS-preflight.
+      // keepalive: запрос доживает, даже если пользователь ушёл в App Store.
+      w.fetch(API + '/v1/analytics/public', { method: 'POST', body: body, keepalive: true, credentials: 'omit' }).then(
+        function (r) { done(r.status === 429 || r.status >= 500); }, // 4xx — наша ошибка, повтор не поможет
+        function () { done(true); }
+      );
+    } catch (e) {
+      done(true);
+    }
+  }
+
+  // final — уход со страницы: отправляем всё сразу, не дожидаясь ответа на прошлый запрос.
+  function flush(final) {
+    if (!enabled || !queue.length || (busy && !final)) return;
+    if (final) {
+      while (queue.length) send(queue.splice(0, BATCH), true);
+      return;
+    }
+    busy = true;
+    send(queue.splice(0, BATCH), false);
+  }
+
+  function isDownload(a) {
+    try { return DOWNLOAD_HOSTS.indexOf(new w.URL(a.href, loc.href).hostname) >= 0; } catch (e) { return false; }
+  }
+
+  if (enabled) {
+    // capture: событие фиксируется до того, как чужой обработчик что-то отменит.
+    d.addEventListener('click', function (e) {
+      try {
+        var a = e.target && e.target.closest && e.target.closest('a[href]');
+        if (!a || !isDownload(a)) return;
+        var t = Date.now();
+        if (a.href === lastDownload.href && t - lastDownload.at < 1000) return; // двойной клик — одно событие
+        lastDownload = { href: a.href, at: t };
+        track('download_clicked');
+        flush(true);
+      } catch (err) {}
+    }, true);
+    w.addEventListener('pagehide', function () { flush(true); });
+    d.addEventListener('visibilitychange', function () {
+      if (d.visibilityState === 'hidden') flush(true);
+    });
+    track('page_view');
+    if (urlRef) track('referral_link_opened');
+  }
+
+  w.FITA_ANALYTICS = {
+    api: API,
+    referral: function () { return ref; },
+    // Для ссылки в приложение: только когда сбор включён, иначе id не заводим.
+    visitorId: function () { return hasVisitor ? visitorId() : null; },
+    forgetReferral: function () {
+      ref = null;
+      delete ctx.referral_code;
+      put(REF_KEY, null);
+    },
+  };
+})(window);

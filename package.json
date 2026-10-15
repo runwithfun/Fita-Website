@@ -4,7 +4,10 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "preview": "npm run build && npx --yes serve@14 _site -l 4190"
+    "build:en": "FITA_LOCALE=en node scripts/build.mjs",
+    "test": "node --test test/analytics.test.mjs test/i18n.test.mjs test/build.test.mjs",
+    "preview": "FITA_ANALYTICS=0 npm run build && npx --yes serve@14 _site -l 4190",
+    "preview:en": "FITA_ANALYTICS=0 npm run build:en && npx --yes serve@14 _site-en -l 4192"
   },
   "devDependencies": {
     "@babel/standalone": "7.29.0",

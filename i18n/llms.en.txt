@@ -1,0 +1,55 @@
+# FITA — AI health companion
+
+> FITA (Fita) is an app with an AI agent that reads sleep, heart rate, heart rate variability (HRV), stress and training load from smartwatches and rings and tells you when to train and when to recover. It works with Apple Watch, Garmin, Oura, Whoop, Fitbit and other devices through Apple Health and Health Connect. Made for Russia: the app interface is in Russian and the AI runs on servers in Russia. The app is in closed beta and free: iOS in the App Store (published in the Russian storefront), builds for Android, Windows, macOS and Linux at releases.appfita.ru. This English site (fita.fit) describes the same product as appfita.ru.
+
+Not to be confused with: FITA (fita.fit, appfita.ru) is not related to the Fita app by Telkomsel (Indonesia), the Fitia nutrition tracker or other products with similar names.
+
+## What it does
+
+- Sleep: stages (deep, REM, awakenings) and an overall recovery score for the night.
+- Day readiness: a "good to go today" or "better take it easy today" answer for training, work and rest.
+- Heart rate and HRV: a week of load and rest history.
+- Stress and balance: tension and recovery as one rhythm.
+- Load and adaptation: acute and chronic load, how effort relates to the body's response.
+- A home screen of widgets that the agent builds around the user; themes and accents.
+- Chat with the agent Fita: remembers past conversations, sees the same numbers as the user, can move a workout or rebuild the screen — only with the user's consent.
+- FITA MCP: AI assistants (ChatGPT, Claude, Gemini and others) can read the user's metrics with their permission; the user decides who gets access to what.
+- Clubs and events: interest clubs, events with limited spots, city events.
+
+## FAQ
+
+### Which watches and trackers does Fita support?
+Any that write data to Apple Health (iPhone) or Health Connect (Android): Apple Watch, Garmin, Oura, Whoop, Fitbit, Samsung Health, Huawei, Strava, Peloton, Komoot, Nike and others.
+
+### Where is health data stored?
+On the user's device. The agent's memory is stored on the device too. Requests to the AI model are processed on servers in Russia (Russian personal data law 152-FZ), without cross-border transfer.
+
+### What does Fita show when there is no data?
+An honest empty state. Fita does not substitute made-up or "zero" values for missing measurements.
+
+### Is it a medical app?
+No. Fita's suggestions are not medical advice, a diagnosis or a prescription and do not replace seeing a doctor.
+
+### How much does it cost?
+The app is free. It is currently in closed beta.
+
+### How do I install it?
+iPhone (iOS 16 and later) — in the App Store: https://apps.apple.com/app/fita/id6794848328. Builds for Android, Windows, macOS and Linux are published at https://releases.appfita.ru/.
+
+## Pages
+
+- [Home](https://fita.fit/): what FITA is; sleep, day readiness, heart rate and HRV, stress and balance, load and adaptation; FITA MCP; FAQ
+- [Space](https://fita.fit/space): widgets, themes, chat with memory; a live home screen builder
+- [FITA on the App Store](https://apps.apple.com/app/fita/id6794848328): iOS 16+, free
+- [Download for Android, Windows, macOS, Linux](https://releases.appfita.ru/): closed beta builds
+- [Russian version](https://appfita.ru/)
+
+## Legal (in Russian)
+
+- [Privacy Policy](https://fita.fit/privacy)
+- [Consent to personal data processing](https://fita.fit/consent)
+- [Terms of Use](https://fita.fit/terms)
+
+## Contact
+
+- Support: support@appfita.ru
