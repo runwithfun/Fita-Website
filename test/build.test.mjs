@@ -38,7 +38,7 @@ test('английская версия: lang, canonical, OG, hreflang, JSON-LD'
     assert.ok(h.includes('<meta property="og:locale" content="en_US">'), f);
     assert.ok(h.includes(`<link rel="alternate" hreflang="ru" href="https://appfita.ru${p}">`), f);
     assert.ok(h.includes(`<link rel="alternate" hreflang="en" href="https://fita.fit${p}">`), f);
-    assert.ok(h.includes(`<link rel="alternate" hreflang="x-default" href="https://appfita.ru${p}">`), f);
+    assert.ok(h.includes(`<link rel="alternate" hreflang="x-default" href="https://fita.fit${p}">`), f);
     assert.doesNotMatch(h, /og:image" content="https:\/\/appfita/, f);
   }
   const ld = jsonLd(en['index.html'])['@graph'];
@@ -77,8 +77,12 @@ test('английская версия: ни одного русского сл
   }
   for (const f of ['robots.txt', 'llms.txt', 'spa.js']) assert.ok(!CYR.test(read('_site-en', f)), f);
   assert.match(read('_site-en', 'robots.txt'), /^Sitemap: https:\/\/fita\.fit\/sitemap\.xml$/m);
-  for (const f of ['CNAME', 'google0e397b29f133d71b.html', 'yandex_05b92f09f6b3d057.html', '14365f8de00c67b810d8f563c4f7b2ab.txt']) {
+  for (const f of ['CNAME', 'yandex_05b92f09f6b3d057.html']) {
     assert.ok(!fs.existsSync(path.join(ROOT, '_site-en', f)), f);
+  }
+  // Файл Google выдан на аккаунт, ключ IndexNow — на владельца: оба годятся и для fita.fit.
+  for (const f of ['google0e397b29f133d71b.html', '14365f8de00c67b810d8f563c4f7b2ab.txt']) {
+    assert.ok(fs.existsSync(path.join(ROOT, '_site-en', f)), f);
   }
 });
 

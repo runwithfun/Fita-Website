@@ -208,6 +208,11 @@ if (!EN) {
   // комментариев и со своим sitemap; llms.txt — английский.
   fs.copyFileSync(path.join(ROOT, 'favicon.ico'), path.join(OUT, 'favicon.ico'));
   fs.copyFileSync(path.join(ROOT, 'i18n', 'llms.en.txt'), path.join(OUT, 'llms.txt'));
+  // Файл Google и ключ IndexNow не привязаны к домену — подходят и для fita.fit.
+  // Файл Яндекса выдан под appfita.ru, его не копируем.
+  for (const f of verificationFiles.filter((f) => !f.startsWith('yandex_'))) {
+    fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
+  }
   const robots = fs
     .readFileSync(path.join(ROOT, 'robots.txt'), 'utf8')
     .split('\n')
@@ -385,6 +390,12 @@ let head = src.slice(0, bodyOpen);
 let footer = src.slice(footerStart, scriptsStart);
 let tailScripts = src.slice(scriptsStart, bodyEnd);
 
+// Видимая ссылка на английскую версию — пара к «Russian version» на fita.fit.
+if (!EN && HREFLANG) {
+  footer = footer.replace('</nav>', '  <a href="https://fita.fit/" lang="en">English version</a>\n  </nav>');
+  if (!footer.includes('English version')) throw new Error('index.html: нет </nav> в подвале');
+}
+
 // Английская версия: перевод всего, кроме текста правовых документов — они
 // остаются русскими с пометкой на английском (lang="ru" у блока документа).
 const LEGAL_VIEWS = PAGES.filter((p) => p.legal).map((p) => p.view);
@@ -507,7 +518,8 @@ function headFor(page) {
       ? [
           `<link rel="alternate" hreflang="ru" href="${RU_SITE}${page.path}">`,
           `<link rel="alternate" hreflang="en" href="${EN_SITE}${page.path}">`,
-          `<link rel="alternate" hreflang="x-default" href="${RU_SITE}${page.path}">`,
+          // x-default — для тех, чей язык не русский и не английский: им понятнее английская версия.
+          `<link rel="alternate" hreflang="x-default" href="${EN_SITE}${page.path}">`,
         ]
       : []),
     page.noindex ? slashRedirect : '',

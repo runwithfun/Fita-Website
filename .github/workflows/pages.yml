@@ -32,7 +32,9 @@ jobs:
       - run: curl -fsS https://appfita.ru/sitemap.xml -o prev-sitemap.xml || true
       # Собирает _site/: отдельный HTML на каждую страницу, JSX скомпилирован,
       # sitemap.xml. Публикуется только _site, а не весь репозиторий.
+      # FITA_HREFLANG=1: fita.fit открывается, связываем версии ссылками hreflang.
       - run: npm run build
+        env: { FITA_HREFLANG: "1" }
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: "_site" }
