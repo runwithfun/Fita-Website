@@ -81,7 +81,7 @@ test('английская версия: ни одного русского сл
     assert.ok(!fs.existsSync(path.join(ROOT, '_site-en', f)), f);
   }
   // Файл Google выдан на аккаунт, ключ IndexNow — на владельца: оба годятся и для fita.fit.
-  for (const f of ['google0e397b29f133d71b.html', '14365f8de00c67b810d8f563c4f7b2ab.txt']) {
+  for (const f of ['google0e397b29f133d71b.html', 'BingSiteAuth.xml', '14365f8de00c67b810d8f563c4f7b2ab.txt']) {
     assert.ok(fs.existsSync(path.join(ROOT, '_site-en', f)), f);
   }
 });

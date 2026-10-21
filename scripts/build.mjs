@@ -198,7 +198,7 @@ fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), {
 // Удалять их нельзя: консоли периодически перепроверяют права.
 const verificationFiles = fs
   .readdirSync(ROOT)
-  .filter((f) => /^[0-9a-f]{32}\.txt$/.test(f) || /^(google[0-9a-f]+|yandex_[0-9a-f]+)\.html$/.test(f));
+  .filter((f) => /^[0-9a-f]{32}\.txt$/.test(f) || /^(google[0-9a-f]+|yandex_[0-9a-f]+)\.html$/.test(f) || f === 'BingSiteAuth.xml');
 if (!EN) {
   for (const f of ['CNAME', '.nojekyll', 'robots.txt', 'llms.txt', 'favicon.ico', ...verificationFiles]) {
     fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
@@ -208,7 +208,7 @@ if (!EN) {
   // комментариев и со своим sitemap; llms.txt — английский.
   fs.copyFileSync(path.join(ROOT, 'favicon.ico'), path.join(OUT, 'favicon.ico'));
   fs.copyFileSync(path.join(ROOT, 'i18n', 'llms.en.txt'), path.join(OUT, 'llms.txt'));
-  // Файл Google и ключ IndexNow не привязаны к домену — подходят и для fita.fit.
+  // Файлы Google и Bing и ключ IndexNow не привязаны к домену — подходят и для fita.fit.
   // Файл Яндекса выдан под appfita.ru, его не копируем.
   for (const f of verificationFiles.filter((f) => !f.startsWith('yandex_'))) {
     fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
