@@ -98,7 +98,7 @@ const PAGES = [
     en: {
       title: 'FITA Space — a home screen that builds itself around you',
       description:
-        'Widgets, themes and a chat with memory: FITA builds your home screen around your rhythm and remembers past conversations. Build your own screen right on the site.',
+        'Widgets, themes and an AI chat with memory. FITA adapts to your rhythm. Design your personal home screen right on the site.',
     },
   },
   {
