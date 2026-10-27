@@ -1,0 +1,1810 @@
+[
+  {
+    "id": "apple-watch",
+    "slug": "apple-watch-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Apple: Set up your Apple Watch",
+        "url": "https://support.apple.com/en-us/109015"
+      },
+      {
+        "label": "Apple: Manage Health data",
+        "url": "https://support.apple.com/en-us/108779"
+      },
+      {
+        "label": "Apple Developer: HRV SDNN",
+        "url": "https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn"
+      },
+      {
+        "label": "Apple Developer: Resting heart rate",
+        "url": "https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/restingheartrate"
+      },
+      {
+        "label": "Apple: Track your sleep",
+        "url": "https://support.apple.com/en-us/108906"
+      },
+      {
+        "label": "Apple: Blood Oxygen app",
+        "url": "https://support.apple.com/en-us/120358"
+      }
+    ],
+    "ru": {
+      "title": "Apple Watch: Apple Health, Health Connect и FITA",
+      "description": "Как данные Apple Watch попадают в «Здоровье» и FITA: пульс, HRV, сон, шаги и SpO₂. Ограничения моделей, разрешения, дубли и отсутствие Android-пути.",
+      "h1": "Apple Watch и Фита",
+      "lead": "Apple Watch записывает поддерживаемые показатели в Apple Health на связанном iPhone. Для Health Connect на Android штатного пути Apple Watch нет: это отдельная система, а не другое название приложения «Здоровье».",
+      "sections": [
+        {
+          "heading": "Какие показатели Apple Watch доступны для чтения?",
+          "paragraphs": [
+            "Таблица относится к данным самих часов. ✓ — документированный путь, ◐ — зависит от модели или условий, ✕ — штатного пути нет. Разрешение не создаёт измерения, если часы его не сделали. Вес в «Здоровье» может прийти от весов или ручного ввода, но часы его не измеряют."
+          ],
+          "table": {
+            "headers": [
+              "Показатель",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ записанные на часах",
+                "✕ штатного экспорта нет"
+              ],
+              [
+                "Шаги",
+                "✓ при включённом фитнес-трекинге",
+                "✕ штатного экспорта нет"
+              ],
+              [
+                "Пульс",
+                "✓ при доступных измерениях",
+                "✕ штатного экспорта нет"
+              ],
+              [
+                "Пульс покоя",
+                "✓ оценка Apple Watch",
+                "✕ штатного экспорта нет"
+              ],
+              [
+                "HRV",
+                "✓ SDNN, не RMSSD",
+                "✕ штатного экспорта нет"
+              ],
+              [
+                "Сон",
+                "◐ при включённом отслеживании",
+                "✕ штатного экспорта нет"
+              ],
+              [
+                "SpO₂",
+                "◐ поддерживаемые модели и регионы",
+                "✕ штатного экспорта нет"
+              ],
+              [
+                "Вес",
+                "✕ часы не измеряют вес",
+                "✕ штатного экспорта нет"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как настроить запись и доступ на iPhone?",
+          "paragraphs": [
+            "Сначала свяжите часы с iPhone. Для разных поколений действуют разные требования к iOS и watchOS; проверяйте совместимость своей модели, а не универсальную версию из чужой инструкции. Отдельная синхронизация с аккаунтом производителя для базового пути Apple Watch → «Здоровье» не нужна."
+          ],
+          "steps": [
+            "На iPhone откройте Watch → All Watches → Add Watch и завершите сопряжение по подсказкам Apple.",
+            "В «Здоровье» откройте профиль → Devices → Apple Watch → Privacy Settings и включите Fitness Tracking, если шаги не записываются.",
+            "Для сна включите Track Sleep with Apple Watch при настройке сна в «Здоровье»; заряжайте часы перед ночью и носите их во время сна.",
+            "В «Здоровье»: профиль → Privacy → Apps → FITA. Разрешите доступ к нужным категориям, если FITA уже запросила его."
+          ]
+        },
+        {
+          "heading": "Почему сон, SpO₂ или HRV могут отсутствовать?",
+          "paragraphs": [
+            "Apple указывает для записи сна включённое отслеживание, ношение не менее часа за ночь и рекомендует заряд хотя бы 30% перед сном. Настройка Apple Watch For Your Kids не поддерживает этот путь сна. Если запись отсутствует в самом «Здоровье», повторное разрешение FITA её не восстановит.",
+            "SpO₂ зависит от модели, региона, возраста и версии ПО: функция не поддерживается на Apple Watch SE. У некоторых американских моделей анализ выполняется на iPhone. Поэтому наличие оптического датчика или название Series сами по себе не гарантируют одинаковый набор записей. HRV в HealthKit использует SDNN; его нельзя напрямую подменять RMSSD из другого устройства."
+          ]
+        },
+        {
+          "heading": "Как проверить источник и убрать дубли?",
+          "paragraphs": [
+            "Откройте нужную категорию в «Здоровье» и посмотрите отдельные записи и их источник. Если пробежку одновременно записывают часы и стороннее приложение, оставьте запись тренировки только у выбранного источника. Приоритет источников помогает выбирать данные категории, но не обещает удаления всех отдельных копий тренировок.",
+            "Документированный путь Apple: категория → Data Sources & Access → Edit. Переместите нужный источник выше. Не удаляйте всю историю ради проверки: сначала сравните одну запись, время начала и имя источника. Если данные часов запаздывают, держите часы и iPhone рядом, проверьте связь и заряд."
+          ]
+        },
+        {
+          "heading": "Как использовать эти данные в FITA?",
+          "paragraphs": [
+            "Сначала проверьте запись в Apple Health, затем разрешите FITA читать нужные категории. FITA получает доступ к разрешённым данным системного хранилища на вашем устройстве; наличие показателя в приложении производителя само по себе не делает его доступным в FITA. Права на запись у источника и права на чтение у FITA — разные разрешения.",
+            "FITA — бесплатная закрытая бета с русским интерфейсом. iOS-версия доступна в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Информация о выпусках для других платформ: https://releases.appfita.ru. Android-инструкции на этой странице описывают экспорт производителя в Health Connect и не означают, что Android-версия FITA уже выпущена."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Можно ли подключить Apple Watch к Android и Health Connect?",
+          "a": "Штатное сопряжение Apple требует iPhone. Прямого экспорта Apple Watch в Health Connect здесь не подтверждено; сторонний перенос нельзя считать встроенной функцией часов."
+        },
+        {
+          "q": "Нужно ли устанавливать FITA на часы?",
+          "a": "Для чтения уже записанных данных через Apple Health нужен доступ FITA на iPhone. Эта инструкция не предполагает отдельного приложения FITA для watchOS."
+        },
+        {
+          "q": "Почему пульс покоя позже изменился?",
+          "a": "Apple уточняет оценку по мере накопления дневных измерений и может заменить ранние записи часов за текущий или предыдущий день."
+        },
+        {
+          "q": "Почему в FITA нет моего веса с Apple Watch?",
+          "a": "Apple Watch не измеряет вес. Нужна запись от совместимых весов, другого приложения или ручного ввода в Apple Health, а затем разрешение FITA на чтение."
+        }
+      ]
+    },
+    "en": {
+      "title": "Apple Watch to Apple Health and Health Connect: FITA",
+      "description": "Understand Apple Watch export to Apple Health, the lack of a native Android path, model limits for sleep and SpO2, SDNN HRV, permissions and duplicates.",
+      "h1": "Apple Watch & FITA",
+      "lead": "Apple Watch writes supported measurements to Apple Health on its paired iPhone. Apple Watch has no native export path to Android Health Connect; the two stores are separate systems.",
+      "sections": [
+        {
+          "heading": "Which Apple Watch metrics can be shared?",
+          "paragraphs": [
+            "This table describes the watch as the source. ✓ means documented support, ◐ means model or setup conditions apply, and ✕ means no native path. Weight in Health can come from scales or manual entry; the watch does not measure it."
+          ],
+          "table": {
+            "headers": [
+              "Metric",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ workouts recorded on the watch",
+                "✕ no native export"
+              ],
+              [
+                "Steps",
+                "✓ with Fitness Tracking enabled",
+                "✕ no native export"
+              ],
+              [
+                "Heart rate",
+                "✓ recorded samples",
+                "✕ no native export"
+              ],
+              [
+                "Resting heart rate",
+                "✓ Apple Watch estimate",
+                "✕ no native export"
+              ],
+              [
+                "HRV",
+                "✓ SDNN, not RMSSD",
+                "✕ no native export"
+              ],
+              [
+                "Sleep",
+                "◐ sleep tracking must be enabled",
+                "✕ no native export"
+              ],
+              [
+                "SpO₂",
+                "◐ supported model and region",
+                "✕ no native export"
+              ],
+              [
+                "Weight",
+                "✕ not measured by the watch",
+                "✕ no native export"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "How do you enable the iPhone path?",
+          "paragraphs": [
+            "Pair the watch first. iPhone and operating-system requirements vary by Apple Watch generation; check the requirements for your own model."
+          ],
+          "steps": [
+            "On iPhone, open Watch → All Watches → Add Watch and complete Apple’s pairing prompts.",
+            "If steps are missing, open Health → profile → Devices → Apple Watch → Privacy Settings and enable Fitness Tracking.",
+            "Enable Track Sleep with Apple Watch during Sleep setup in Health and wear the charged watch overnight.",
+            "In Health → profile → Privacy → Apps → FITA, allow the categories FITA has requested."
+          ]
+        },
+        {
+          "heading": "Why might sleep, oxygen or HRV be missing?",
+          "paragraphs": [
+            "Apple requires sleep tracking to be enabled and the watch to be worn for at least one hour overnight; it recommends at least 30% charge before bed. Sleep is unavailable on watches configured with Apple Watch For Your Kids. No FITA permission can recreate a measurement missing in Health.",
+            "Blood Oxygen availability depends on the model, region, age and software. Apple Watch SE does not support the feature. Some US models process their readings on the paired iPhone. HealthKit HRV uses SDNN, so it is not interchangeable with another wearable’s RMSSD."
+          ]
+        },
+        {
+          "heading": "How do you identify duplicates and delayed records?",
+          "paragraphs": [
+            "Inspect an individual Health record and its source. When both the watch and another app record a run, choose which app should write workouts. Source priority can select data for a category; it does not guarantee that duplicate workout records disappear.",
+            "Apple documents category → Data Sources & Access → Edit for source ordering. Compare one workout’s source and timestamps before deleting anything. For delayed watch data, check charge and connectivity and keep the paired devices nearby. Apple may refine resting-heart-rate estimates and replace its watch samples for the current or previous day."
+          ]
+        },
+        {
+          "heading": "How can FITA use the exported data?",
+          "paragraphs": [
+            "Verify a record in Apple Health first, then grant FITA access to the categories you want it to read. FITA reads permitted health-store data on your device. A metric visible only inside the manufacturer app is not automatically available to FITA; the source needs write permission and FITA needs separate read permission.",
+            "FITA is a free closed beta with a Russian interface. The iOS release is available in the Russian App Store: https://apps.apple.com/ru/app/fita/id6794848328. Other platform releases are listed at https://releases.appfita.ru. The Android instructions here explain manufacturer export to Health Connect; they do not announce an Android release of FITA."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can Apple Watch pair natively with Android?",
+          "a": "Apple’s setup requires an iPhone. Native Apple Watch export into Health Connect is not documented; a third-party transfer is a separate service."
+        },
+        {
+          "q": "Does FITA need a watchOS app?",
+          "a": "Reading existing Apple Health records relies on FITA’s iPhone permissions. This guide does not assume a FITA watchOS app."
+        },
+        {
+          "q": "Why do HRV values differ from another wearable?",
+          "a": "The calculation and sampling window can differ. Apple Health’s HRV type is SDNN, not RMSSD."
+        },
+        {
+          "q": "Can Apple Watch supply my weight?",
+          "a": "It does not measure weight. A scale, another app or manual Health entry must provide that record before FITA can read it."
+        }
+      ]
+    }
+  },
+  {
+    "id": "garmin",
+    "slug": "garmin-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Garmin: Sharing data with Apple Health",
+        "url": "https://support.garmin.com/en-NZ/?faq=lK5FPB9iPF5PXFkIpFlFPA&productID=125677"
+      },
+      {
+        "label": "Garmin: Sharing data with Health Connect",
+        "url": "https://support.garmin.com/lv-LV/?faq=JToBEy0jfe6pIygark2Ui5"
+      },
+      {
+        "label": "Apple: Manage Health data",
+        "url": "https://support.apple.com/en-us/108779"
+      },
+      {
+        "label": "Android: Get started with Health Connect",
+        "url": "https://support.google.com/android/answer/12201227?hl=en"
+      }
+    ],
+    "ru": {
+      "title": "Garmin: синхронизация Apple Health и Health Connect",
+      "description": "Подключение Garmin Connect к Apple Health и Health Connect: какие данные экспортируются, почему нет HRV и маршрута, как проверить доступ и убрать дубли.",
+      "h1": "Garmin и Фита",
+      "lead": "Garmin Connect экспортирует данные в Apple Health на iPhone и в Health Connect на Android 14 или новее. Обе интеграции односторонние: Garmin не читает из этих хранилищ данные других устройств.",
+      "sections": [
+        {
+          "heading": "Что Garmin действительно экспортирует?",
+          "paragraphs": [
+            "В таблице ✓ означает подтверждённую категорию, ◐ — ограничение или непроверенный отдельный экспорт, ✕ — прямо исключённый экспорт. Неперечисленные категории отмечены ◐: их отдельный экспорт не подтверждён. Набор также зависит от вашей модели и разрешений. Показатели Body Battery и другие оценки Garmin нельзя считать автоматически доступными через системное хранилище."
+          ],
+          "table": {
+            "headers": [
+              "Показатель",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ без GPS-маршрута",
+                "◐ данные активности; состав записи сессии не детализирован"
+              ],
+              [
+                "Шаги",
+                "✓",
+                "✓"
+              ],
+              [
+                "Пульс",
+                "◐ весь день; в тренировках только минимум/максимум",
+                "✓ активность и повседневные записи"
+              ],
+              [
+                "Пульс покоя",
+                "◐ не перечислен в экспорте",
+                "◐ отдельный экспорт не подтверждён"
+              ],
+              [
+                "HRV",
+                "◐ не перечислен в экспорте",
+                "◐ не перечислен в экспорте"
+              ],
+              [
+                "Сон",
+                "✓ Sleep Analysis",
+                "✓ стадии сна"
+              ],
+              [
+                "SpO₂",
+                "◐ не перечислен в экспорте",
+                "◐ не перечислен в экспорте"
+              ],
+              [
+                "Вес",
+                "✓ при наличии в Connect",
+                "✓ при наличии в Connect"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как включить Apple Health на iPhone?",
+          "paragraphs": [
+            "Сначала синхронизируйте устройство с Garmin Connect. Оставьте Connect открытым на экране: Garmin прямо указывает, что передача в Apple Health приостанавливается в фоне. После первого разрешения доступна история максимум за предыдущие две недели, а не за весь срок использования часов."
+          ],
+          "steps": [
+            "Garmin Connect → More → Settings → Connect Apps → Apple Health в Available Apps → Connect with Apple Health.",
+            "Выберите категории и нажмите Allow. Разрешайте те данные, которыми хотите делиться.",
+            "Для проверки Apple Health → Summary → фото профиля → Apps and Services в Privacy → Connect. Проверьте переключатели.",
+            "Снова синхронизируйте часы, оставив Garmin Connect открытым, и проверьте одну свежую запись в «Здоровье»."
+          ]
+        },
+        {
+          "heading": "Как настроить Health Connect на Android?",
+          "paragraphs": [
+            "Официальный FAQ Garmin ограничивает эту интеграцию Android 14 и новее. После успешной синхронизации устройства Connect передаёт разрешённые данные в Health Connect. Установка Health Connect на более старый Android сама по себе не отменяет требования Garmin.",
+            "Garmin предупреждает, что путь настройки различается между телефонами, и направляет в инструкцию Android. Откройте настройки Health Connect, найдите разрешения приложений и предоставьте Garmin Connect право записи нужных типов. Проверьте отдельную запись и её источник. Универсального точного пути меню для всех оболочек производитель не публикует."
+          ]
+        },
+        {
+          "heading": "Почему не видно маршрута, HRV или полной кривой пульса?",
+          "paragraphs": [
+            "Для Apple Health Garmin явно исключает GPS-трек. Пульс тренировки передаётся только крайними значениями, поэтому в Apple Activity возможна надпись Chart Unavailable. Это ограничение передачи, а не обязательно сбой датчика. HRV и SpO₂ отсутствуют в обоих опубликованных перечнях; их появление после смены разрешений обещать нельзя.",
+            "Если шаги завышены, проверьте источник в «Здоровье»: категория → Data Sources & Access → Edit. Если одну тренировку записывают Connect и ещё одно приложение, оставьте запись у выбранного источника. Приоритет шагов и отдельные дубли тренировок проверяются раздельно; удалять всю историю Connect для диагностики не требуется."
+          ]
+        },
+        {
+          "heading": "Как использовать эти данные в FITA?",
+          "paragraphs": [
+            "Сначала проверьте запись в Apple Health, затем разрешите FITA читать нужные категории. FITA получает доступ к разрешённым данным системного хранилища на вашем устройстве; наличие показателя в приложении производителя само по себе не делает его доступным в FITA. Права на запись у источника и права на чтение у FITA — разные разрешения.",
+            "FITA — бесплатная закрытая бета с русским интерфейсом. iOS-версия доступна в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Информация о выпусках для других платформ: https://releases.appfita.ru. Android-инструкции на этой странице описывают экспорт производителя в Health Connect и не означают, что Android-версия FITA уже выпущена."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Передаст ли Apple Health тренировки Apple Watch в Garmin?",
+          "a": "Нет. Garmin описывает обе интеграции как одностороннюю передачу из Connect."
+        },
+        {
+          "q": "Почему данные есть в Connect, но нет в «Здоровье»?",
+          "a": "Проверьте право записи категории, выполните синхронизацию часов и держите Connect на переднем плане. Затем проверьте саму запись в Apple Health."
+        },
+        {
+          "q": "Почему HRV Garmin отсутствует в FITA?",
+          "a": "HRV не включён в опубликованные списки экспорта Connect для этих хранилищ. Наличие HRV Status в Garmin не означает наличие записи для FITA."
+        },
+        {
+          "q": "Можно ли перенести всю старую историю одним подключением?",
+          "a": "Для Apple Health Garmin указывает максимум две недели предыдущих данных после включения. Аналогичный полный перенос истории Health Connect официально здесь не подтверждён."
+        }
+      ]
+    },
+    "en": {
+      "title": "Garmin to Apple Health and Health Connect: what exports",
+      "description": "Connect Garmin to Apple Health or Android Health Connect. Check exported metrics, limited workout heart rate, missing HRV and routes, permissions and duplicates.",
+      "h1": "Garmin & FITA",
+      "lead": "Garmin Connect writes data to Apple Health on iPhone and Health Connect on Android 14 or later. Both are one-way exports: Garmin does not read other devices’ data from either store.",
+      "sections": [
+        {
+          "heading": "Which Garmin metrics actually export?",
+          "paragraphs": [
+            "✓ indicates a documented category; ◐ means limited or unverified detail; ✕ means explicitly excluded export. Categories absent from the published list are marked ◐ as unverified. Device support and permissions still apply. Garmin-specific scores such as Body Battery are not automatically shared."
+          ],
+          "table": {
+            "headers": [
+              "Metric",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ no GPS route",
+                "◐ activity data; session record details not itemized"
+              ],
+              [
+                "Steps",
+                "✓",
+                "✓"
+              ],
+              [
+                "Heart rate",
+                "◐ all-day; timed activities only high/low",
+                "✓ activity and wellness data"
+              ],
+              [
+                "Resting heart rate",
+                "◐ not in export list",
+                "◐ separate export unverified"
+              ],
+              [
+                "HRV",
+                "◐ not in export list",
+                "◐ not in export list"
+              ],
+              [
+                "Sleep",
+                "✓ Sleep Analysis",
+                "✓ sleep stages"
+              ],
+              [
+                "SpO₂",
+                "◐ not in export list",
+                "◐ not in export list"
+              ],
+              [
+                "Weight",
+                "✓ when present in Connect",
+                "✓ when present in Connect"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "How do you enable Apple Health on iPhone?",
+          "paragraphs": [
+            "Sync the Garmin device first. Connect must remain in the foreground for the Apple Health transfer. Initial history is limited to up to two previous weeks."
+          ],
+          "steps": [
+            "Garmin Connect → More → Settings → Connect Apps → Apple Health under Available Apps → Connect with Apple Health.",
+            "Choose categories and tap Allow.",
+            "Review permissions in Apple Health → Summary → profile picture → Privacy → Apps and Services → Connect.",
+            "Sync the device with Connect open, then inspect a recent record in Health."
+          ]
+        },
+        {
+          "heading": "How does the Android path differ?",
+          "paragraphs": [
+            "Garmin requires Android 14 or later for Health Connect. Data transfer follows each successful device sync. Installing Health Connect on an older version of Android does not remove Garmin’s requirement.",
+            "Garmin notes that setup varies between phone models and links to Android’s instructions. In Health Connect’s app permissions, allow Garmin Connect to write the desired categories and inspect a new record’s source. A single exact menu path for every Android skin is not documented."
+          ]
+        },
+        {
+          "heading": "Why are routes, HRV or heart-rate charts missing?",
+          "paragraphs": [
+            "Garmin explicitly excludes GPS tracks from its Apple Health export. Timed activities contain only high and low heart rate, which can produce Chart Unavailable in Apple Activity. HRV and SpO₂ are absent from both published export lists; their appearance after changing permissions cannot be promised.",
+            "For inflated step totals, inspect Health → category → Data Sources & Access → Edit. When two apps write the same workout, choose one workout writer. Step priority and duplicate workout records are separate checks. If nothing arrives, verify write permission and repeat device sync with Connect visible before changing FITA settings."
+          ]
+        },
+        {
+          "heading": "How can FITA use the exported data?",
+          "paragraphs": [
+            "Verify a record in Apple Health first, then grant FITA access to the categories you want it to read. FITA reads permitted health-store data on your device. A metric visible only inside the manufacturer app is not automatically available to FITA; the source needs write permission and FITA needs separate read permission.",
+            "FITA is a free closed beta with a Russian interface. The iOS release is available in the Russian App Store: https://apps.apple.com/ru/app/fita/id6794848328. Other platform releases are listed at https://releases.appfita.ru. The Android instructions here explain manufacturer export to Health Connect; they do not announce an Android release of FITA."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can Garmin read Apple Watch workouts from Apple Health?",
+          "a": "No. Garmin documents one-way export from Connect for both integrations."
+        },
+        {
+          "q": "Why is a workout heart-rate chart incomplete?",
+          "a": "Garmin sends only the high and low heart rate from timed activities to Apple Health, rather than the complete curve."
+        },
+        {
+          "q": "Does Garmin HRV Status reach FITA through these stores?",
+          "a": "HRV is not in Garmin’s published export lists for either store. Its presence inside Connect is not proof of an exported record."
+        },
+        {
+          "q": "Does enabling sync import my entire history?",
+          "a": "Garmin states up to two previous weeks for Apple Health. An equivalent complete Health Connect history transfer is not verified here."
+        }
+      ]
+    }
+  },
+  {
+    "id": "oura",
+    "slug": "oura-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Oura: Apple Health Integration, updated October 14 2026",
+        "url": "https://support.ouraring.com/hc/en-us/articles/360025438734-Apple-Health-Integration"
+      },
+      {
+        "label": "Oura: Health Connect Integration, updated August 19 2026",
+        "url": "https://support.ouraring.com/hc/en-us/articles/10786105824531-Health-Connect-by-Android-Integration"
+      },
+      {
+        "label": "Oura: HRV method comparison",
+        "url": "https://ouraring.com/blog/wp-content/uploads/2018/10/The-HRV-of-the-Ring-Comparison-of-OURA-Ring-to-ECG.pdf"
+      },
+      {
+        "label": "Apple Developer: HRV SDNN",
+        "url": "https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn"
+      },
+      {
+        "label": "Apple: Manage Health data",
+        "url": "https://support.apple.com/en-us/108779"
+      }
+    ],
+    "ru": {
+      "title": "Oura: Apple Health, Health Connect и HRV в FITA",
+      "description": "Как Oura экспортирует сон, шаги и пульс в Apple Health и Health Connect. Разница HRV, ограничения пульса покоя, вес, подписка и проверка дублей.",
+      "h1": "Oura и Фита",
+      "lead": "Oura поддерживает Apple Health на iPhone и Health Connect на Android. Списки экспорта различаются: HRV перечислен для Health Connect, но отсутствует в актуальном списке экспорта Apple Health.",
+      "sections": [
+        {
+          "heading": "Что Oura передаёт в каждое хранилище?",
+          "paragraphs": [
+            "✓ — экспорт перечислен, ◐ — отдельная категория не подтверждена, ✕ — прямо исключённый экспорт. Отсутствие категории в списке отмечено ◐ как непроверенный экспорт. Интеграции доступны Gen2, а для Gen3 и новее Oura требует активное членство. Кольцо не взвешивает человека: экспортируемый вес — запись профиля или другой доступный источник."
+          ],
+          "table": {
+            "headers": [
+              "Показатель",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ ручные, Activity Heart Rate, автоопределение",
+                "✓ Exercise"
+              ],
+              [
+                "Шаги",
+                "✓",
+                "✓"
+              ],
+              [
+                "Пульс",
+                "✓ интервалы в одну минуту",
+                "✓ Heart rate"
+              ],
+              [
+                "Пульс покоя",
+                "◐ отдельного экспорта в текущем списке нет",
+                "◐ отдельная категория не подтверждена"
+              ],
+              [
+                "HRV",
+                "◐ в текущем списке экспорта отсутствует",
+                "✓ HRV, метод RMSSD"
+              ],
+              [
+                "Сон",
+                "✓ длительность, начало/конец, стадии",
+                "✓ Sleep; детализация текущим списком не раскрыта"
+              ],
+              [
+                "SpO₂",
+                "◐ в текущем списке отсутствует",
+                "◐ в текущем списке отсутствует"
+              ],
+              [
+                "Вес",
+                "✓ не измеряется кольцом",
+                "✓ не измеряется кольцом"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как включить интеграцию на iPhone и Android?",
+          "paragraphs": [
+            "Разрешения чтения и записи настраиваются отдельно. Импорт тренировки в Oura не доказывает, что эта же категория экспортируется обратно. Для диагностики выбирайте свежую тренировку или одну ночь и проверяйте источник записи в целевом хранилище."
+          ],
+          "steps": [
+            "На iPhone: Oura → меню слева вверху → Settings → Data sharing → Apple Health → Connect to Health.",
+            "Чтобы изменить категории на iPhone: Apple Health → профиль → Privacy → Apps → Oura.",
+            "На Android: Oura → меню → Settings → Data Sharing → Health Connect. Установите Health Connect по подсказке, если требуется, и выберите категории.",
+            "Для повторной проверки Android-разрешений: Settings → Data Sharing → Health Connect → Open Health Connect."
+          ]
+        },
+        {
+          "heading": "Почему ночной HRV не появился в Apple Health?",
+          "paragraphs": [
+            "Apple Health хранит HRV как SDNN; Oura использует RMSSD для ночной вариабельности. Это разные способы расчёта, которые нельзя переименовывать или сравнивать как одинаковые числа. В статье Oura от 14 октября 2026 HRV не входит в экспорт Apple Health; для Health Connect HRV прямо указан.",
+            "С пульсом покоя нужна такая же точность: обычный Heart Rate не равен отдельному Resting Heart Rate. Актуальная статья Health Connect от 19 августа 2026 перечисляет пульс и HRV без отдельного RHR. Более старые поисковые выдержки упоминали ночной RHR, поэтому здесь его отдельный экспорт отмечен непроверенным, а не обещан."
+          ]
+        },
+        {
+          "heading": "Как избежать дублей и исправить задержку?",
+          "paragraphs": [
+            "Если Oura и Apple Watch одновременно пишут шаги, Oura рекомендует «Здоровье» → Browse → Activity → Steps → Data Sources & Access → Edit и выбор приоритета. Если копии сохраняются, отключите запись Steps у лишнего источника. Для одинаковой тренировки также оставьте один путь экспорта.",
+            "Обновите Oura и систему, откройте приложения хотя бы раз в день. Для сброса интеграции Oura документирует меню → Settings → Data Sharing → нужная интеграция: выключить и включить переключатели, затем перезапустить телефон. Перед переустановкой сделайте Settings → Account → Back up all data. Разница калорий может отражать активные калории против суммы с основным обменом."
+          ]
+        },
+        {
+          "heading": "Как использовать эти данные в FITA?",
+          "paragraphs": [
+            "Сначала проверьте запись в Apple Health, затем разрешите FITA читать нужные категории. FITA получает доступ к разрешённым данным системного хранилища на вашем устройстве; наличие показателя в приложении производителя само по себе не делает его доступным в FITA. Права на запись у источника и права на чтение у FITA — разные разрешения.",
+            "FITA — бесплатная закрытая бета с русским интерфейсом. iOS-версия доступна в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Информация о выпусках для других платформ: https://releases.appfita.ru. Android-инструкции на этой странице описывают экспорт производителя в Health Connect и не означают, что Android-версия FITA уже выпущена."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Нужна ли подписка для синхронизации Oura?",
+          "a": "Для Gen3 и более новых поколений официальные статьи требуют активное членство; Gen2 перечислен отдельно."
+        },
+        {
+          "q": "Передаёт ли кольцо SpO₂ в Apple Health?",
+          "a": "SpO₂ отсутствует в актуальном списке экспорта. Его наличие в Oura не подтверждает передачу в Apple Health или Health Connect."
+        },
+        {
+          "q": "Почему нельзя изменить вес в Oura?",
+          "a": "Oura предупреждает, что при связанном источнике некоторые данные профиля импортируются и редактируются в источнике. Само кольцо вес не измеряет."
+        },
+        {
+          "q": "Нужно ли подключать Google Fit вместо Health Connect?",
+          "a": "Нет. Oura сообщает, что интеграция Google Fit больше недоступна. На Android используйте документированный путь Health Connect."
+        }
+      ]
+    },
+    "en": {
+      "title": "Oura to Apple Health or Health Connect: sleep, HRV and FITA",
+      "description": "Compare Oura exports to Apple Health and Health Connect: sleep, steps, HRV methods, unverified resting-heart-rate export, membership and duplicate records.",
+      "h1": "Oura & FITA",
+      "lead": "Oura supports Apple Health on iPhone and Health Connect on Android. Their export lists differ: Health Connect lists HRV, while the current Apple Health export list does not.",
+      "sections": [
+        {
+          "heading": "What does Oura export to each platform?",
+          "paragraphs": [
+            "✓ means listed export; ◐ means a separate category is unverified; ✕ means explicitly excluded export. An unlisted category is marked ◐ as unverified. Gen2 is supported; Gen3 and later require active membership. The ring does not measure body weight."
+          ],
+          "table": {
+            "headers": [
+              "Metric",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ manual, Activity Heart Rate, automatic detection",
+                "✓ Exercise"
+              ],
+              [
+                "Steps",
+                "✓",
+                "✓"
+              ],
+              [
+                "Heart rate",
+                "✓ one-minute intervals",
+                "✓ Heart rate"
+              ],
+              [
+                "Resting heart rate",
+                "◐ no separate category in current list",
+                "◐ separate category unverified"
+              ],
+              [
+                "HRV",
+                "◐ absent from current export list",
+                "✓ HRV; RMSSD method"
+              ],
+              [
+                "Sleep",
+                "✓ duration, start/end and stages",
+                "✓ Sleep; current list does not itemize detail"
+              ],
+              [
+                "SpO₂",
+                "◐ absent from current list",
+                "◐ absent from current list"
+              ],
+              [
+                "Weight",
+                "✓ not measured by the ring",
+                "✓ not measured by the ring"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "How do you enable the iPhone and Android connections?",
+          "paragraphs": [
+            "Reading and writing are separate permissions. A workout being imported into Oura does not establish the reverse export. Test one new workout or one night and inspect the destination record’s source."
+          ],
+          "steps": [
+            "iPhone: Oura → top-left menu → Settings → Data sharing → Apple Health → Connect to Health.",
+            "Change iPhone categories in Apple Health → profile → Privacy → Apps → Oura.",
+            "Android: Oura → menu → Settings → Data Sharing → Health Connect, then follow any installation prompt and select categories.",
+            "Review Android permissions through Settings → Data Sharing → Health Connect → Open Health Connect."
+          ]
+        },
+        {
+          "heading": "Why is HRV or resting heart rate missing?",
+          "paragraphs": [
+            "Apple Health uses SDNN for HRV; Oura’s nighttime method is RMSSD. These measurements cannot simply be relabelled as one another. Oura’s Apple Health article updated October 14, 2026 omits HRV; its Health Connect article explicitly lists it.",
+            "The current Health Connect article, updated August 19, 2026, lists heart rate and HRV but no separate resting-heart-rate category. Older search extracts mention nighttime RHR. This guide treats that separate export as unverified instead of promising it. Ordinary heart-rate samples are not proof of a Resting Heart Rate record."
+          ]
+        },
+        {
+          "heading": "How do you fix duplicates or delayed sync?",
+          "paragraphs": [
+            "For step priority, Oura documents Health → Browse → Activity → Steps → Data Sources & Access → Edit. If duplicate counting persists, stop the extra source from writing Steps. Choose one export path for each workout as well.",
+            "Update Oura and the operating system and open connected apps daily. Oura documents resetting toggles through menu → Settings → Data Sharing → integration, followed by a phone restart. Before reinstalling, use Settings → Account → Back up all data. Calorie differences may reflect active calories versus totals including basal metabolism."
+          ]
+        },
+        {
+          "heading": "How can FITA use the exported data?",
+          "paragraphs": [
+            "Verify a record in Apple Health first, then grant FITA access to the categories you want it to read. FITA reads permitted health-store data on your device. A metric visible only inside the manufacturer app is not automatically available to FITA; the source needs write permission and FITA needs separate read permission.",
+            "FITA is a free closed beta with a Russian interface. The iOS release is available in the Russian App Store: https://apps.apple.com/ru/app/fita/id6794848328. Other platform releases are listed at https://releases.appfita.ru. The Android instructions here explain manufacturer export to Health Connect; they do not announce an Android release of FITA."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is membership required?",
+          "a": "Oura requires active membership for Gen3 and later integrations. Gen2 is listed separately."
+        },
+        {
+          "q": "Does Oura export blood oxygen?",
+          "a": "SpO₂ is absent from the current export lists for both platforms. A measurement in Oura does not establish an exported record."
+        },
+        {
+          "q": "Does Oura measure the weight it exports?",
+          "a": "No. Weight is profile or connected-source data, not a ring measurement."
+        },
+        {
+          "q": "Should I use Google Fit instead?",
+          "a": "Oura states that its Google Fit integration is no longer available. Use Health Connect on Android."
+        }
+      ]
+    }
+  },
+  {
+    "id": "whoop",
+    "slug": "whoop-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "WHOOP: Apple Health Integration, April 16 2026",
+        "url": "https://support.whoop.com/s/article/Apple-Health-Integration?language=en_US"
+      },
+      {
+        "label": "WHOOP: Health Connect Integration for Android",
+        "url": "https://support.whoop.com/s/article/Google-Health-Integration-For-Android"
+      },
+      {
+        "label": "Apple Developer: HRV SDNN",
+        "url": "https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn"
+      },
+      {
+        "label": "Apple: Manage Health data",
+        "url": "https://support.apple.com/en-us/108779"
+      },
+      {
+        "label": "Android: Get started with Health Connect",
+        "url": "https://support.google.com/android/answer/12201227?hl=en"
+      }
+    ],
+    "ru": {
+      "title": "WHOOP: Apple Health и Health Connect — что передаётся",
+      "description": "Настройка WHOOP для Apple Health и Health Connect: тренировки, шаги, сон, SpO₂ и пульс покоя. Почему нет HRV, экспорт веса и способы убрать дубли.",
+      "h1": "WHOOP и Фита",
+      "lead": "WHOOP экспортирует тренировки, сон и ряд показателей в Apple Health и Health Connect, но не весь экран Recovery. Направление важно: вес WHOOP читает из хранилищ, а его обратный экспорт в списках не указан.",
+      "sections": [
+        {
+          "heading": "Какие данные WHOOP экспортирует?",
+          "paragraphs": [
+            "✓ — подтверждённый экспорт, ◐ — условие или неподтверждённая категория, ✕ — документированное отсутствие либо противоположное направление. Конкретный набор зависит от устройства, разрешений и членства. Для Health Connect WHOOP отдельно связывает показатели Health Monitor с уровнем Peak; наличие интеграции на One не гарантирует все показатели."
+          ],
+          "table": {
+            "headers": [
+              "Показатель",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ кроме Recovery-активностей вроде медитации",
+                "✓ Exercise"
+              ],
+              [
+                "Шаги",
+                "◐ если включены в настройках WHOOP",
+                "✓ Steps"
+              ],
+              [
+                "Пульс",
+                "◐ во время активностей, включая сон",
+                "◐ обычный Heart Rate в списке экспорта не указан"
+              ],
+              [
+                "Пульс покоя",
+                "✓",
+                "◐ экспорт указан; зависит от членства"
+              ],
+              [
+                "HRV",
+                "✕ WHOOP прямо исключает экспорт RMSSD",
+                "◐ экспорт HRV в списке не указан"
+              ],
+              [
+                "Сон",
+                "✓",
+                "✓"
+              ],
+              [
+                "SpO₂",
+                "◐ если доступен устройству и аккаунту",
+                "◐ экспорт указан; проверьте доступность"
+              ],
+              [
+                "Вес",
+                "◐ указан импорт в WHOOP, не экспорт",
+                "◐ указан импорт в WHOOP, не экспорт"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как включить связь на iPhone?",
+          "paragraphs": [
+            "В iOS-справке WHOOP есть отдельные списки Imported и Exported: сверяйте именно второй. Например, маршруты и вес в разделе импорта не означают, что WHOOP запишет их для другого приложения. После подключения проверьте одну новую активность в «Здоровье»."
+          ],
+          "steps": [
+            "WHOOP → More → App Settings → Integrations → Apple Health → Connect.",
+            "Выберите Turn on all либо отдельные категории и нажмите Allow.",
+            "Чтобы пересмотреть доступ: Apple Health → профиль → Apps → WHOOP; измените категории.",
+            "Отдельно убедитесь, что включена запись нужного типа, а не только его чтение WHOOP."
+          ]
+        },
+        {
+          "heading": "Как настроить Health Connect на Android?",
+          "paragraphs": [
+            "Путь Android отличается от iPhone. Обновите WHOOP, затем используйте документированное меню More → Account & Settings → Integrations → Health Connect → Set Up. Подтвердите доступ к выбранным категориям. Если приложение переустановлено, подключение нужно включить заново: Android удаляет разрешения при удалении приложения.",
+            "В Android-статье экспорт обычного пульса и HRV не перечислен, хотя отдельные показатели Recovery перечислены. Не переносите iOS-таблицу на Android автоматически. Heart Screener, Blood Pressure Insights, WHOOP Age, Pace of Aging и VO₂ max WHOOP прямо не передаёт в Health Connect."
+          ]
+        },
+        {
+          "heading": "Почему нет HRV и откуда берутся дубли тренировок?",
+          "paragraphs": [
+            "WHOOP использует RMSSD, Apple Health — SDNN. WHOOP прямо сообщает, что HRV в Apple Health не экспортирует. Нельзя получить этот показатель включением всех переключателей или считать пульс покоя заменой HRV.",
+            "Дубли появляются, когда WHOOP и часы или другое приложение записывают одну сессию, особенно при одновременном импорте и экспорте. WHOOP рекомендует отключить запись Workouts у WHOOP в Apple Health, если основная запись приходит от другого источника. Указанный приоритет Health Connect влияет на выбор отображаемых данных и не означает автоматическое удаление всех копий. При задержке откройте приложения и проверьте права каждой стороны."
+          ]
+        },
+        {
+          "heading": "Как использовать эти данные в FITA?",
+          "paragraphs": [
+            "Сначала проверьте запись в Apple Health, затем разрешите FITA читать нужные категории. FITA получает доступ к разрешённым данным системного хранилища на вашем устройстве; наличие показателя в приложении производителя само по себе не делает его доступным в FITA. Права на запись у источника и права на чтение у FITA — разные разрешения.",
+            "FITA — бесплатная закрытая бета с русским интерфейсом. iOS-версия доступна в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Информация о выпусках для других платформ: https://releases.appfita.ru. Android-инструкции на этой странице описывают экспорт производителя в Health Connect и не означают, что Android-версия FITA уже выпущена."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Передаст ли WHOOP Recovery Score в FITA?",
+          "a": "Не следует ожидать весь фирменный экран Recovery. Опубликованные списки описывают отдельные категории, такие как сон и пульс покоя, а не полный перенос оценки."
+        },
+        {
+          "q": "Почему в «Здоровье» есть вес, но источник не WHOOP?",
+          "a": "Вес в документации WHOOP указан как импортируемый из Apple Health или Health Connect. Это не подтверждает обратный экспорт."
+        },
+        {
+          "q": "Можно ли отключить только экспорт тренировок?",
+          "a": "Да. Для Apple Health WHOOP документирует отдельное отключение Workouts в разрешениях записи."
+        },
+        {
+          "q": "Выгружается ли ЭКГ WHOOP MG?",
+          "a": "WHOOP сообщает, что ECG/Heart Screener и Blood Pressure Insights в эти интеграции не экспортируются. Это не обычные записи пульса."
+        }
+      ]
+    },
+    "en": {
+      "title": "WHOOP to Apple Health and Health Connect: export guide",
+      "description": "Compare WHOOP exports on iPhone and Android: workouts, steps, sleep, resting heart rate and SpO2, missing HRV, imported weight and duplicate workout fixes.",
+      "h1": "WHOOP & FITA",
+      "lead": "WHOOP exports workouts, sleep and selected metrics to Apple Health and Health Connect. It does not export every Recovery feature. Weight is listed as imported into WHOOP, not exported back.",
+      "sections": [
+        {
+          "heading": "Which WHOOP metrics are actually exported?",
+          "paragraphs": [
+            "✓ means confirmed export; ◐ means conditional or unverified; ✕ means explicitly unavailable or the documented direction is import. Device support, permissions and membership matter. WHOOP’s Android documentation links Health Monitor metrics to Peak; One support does not promise every metric."
+          ],
+          "table": {
+            "headers": [
+              "Metric",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ excludes Recovery activities such as meditation",
+                "✓ Exercise"
+              ],
+              [
+                "Steps",
+                "◐ when enabled in WHOOP settings",
+                "✓ Steps"
+              ],
+              [
+                "Heart rate",
+                "◐ during activities including sleep",
+                "◐ ordinary Heart Rate not in export list"
+              ],
+              [
+                "Resting heart rate",
+                "✓",
+                "◐ listed export; membership conditions apply"
+              ],
+              [
+                "HRV",
+                "✕ WHOOP explicitly excludes RMSSD export",
+                "◐ not in export list"
+              ],
+              [
+                "Sleep",
+                "✓",
+                "✓"
+              ],
+              [
+                "SpO₂",
+                "◐ device/account availability applies",
+                "◐ listed export; check availability"
+              ],
+              [
+                "Weight",
+                "◐ import into WHOOP, not export",
+                "◐ import into WHOOP, not export"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "How do you connect on iPhone?",
+          "paragraphs": [
+            "WHOOP publishes separate imported and exported lists. Workout routes and weight appearing in the imported list do not establish export to another app."
+          ],
+          "steps": [
+            "WHOOP → More → App Settings → Integrations → Apple Health → Connect.",
+            "Select Turn on all or individual categories, then tap Allow.",
+            "Review categories in Apple Health → profile → Apps → WHOOP.",
+            "Confirm the desired category is enabled for writing, not only reading, and inspect one new Health record."
+          ]
+        },
+        {
+          "heading": "How do you connect on Android?",
+          "paragraphs": [
+            "Update WHOOP, then open More → Account & Settings → Integrations → Health Connect → Set Up and grant category permissions. Re-enable the integration after reinstalling WHOOP because Android removes its permissions when the app is uninstalled.",
+            "The Android export list does not name ordinary Heart Rate or HRV. Do not apply the iOS list to Android. WHOOP explicitly excludes Heart Screener, Blood Pressure Insights, WHOOP Age, Pace of Aging and VO₂ max from Health Connect."
+          ]
+        },
+        {
+          "heading": "Why are HRV missing and workouts duplicated?",
+          "paragraphs": [
+            "WHOOP calculates RMSSD while Apple Health’s HRV category uses SDNN. WHOOP explicitly states that it does not export HRV to Apple Health. Enabling every permission cannot change that.",
+            "Duplicates can arise when WHOOP and another source write the same session, especially with both import and export enabled. WHOOP recommends disabling its Workouts write permission in Apple Health when another app is the chosen writer. Health Connect priority helps determine displayed data; it does not promise deletion of every duplicate. For delays, open both apps and inspect their permissions before changing downstream FITA settings."
+          ]
+        },
+        {
+          "heading": "How can FITA use the exported data?",
+          "paragraphs": [
+            "Verify a record in Apple Health first, then grant FITA access to the categories you want it to read. FITA reads permitted health-store data on your device. A metric visible only inside the manufacturer app is not automatically available to FITA; the source needs write permission and FITA needs separate read permission.",
+            "FITA is a free closed beta with a Russian interface. The iOS release is available in the Russian App Store: https://apps.apple.com/ru/app/fita/id6794848328. Other platform releases are listed at https://releases.appfita.ru. The Android instructions here explain manufacturer export to Health Connect; they do not announce an Android release of FITA."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Will the whole Recovery Score appear in FITA?",
+          "a": "The integration lists describe individual exported categories, not a complete transfer of the WHOOP Recovery screen."
+        },
+        {
+          "q": "Does WHOOP export my body weight?",
+          "a": "Both official integration pages list weight as imported into WHOOP. Reverse export is not confirmed."
+        },
+        {
+          "q": "Can I disable workout export only?",
+          "a": "Yes. WHOOP documents switching off Workouts write permission in Apple Health."
+        },
+        {
+          "q": "Does WHOOP MG export ECG?",
+          "a": "WHOOP excludes ECG/Heart Screener and Blood Pressure Insights from these integrations. They are separate from ordinary heart-rate records."
+        }
+      ]
+    }
+  },
+  {
+    "id": "polar",
+    "slug": "polar-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Polar: Connecting Flow with Apple Health",
+        "url": "https://support.polar.com/en/support/connecting_polar_flow_with_apple_health"
+      },
+      {
+        "label": "Polar: Connecting Flow to Health Connect",
+        "url": "https://support.polar.com/sg-en/flow-app-health-connect"
+      },
+      {
+        "label": "Apple: Manage Health data",
+        "url": "https://support.apple.com/en-us/108779"
+      },
+      {
+        "label": "Android: Get started with Health Connect",
+        "url": "https://support.google.com/android/answer/12201227?hl=en"
+      }
+    ],
+    "ru": {
+      "title": "Polar Flow: Apple Health и Health Connect для FITA",
+      "description": "Как Polar Flow передаёт тренировки, шаги, сон и пульс в Apple Health и Health Connect. Различия SpO₂, пульса покоя и HRV, настройка и решение сбоев.",
+      "h1": "Polar и Фита",
+      "lead": "Polar Flow экспортирует данные в Apple Health на iPhone и в Health Connect на Android. Их наборы различаются: SpO₂ и пульс покоя перечислены для Health Connect, но отсутствуют в опубликованном списке Apple Health.",
+      "sections": [
+        {
+          "heading": "Какие показатели Polar передаёт на iPhone и Android?",
+          "paragraphs": [
+            "✓ — категория документирована, ◐ — есть условия или ограниченная детализация, ✕ — прямо исключённый экспорт. Неперечисленные категории отмечены ◐ как непроверенные. Наличие метрики на часах не подтверждает её передачу. Особенно важно различать непрерывный дневной пульс и пульс, записанный только на тренировке."
+          ],
+          "table": {
+            "headers": [
+              "Показатель",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ тип, время, дистанция, сводка",
+                "✓ Exercise; круги и маршрут, если есть"
+              ],
+              [
+                "Шаги",
+                "✓ с устройства Polar",
+                "✓ суточные шаги"
+              ],
+              [
+                "Пульс",
+                "◐ только тренировки, не непрерывный",
+                "◐ только пульс тренировок"
+              ],
+              [
+                "Пульс покоя",
+                "◐ не в списке экспорта",
+                "◐ из физических настроек профиля"
+              ],
+              [
+                "HRV",
+                "◐ не в списке экспорта",
+                "◐ не в списке экспорта"
+              ],
+              [
+                "Сон",
+                "◐ длительность, засыпание и пробуждение",
+                "✓ начало, конец и стадии"
+              ],
+              [
+                "SpO₂",
+                "◐ не в списке экспорта",
+                "◐ записи SpO₂, если доступны"
+              ],
+              [
+                "Вес",
+                "✓ значение настроек Flow",
+                "✓ физические настройки"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как подключить Polar Flow к Apple Health?",
+          "paragraphs": [
+            "Для iPhone Polar прямо описывает односторонний путь Flow → Apple Health: данные из «Здоровья» в Flow по этой интеграции не синхронизируются. Сначала убедитесь, что свежая тренировка или шаги уже попали с устройства в Flow."
+          ],
+          "steps": [
+            "Откройте Polar Flow → More → General settings.",
+            "Включите Apple Health, выберите категории либо Turn All Categories On.",
+            "Нажмите Allow в правом верхнем углу.",
+            "Если нужно повторить передачу, в More → General settings нажмите Sync now под переключателем Apple Health. Это повторно синхронизирует последние две недели."
+          ]
+        },
+        {
+          "heading": "Как включить передачу Polar в Health Connect?",
+          "paragraphs": [
+            "На Android откройте Flow → General settings → Health Connect. Если система предложит установить Health Connect, завершите установку. Выберите данные и нажмите Allow. Впоследствии кнопка Manage permissions позволяет пересмотреть доступ. Polar обещает передачу новых данных при активном соединении; автоматический перенос всей многолетней истории не заявлен.",
+            "В списке Android есть Exercise route, когда маршрут существует, и SpO₂ record, когда измерение доступно. Это не означает, что каждый Polar поддерживает датчик кислорода. Resting heart rate берётся из физических настроек: запись профиля не равна новой измеренной ночной оценке. HRV из Nightly Recharge или других экранов не перечислен в экспорте этих интеграций."
+          ]
+        },
+        {
+          "heading": "Как устранить пропуски и дубли?",
+          "paragraphs": [
+            "Если на iPhone ничего не приходит, сначала используйте документированную Sync now, затем проверьте Apple Health → профиль → Apps → Polar Flow и права записи. Обновите Flow. Приоритет для шагов задаётся в категории Steps → Data Sources & Access → Edit; Polar описывает перенос Flow выше в списке.",
+            "Если тренировка записана также другим приложением, выберите один источник записи тренировок. Разные суммы калорий не всегда означают дубль: активная энергия исключает основной обмен, а общая включает его. Не ищите дневную непрерывную кривую пульса в «Здоровье», если экспорт Polar её не поддерживает. Проверяйте одну категорию и одну дату, прежде чем менять все разрешения сразу."
+          ]
+        },
+        {
+          "heading": "Как использовать эти данные в FITA?",
+          "paragraphs": [
+            "Сначала проверьте запись в Apple Health, затем разрешите FITA читать нужные категории. FITA получает доступ к разрешённым данным системного хранилища на вашем устройстве; наличие показателя в приложении производителя само по себе не делает его доступным в FITA. Права на запись у источника и права на чтение у FITA — разные разрешения.",
+            "FITA — бесплатная закрытая бета с русским интерфейсом. iOS-версия доступна в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Информация о выпусках для других платформ: https://releases.appfita.ru. Android-инструкции на этой странице описывают экспорт производителя в Health Connect и не означают, что Android-версия FITA уже выпущена."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Polar H10 тоже передаст шаги и сон?",
+          "a": "Не следует переносить таблицу часов на любой датчик. Набор зависит от того, какие записи устройство и приложение действительно создали в Flow."
+        },
+        {
+          "q": "Почему не передаётся мой круглосуточный пульс?",
+          "a": "Polar отдельно указывает, что Apple Health получает пульс во время тренировок, а непрерывное измерение не синхронизируется. Health Connect также перечисляет пульс тренировок."
+        },
+        {
+          "q": "Появится ли HRV Nightly Recharge?",
+          "a": "HRV отсутствует в опубликованных списках экспорта Flow для обоих хранилищ. Доступность внутри Polar не означает доступность в FITA."
+        },
+        {
+          "q": "Будут ли стадии сна одинаковыми на двух платформах?",
+          "a": "Для Health Connect Polar прямо перечисляет стадии. Apple Health-статья описывает длительность и времена сна, поэтому одинаковую детализацию обещать нельзя."
+        }
+      ]
+    },
+    "en": {
+      "title": "Polar Flow to Apple Health and Health Connect: FITA guide",
+      "description": "Set up Polar Flow exports on iPhone or Android. Compare workout heart rate, sleep, SpO2 and profile resting heart rate, with permissions and duplicate fixes.",
+      "h1": "Polar & FITA",
+      "lead": "Polar Flow exports to Apple Health on iPhone and Health Connect on Android. The category lists differ: Health Connect includes SpO₂ and profile resting heart rate; Apple Health’s published list does not.",
+      "sections": [
+        {
+          "heading": "Which Polar metrics export on each platform?",
+          "paragraphs": [
+            "✓ means listed support, ◐ means conditions or limited detail, and ✕ means explicitly excluded export. An unlisted category is marked ◐ as unverified. A measurement shown on a watch is not proof of its export. Workout heart rate and continuous all-day heart rate are different data streams."
+          ],
+          "table": {
+            "headers": [
+              "Metric",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ type, times, distance, summary",
+                "✓ Exercise; laps and route when available"
+              ],
+              [
+                "Steps",
+                "✓ Polar device steps",
+                "✓ daily steps"
+              ],
+              [
+                "Heart rate",
+                "◐ workouts only, not continuous",
+                "◐ workout heart rate only"
+              ],
+              [
+                "Resting heart rate",
+                "◐ not in export list",
+                "◐ physical profile settings"
+              ],
+              [
+                "HRV",
+                "◐ not in export list",
+                "◐ not in export list"
+              ],
+              [
+                "Sleep",
+                "◐ duration, sleep onset and wake time",
+                "✓ start/end and stages"
+              ],
+              [
+                "SpO₂",
+                "◐ not in export list",
+                "◐ SpO₂ records when available"
+              ],
+              [
+                "Weight",
+                "✓ Flow settings value",
+                "✓ physical settings"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "How do you enable Apple Health?",
+          "paragraphs": [
+            "Polar documents one-way Flow → Apple Health sync. This integration does not import Health data into Flow. Check that the watch’s new data have reached Flow first."
+          ],
+          "steps": [
+            "Polar Flow → More → General settings.",
+            "Enable Apple Health, then select categories or Turn All Categories On.",
+            "Tap Allow in the upper-right corner.",
+            "For a retry, use More → General settings → Sync now below Apple Health. It resyncs the last two weeks."
+          ]
+        },
+        {
+          "heading": "How do you enable Health Connect?",
+          "paragraphs": [
+            "On Android, open Flow → General settings → Health Connect. Complete installation if prompted, choose data and tap Allow. Use Manage permissions to change access later. Polar describes new data syncing while the connection remains active, not a guaranteed transfer of all historical records.",
+            "Exercise routes and SpO₂ records require source data to exist. This does not give every Polar device an oxygen sensor. Resting heart rate is listed as physical-settings data, not necessarily a freshly measured nightly estimate. Neither export list includes HRV from Polar’s recovery screens."
+          ]
+        },
+        {
+          "heading": "What should you check for missing data or duplicates?",
+          "paragraphs": [
+            "On iPhone, start with Sync now, then inspect Health → profile → Apps → Polar Flow and update Flow. For step source ordering, Polar documents Steps → Data Sources & Access → Edit and moving Flow higher.",
+            "When another app writes the same workout, choose one workout writer. Active calories exclude basal metabolism while total calories include it, so a difference is not always duplication. Do not expect continuous all-day heart rate from a workout-only export. Compare one category and date before changing every permission."
+          ]
+        },
+        {
+          "heading": "How can FITA use the exported data?",
+          "paragraphs": [
+            "Verify a record in Apple Health first, then grant FITA access to the categories you want it to read. FITA reads permitted health-store data on your device. A metric visible only inside the manufacturer app is not automatically available to FITA; the source needs write permission and FITA needs separate read permission.",
+            "FITA is a free closed beta with a Russian interface. The iOS release is available in the Russian App Store: https://apps.apple.com/ru/app/fita/id6794848328. Other platform releases are listed at https://releases.appfita.ru. The Android instructions here explain manufacturer export to Health Connect; they do not announce an Android release of FITA."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Does this apply to every Polar sensor?",
+          "a": "No. A chest strap such as H10 does not automatically create the same daily activity and sleep records as a compatible watch."
+        },
+        {
+          "q": "Why is all-day heart rate missing?",
+          "a": "Polar says Apple Health receives workout heart rate, not continuous tracking. Its Health Connect list also specifies workout heart rate."
+        },
+        {
+          "q": "Can FITA read Nightly Recharge HRV through this path?",
+          "a": "HRV is absent from both published Flow export lists. Its presence inside Polar is not proof of an exported record."
+        },
+        {
+          "q": "Are sleep stages identical on iOS and Android?",
+          "a": "Polar explicitly lists stages for Health Connect. Its Apple Health article lists duration and sleep/wake timing, so equal detail is not established."
+        }
+      ]
+    }
+  },
+  {
+    "id": "coros",
+    "slug": "coros-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "COROS: Connecting Apple Health with COROS App",
+        "url": "https://support.coros.com/hc/en-us/articles/360041549551-Connecting-Apple-Health-with-COROS-App"
+      },
+      {
+        "label": "COROS: Supported 3rd Party Apps, June 19 2026",
+        "url": "https://support.coros.com/hc/en-us/articles/360040256531-Supported-3rd-Party-Apps"
+      },
+      {
+        "label": "Apple: Manage Health data",
+        "url": "https://support.apple.com/en-us/108779"
+      },
+      {
+        "label": "Apple Developer: HRV SDNN",
+        "url": "https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn"
+      },
+      {
+        "label": "Android: Get started with Health Connect",
+        "url": "https://support.google.com/android/answer/12201227?hl=en"
+      }
+    ],
+    "ru": {
+      "title": "COROS: подключение Apple Health и Health Connect",
+      "description": "Что COROS передаёт в Apple Health и что подтверждено для Health Connect. Настройка доступа, сон, шаги, пульс, неизвестные категории и проверка дублей.",
+      "h1": "COROS и Фита",
+      "lead": "COROS документирует передачу в Apple Health и включает Health Connect в официальный список поддерживаемых сервисов Android. При этом опубликованная инструкция Apple Health перечисляет конкретные категории, а список категорий экспорта Health Connect не подтверждён.",
+      "sections": [
+        {
+          "heading": "Какие данные COROS подтверждены для экспорта?",
+          "paragraphs": [
+            "✓ — категория прямо перечислена производителем, ◐ — экспорт конкретной категории не проверен, а не запрещён. В справке Apple Health названы пульс, Sleep Analysis, шаги и дистанции плавания, велосипеда, ходьбы и бега. Из этого нельзя автоматически вывести передачу всех тренировок, HRV или SpO₂."
+          ],
+          "table": {
+            "headers": [
+              "Показатель",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "◐ категория Workouts в статье не перечислена",
+                "◐ категории экспорта не опубликованы в найденном источнике"
+              ],
+              [
+                "Шаги",
+                "✓",
+                "◐ отдельный экспорт не подтверждён"
+              ],
+              [
+                "Пульс",
+                "✓ Heart Rate; детализация не указана",
+                "◐ отдельный экспорт не подтверждён"
+              ],
+              [
+                "Пульс покоя",
+                "◐ отдельный экспорт не подтверждён",
+                "◐ отдельный экспорт не подтверждён"
+              ],
+              [
+                "HRV",
+                "◐ экспорт не подтверждён",
+                "◐ экспорт не подтверждён"
+              ],
+              [
+                "Сон",
+                "✓ Sleep Analysis; стадии не уточнены",
+                "◐ отдельный экспорт не подтверждён"
+              ],
+              [
+                "SpO₂",
+                "◐ экспорт не подтверждён",
+                "◐ экспорт не подтверждён"
+              ],
+              [
+                "Вес",
+                "◐ экспорт не подтверждён",
+                "◐ экспорт не подтверждён"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как включить Apple Health в приложении COROS?",
+          "paragraphs": [
+            "Сначала дождитесь появления свежих данных часов в COROS. Используйте именно разрешения записи в Apple Health: право приложению читать показатель не доказывает, что оно отправляет свои записи. Названия пунктов ниже сохранены по англоязычной справке; перевод и расположение могут меняться с версией."
+          ],
+          "steps": [
+            "COROS → Profile → Setting → 3rd Party Apps → Data Sync → Apple Health.",
+            "В открывшемся окне выберите нужные доступные категории.",
+            "Чтобы изменить доступ: Apple Health → профиль справа вверху → Privacy → Apps → COROS.",
+            "Проверьте одну свежую запись шагов, пульса или сна в Apple Health и убедитесь, что источником указан COROS."
+          ]
+        },
+        {
+          "heading": "Можно ли подключить COROS к Health Connect?",
+          "paragraphs": [
+            "Да, Health Connect присутствует в официальном списке партнёров COROS, обновлённом 19 июня 2026. Общий документированный путь подключения партнёра: COROS → Profile → Settings → 3rd Party Apps → Data Sync. Выберите доступную интеграцию Health Connect и следуйте её экрану разрешений.",
+            "Этот источник не раскрывает направления и набор всех полей. Поэтому нельзя обещать HRV, ночной пульс покоя или сон на Android лишь потому, что часы их измеряют. Проверьте, какие права записи COROS действительно запрашивает, и есть ли свежая запись с источником COROS в Health Connect. Если пункта нет в вашей версии приложения, обновите COROS и уточните доступность у поддержки; сторонний мост не равен встроенной интеграции."
+          ]
+        },
+        {
+          "heading": "Почему нужная категория не появилась в FITA?",
+          "paragraphs": [
+            "Начните с последовательности часы → COROS → системное хранилище → FITA. Если запись есть только в COROS, это вопрос экспорта, а не чтения FITA. Если запись есть в Apple Health, проверьте разрешение FITA именно на этот тип. Общий переключатель связи не гарантирует все категории.",
+            "HRV требует отдельной проверки метода: Apple Health использует SDNN, и наличие ночного HRV на часах COROS не доказывает экспорт совместимой записи. Для сна справка подтверждает Sleep Analysis, но не описывает одинаковую детализацию стадий для всех моделей. Пустое поле разумнее оставить пустым, чем подменять другим измерением."
+          ]
+        },
+        {
+          "heading": "Как проверить дубли без удаления истории?",
+          "paragraphs": [
+            "Сравните одну дату, время и источник записи. Если шаги приходят и от телефона, и от COROS, откройте в «Здоровье» категорию → Data Sources & Access → Edit и задайте приоритет. Если одну тренировку пишет ещё одно приложение, выберите один путь её записи. Приоритет показателя и удаление отдельной копии тренировки — разные операции. На Android аналогично сначала проверьте источник записи и права приложений."
+          ]
+        },
+        {
+          "heading": "Как использовать эти данные в FITA?",
+          "paragraphs": [
+            "Сначала проверьте запись в Apple Health, затем разрешите FITA читать нужные категории. FITA получает доступ к разрешённым данным системного хранилища на вашем устройстве; наличие показателя в приложении производителя само по себе не делает его доступным в FITA. Права на запись у источника и права на чтение у FITA — разные разрешения.",
+            "FITA — бесплатная закрытая бета с русским интерфейсом. iOS-версия доступна в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Информация о выпусках для других платформ: https://releases.appfita.ru. Android-инструкции на этой странице описывают экспорт производителя в Health Connect и не означают, что Android-версия FITA уже выпущена."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Health Connect у COROS точно отсутствует?",
+          "a": "Нет. Актуальный официальный список COROS включает Health Connect. Непроверенными остаются конкретные категории и направление каждой из них."
+        },
+        {
+          "q": "Передаётся ли сон COROS в Apple Health?",
+          "a": "В официальной инструкции перечислен Sleep Analysis. Состав стадий и одинаковая поддержка всех моделей там не уточняются."
+        },
+        {
+          "q": "Почему нет тренировок, хотя есть дистанция?",
+          "a": "Дистанция — отдельный тип данных. Её экспорт не доказывает создание полноценной записи Workouts; в найденной Apple Health-статье Workouts не перечислен."
+        },
+        {
+          "q": "Можно ли считать все поля со знаком ◐ неподдерживаемыми?",
+          "a": "Нет. Здесь ◐ означает отсутствие достаточного официального подтверждения конкретного экспорта. Проверьте актуальные разрешения и отдельную запись своей версии приложения."
+        }
+      ]
+    },
+    "en": {
+      "title": "COROS to Apple Health and Health Connect: verified exports",
+      "description": "Set up COROS sharing with Apple Health and check its official Health Connect support. See verified steps, heart rate and sleep plus unknown export categories.",
+      "h1": "COROS & FITA",
+      "lead": "COROS documents Apple Health sharing and lists Health Connect as a supported Android partner. Its Apple Health guide names categories; a category-by-category Health Connect export specification was not verified.",
+      "sections": [
+        {
+          "heading": "Which COROS exports are confirmed?",
+          "paragraphs": [
+            "✓ means explicitly listed support. ◐ means the particular export is unverified, not necessarily unavailable. COROS’s Apple Health guide lists Heart Rate, Sleep Analysis, Steps and swimming, cycling, walking/running distances. Distance export does not establish a complete workout record."
+          ],
+          "table": {
+            "headers": [
+              "Metric",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "◐ Workouts not itemized in guide",
+                "◐ export categories not verified"
+              ],
+              [
+                "Steps",
+                "✓",
+                "◐ separate export unverified"
+              ],
+              [
+                "Heart rate",
+                "✓ Heart Rate; detail not specified",
+                "◐ separate export unverified"
+              ],
+              [
+                "Resting heart rate",
+                "◐ separate export unverified",
+                "◐ separate export unverified"
+              ],
+              [
+                "HRV",
+                "◐ export unverified",
+                "◐ export unverified"
+              ],
+              [
+                "Sleep",
+                "✓ Sleep Analysis; stages unspecified",
+                "◐ separate export unverified"
+              ],
+              [
+                "SpO₂",
+                "◐ export unverified",
+                "◐ export unverified"
+              ],
+              [
+                "Weight",
+                "◐ export unverified",
+                "◐ export unverified"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "How do you enable Apple Health sharing?",
+          "paragraphs": [
+            "First sync new watch data into COROS. Write permission is distinct from read permission. The menu names below follow the official English guide and can vary with app versions."
+          ],
+          "steps": [
+            "COROS → Profile → Setting → 3rd Party Apps → Data Sync → Apple Health.",
+            "Select the available categories you want to share.",
+            "Review access in Apple Health → top-right profile → Privacy → Apps → COROS.",
+            "Inspect a new step, heart-rate or sleep record in Apple Health and check that COROS is its source."
+          ]
+        },
+        {
+          "heading": "Does COROS support Health Connect?",
+          "paragraphs": [
+            "Yes. COROS’s official partner list, updated June 19, 2026, includes Health Connect. Its general partner-connection path is COROS → Profile → Settings → 3rd Party Apps → Data Sync. Select Health Connect if available and follow its permission prompts.",
+            "The source does not itemize every field or direction. Do not promise Android HRV, resting heart rate or sleep solely because a watch measures them. Inspect the actual write permissions and a new Health Connect record from COROS. If the integration is missing in your version, update the app and check availability with COROS support. A separate bridge app is a different integration."
+          ]
+        },
+        {
+          "heading": "Why can a category be missing in FITA?",
+          "paragraphs": [
+            "Follow watch → COROS → health store → FITA. A record that exists only inside COROS is an export issue. If it exists in Apple Health, inspect FITA’s read permission for that type. A general connection switch does not promise every metric.",
+            "Apple Health uses SDNN HRV. A COROS nighttime HRV screen does not establish export of a compatible record. Sleep Analysis is documented, but identical stage detail across watch models is not. Do not replace missing categories with superficially similar measurements."
+          ]
+        },
+        {
+          "heading": "How do you check duplicate records?",
+          "paragraphs": [
+            "Compare one date, timestamp and source. For competing step sources, use Health → category → Data Sources & Access → Edit to order them. Choose one workout writer when another app records the same session. Source priority and deleting an individual duplicate workout are separate operations. On Android, inspect record sources and permissions first."
+          ]
+        },
+        {
+          "heading": "How can FITA use the exported data?",
+          "paragraphs": [
+            "Verify a record in Apple Health first, then grant FITA access to the categories you want it to read. FITA reads permitted health-store data on your device. A metric visible only inside the manufacturer app is not automatically available to FITA; the source needs write permission and FITA needs separate read permission.",
+            "FITA is a free closed beta with a Russian interface. The iOS release is available in the Russian App Store: https://apps.apple.com/ru/app/fita/id6794848328. Other platform releases are listed at https://releases.appfita.ru. The Android instructions here explain manufacturer export to Health Connect; they do not announce an Android release of FITA."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is COROS Health Connect support absent?",
+          "a": "No. The current official partner list includes it. Individual export categories and directions remain unverified."
+        },
+        {
+          "q": "Does COROS export sleep to Apple Health?",
+          "a": "Its guide explicitly lists Sleep Analysis, but does not itemize stages or equal support across all models."
+        },
+        {
+          "q": "Does distance export prove workouts export?",
+          "a": "No. Distance and Workouts are separate categories; the retrieved Apple Health guide does not list Workouts."
+        },
+        {
+          "q": "Does ◐ mean a metric is unsupported?",
+          "a": "No. It means a specific export was not adequately confirmed. Inspect current write permissions and a record from your own app version."
+        }
+      ]
+    }
+  },
+  {
+    "id": "suunto",
+    "slug": "suunto-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Suunto official App Store listing: Apple Health connection",
+        "url": "https://apps.apple.com/us/app/suunto/id1230327951"
+      },
+      {
+        "label": "Suunto: Getting started and watch synchronization",
+        "url": "https://www.suunto.com/Support/faq-articles/suunto-app/how-do-i-get-started-with-the-suunto-app/"
+      },
+      {
+        "label": "Apple: Manage Health data",
+        "url": "https://support.apple.com/en-us/108779"
+      },
+      {
+        "label": "Android: Get started with Health Connect",
+        "url": "https://support.google.com/android/answer/12201227?hl=en"
+      }
+    ],
+    "ru": {
+      "title": "Suunto: Apple Health, Health Connect и данные для FITA",
+      "description": "Как проверить подключение Suunto к Apple Health и доступ FITA. Что подтверждено официально, где экспорт метрик неизвестен, Health Connect и дубли записей.",
+      "h1": "Suunto и Фита",
+      "lead": "Официальное описание Suunto подтверждает соединение приложения с Apple Health через настройки. При этом актуальная официальная таблица категорий экспорта и штатная интеграция Suunto с Health Connect при проверке не найдены; обещать все данные часов нельзя.",
+      "sections": [
+        {
+          "heading": "Какие показатели Suunto можно обещать в Apple Health?",
+          "paragraphs": [
+            "Сам факт соединения Apple Health подтверждён в официальной карточке Suunto. Но источник не перечисляет категории, а общая справка о приложении описывает данные внутри Suunto. Поэтому ◐ в таблице означает «экспорт конкретного типа не проверен», а не «функция точно отсутствует». Для Health Connect не подтверждён даже штатный путь приложения."
+          ],
+          "table": {
+            "headers": [
+              "Показатель",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "◐ категория экспорта не подтверждена",
+                "◐ штатный путь не подтверждён"
+              ],
+              [
+                "Шаги",
+                "◐ категория экспорта не подтверждена",
+                "◐ штатный путь не подтверждён"
+              ],
+              [
+                "Пульс",
+                "◐ категория и детализация не подтверждены",
+                "◐ штатный путь не подтверждён"
+              ],
+              [
+                "Пульс покоя",
+                "◐ отдельный экспорт не подтверждён",
+                "◐ штатный путь не подтверждён"
+              ],
+              [
+                "HRV",
+                "◐ отдельный экспорт не подтверждён",
+                "◐ штатный путь не подтверждён"
+              ],
+              [
+                "Сон",
+                "◐ экспорт не подтверждён",
+                "◐ штатный путь не подтверждён"
+              ],
+              [
+                "SpO₂",
+                "◐ экспорт не подтверждён",
+                "◐ штатный путь не подтверждён"
+              ],
+              [
+                "Вес",
+                "◐ экспорт не подтверждён",
+                "◐ штатный путь не подтверждён"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как проверить соединение Suunto с Apple Health?",
+          "paragraphs": [
+            "Проверяйте два отдельных перехода: сначала часы → Suunto, затем Suunto → «Здоровье». В официальной инструкции синхронизация по Bluetooth начинается при открытии приложения, когда устройства рядом и Bluetooth включён. Ход передачи виден через значок часов; тренировки должны появиться в Diary."
+          ],
+          "steps": [
+            "Откройте Suunto при включённом Bluetooth и дождитесь синхронизации часов. Нажмите значок часов, чтобы проверить прогресс.",
+            "Откройте настройки приложения Suunto и включите предложенное соединение Apple Health. Официальная карточка приложения указывает настройки, но не публикует более точный универсальный путь.",
+            "В Apple Health → профиль → Privacy → Apps найдите Suunto и проверьте доступные категории записи. Если приложения нет, сначала откройте соединение внутри Suunto.",
+            "Откройте нужную категорию Apple Health, проверьте отдельную свежую запись и имя её источника. Только запись Suunto подтверждает передачу вашей категории."
+          ]
+        },
+        {
+          "heading": "Что делать с Health Connect на Android?",
+          "paragraphs": [
+            "Наличие Suunto на Android не означает поддержку Health Connect. В проверенных официальных источниках нет инструкции этой интеграции и её списка экспорта. Не заменяйте неизвестный путь советом просто выдать разрешения: приложение должно само поддерживать запись и запросить доступ.",
+            "Отдельные модели и поколения могут использовать разные приложения и способы синхронизации. Например, Suunto описывает для старых Ambit и Ambit2 передачу через USB и SuuntoLink, а для ряда других моделей — Bluetooth. Историю с конкретных часов нельзя автоматически переносить на все Suunto. Сторонний мост потребует собственной проверки направления, категорий, разрешений и условий сервиса."
+          ]
+        },
+        {
+          "heading": "Почему есть тренировка, но нет сна или ночного HRV?",
+          "paragraphs": [
+            "Экспорт каждого типа независим. Даже если одна тренировка появилась в Apple Health, это не подтверждает дневные шаги, отдельный пульс покоя или стадии сна. Датчик SpO₂ на конкретных часах также не доказывает экспорт кислорода. Для HRV дополнительно важен метод: системная категория Apple Health использует SDNN, поэтому нельзя обещать совместимость лишь по названию HRV.",
+            "Если данные есть в Suunto, но отсутствуют в «Здоровье», проверьте категорию записи и фактические разрешения. Если они уже есть в «Здоровье», переходите к разрешению FITA на чтение. При обращении в поддержку полезны модель часов, версия приложения, дата записи и точная отсутствующая категория."
+          ]
+        },
+        {
+          "heading": "Как разобраться с дублями и разными итогами?",
+          "paragraphs": [
+            "Сравните источник и время одной записи. Когда телефон и часы оба дают шаги, Apple позволяет менять порядок источников: категория → Data Sources & Access → Edit. Если две интеграции записывают одну тренировку, выберите один путь записи. Приоритет не гарантирует удаления отдельных копий. Сначала подтвердите дубли в хранилище, затем меняйте разрешения; удаление всей истории не требуется."
+          ]
+        },
+        {
+          "heading": "Как использовать эти данные в FITA?",
+          "paragraphs": [
+            "Сначала проверьте запись в Apple Health, затем разрешите FITA читать нужные категории. FITA получает доступ к разрешённым данным системного хранилища на вашем устройстве; наличие показателя в приложении производителя само по себе не делает его доступным в FITA. Права на запись у источника и права на чтение у FITA — разные разрешения.",
+            "FITA — бесплатная закрытая бета с русским интерфейсом. iOS-версия доступна в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Информация о выпусках для других платформ: https://releases.appfita.ru. Android-инструкции на этой странице описывают экспорт производителя в Health Connect и не означают, что Android-версия FITA уже выпущена."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Suunto вообще подключается к Apple Health?",
+          "a": "Да. Официальная карточка приложения Suunto прямо подтверждает связь с Apple Health через настройки приложения."
+        },
+        {
+          "q": "Значок ◐ означает, что Suunto ничего не передаёт?",
+          "a": "Нет. Он показывает недостаток официальной детализации конкретной категории при этой проверке. Фактическую передачу можно подтвердить отдельной записью с источником Suunto."
+        },
+        {
+          "q": "Есть ли штатная настройка Health Connect?",
+          "a": "В проверенных официальных материалах инструкция и матрица экспорта не найдены. Это отсутствие подтверждения, а не окончательное утверждение о невозможности."
+        },
+        {
+          "q": "Почему нельзя взять список метрик другой модели Suunto?",
+          "a": "Разные поколения отличаются датчиками, приложениями и путями синхронизации. Измерение на одних часах не доказывает экспорт тех же данных у других."
+        }
+      ]
+    },
+    "en": {
+      "title": "Suunto to Apple Health and Health Connect: what is verified",
+      "description": "Verify Suunto’s Apple Health connection and FITA permissions. Understand missing official export detail, unverified Health Connect support and duplicate records.",
+      "h1": "Suunto & FITA",
+      "lead": "Suunto’s official app listing confirms an Apple Health connection through app settings. A current official category export matrix and native Suunto Health Connect setup were not found during this review, so a complete watch-data transfer cannot be promised.",
+      "sections": [
+        {
+          "heading": "Which Suunto metrics can be promised?",
+          "paragraphs": [
+            "Apple Health connectivity is confirmed; individual export categories are not itemized in the retrieved official listing. Suunto’s general app documentation describes data inside Suunto, which does not prove export. ◐ means unverified, not conclusively unsupported. For Health Connect, the native connection itself is unverified."
+          ],
+          "table": {
+            "headers": [
+              "Metric",
+              "Apple Health",
+              "Health Connect"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "◐ category export unverified",
+                "◐ native path unverified"
+              ],
+              [
+                "Steps",
+                "◐ category export unverified",
+                "◐ native path unverified"
+              ],
+              [
+                "Heart rate",
+                "◐ category and sampling detail unverified",
+                "◐ native path unverified"
+              ],
+              [
+                "Resting heart rate",
+                "◐ separate export unverified",
+                "◐ native path unverified"
+              ],
+              [
+                "HRV",
+                "◐ separate export unverified",
+                "◐ native path unverified"
+              ],
+              [
+                "Sleep",
+                "◐ export unverified",
+                "◐ native path unverified"
+              ],
+              [
+                "SpO₂",
+                "◐ export unverified",
+                "◐ native path unverified"
+              ],
+              [
+                "Weight",
+                "◐ export unverified",
+                "◐ native path unverified"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "How do you verify the Apple Health connection?",
+          "paragraphs": [
+            "Test watch → Suunto and Suunto → Health separately. Suunto documents Bluetooth sync when you open the app with the devices nearby and Bluetooth on. The watch icon shows progress and exercises appear in Diary."
+          ],
+          "steps": [
+            "Open Suunto with Bluetooth enabled and wait for watch sync. Use the watch icon to inspect progress.",
+            "Open Suunto app settings and enable the Apple Health connection offered there. The official listing does not provide a more precise universal menu path.",
+            "In Apple Health → profile → Privacy → Apps → Suunto, inspect the available write categories. If Suunto is absent, start the connection inside Suunto first.",
+            "Inspect a new record in the desired Health category and check its source. A record from Suunto confirms that category for your setup."
+          ]
+        },
+        {
+          "heading": "What is known about Android Health Connect?",
+          "paragraphs": [
+            "Having an Android app does not establish Health Connect support. No native setup guide or export matrix was found in the official sources reviewed. Granting permissions alone cannot create a connection: the source app must implement writing and request access.",
+            "Watch generations also differ. Suunto documents USB and SuuntoLink for older Ambit and Ambit2 devices and Bluetooth for several other families. Do not apply one model’s data path to every Suunto. A third-party bridge requires a separate check of its direction, categories, permissions and terms."
+          ]
+        },
+        {
+          "heading": "Why can one workout arrive while sleep or HRV does not?",
+          "paragraphs": [
+            "Each export category is independent. One workout in Apple Health does not prove export of daily steps, resting heart rate or sleep stages. A model’s SpO₂ sensor does not prove oxygen export. Apple Health uses SDNN for HRV; the label HRV alone does not establish compatible export.",
+            "If a record exists only in Suunto, inspect the source integration and write categories. If it is already in Health, inspect FITA’s read permission. For support, note your watch model, app version, record date and exact missing category."
+          ]
+        },
+        {
+          "heading": "How do you check duplicates?",
+          "paragraphs": [
+            "Compare one record’s source and time. Apple allows category → Data Sources & Access → Edit for source ordering. If two integrations write one workout, choose one writer. Priority is not a promise to remove separate workout copies. Verify duplicates in the store before changing permissions; you do not need to erase the whole history."
+          ]
+        },
+        {
+          "heading": "How can FITA use the exported data?",
+          "paragraphs": [
+            "Verify a record in Apple Health first, then grant FITA access to the categories you want it to read. FITA reads permitted health-store data on your device. A metric visible only inside the manufacturer app is not automatically available to FITA; the source needs write permission and FITA needs separate read permission.",
+            "FITA is a free closed beta with a Russian interface. The iOS release is available in the Russian App Store: https://apps.apple.com/ru/app/fita/id6794848328. Other platform releases are listed at https://releases.appfita.ru. The Android instructions here explain manufacturer export to Health Connect; they do not announce an Android release of FITA."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Does Suunto connect to Apple Health at all?",
+          "a": "Yes. Suunto’s official App Store listing confirms the connection through app settings."
+        },
+        {
+          "q": "Does ◐ mean Suunto exports nothing?",
+          "a": "No. It means the retrieved official sources do not confirm that particular category. A record with Suunto as its source can verify your setup."
+        },
+        {
+          "q": "Is there a verified native Health Connect setup?",
+          "a": "No official setup guide or export matrix was found in the reviewed materials. That is missing confirmation, not a conclusive statement of impossibility."
+        },
+        {
+          "q": "Can I use another Suunto model’s metric list?",
+          "a": "Different generations have different sensors and synchronization paths. One model’s measurement does not prove another model’s export."
+        }
+      ]
+    }
+  }
+]

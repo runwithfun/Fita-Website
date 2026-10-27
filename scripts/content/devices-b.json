@@ -1,0 +1,1577 @@
+[
+  {
+    "id": "xiaomi-mi-band",
+    "slug": "xiaomi-mi-band-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Xiaomi: Mi Fitness Apple Health authorization",
+        "url": "https://www.mi.com/global/support/faq/details/KA-243012/"
+      },
+      {
+        "label": "Xiaomi: Zepp Life writes steps, sleep and weight",
+        "url": "https://www.mi.com/global/support/article/KA-12890/"
+      },
+      {
+        "label": "Xiaomi: current FAQ with Health Connect route",
+        "url": "https://www.mi.com/uk/support/faq/details/KA-728115/"
+      },
+      {
+        "label": "Google: supported Mi Fitness metrics through Health Connect",
+        "url": "https://support.google.com/googlehealth/answer/14236613?hl=en"
+      },
+      {
+        "label": "Xiaomi: Zepp Life to Mi Fitness transfer",
+        "url": "https://www.mi.com/global/support/faq/details/KA-231328/"
+      },
+      {
+        "label": "Apple publisher listing: Mi Fitness (Xiaomi Wear Lite) version and OS requirements",
+        "url": "https://apps.apple.com/us/app/mi-fitness-xiaomi-wear-lite/id1493500777"
+      },
+      {
+        "label": "Apple publisher listing: Zepp Life (Formerly MiFit) version and OS requirements",
+        "url": "https://apps.apple.com/us/app/zepp-life-formerly-mifit/id938688461"
+      }
+    ],
+    "ru": {
+      "title": "Mi Band и Xiaomi: Apple Health, Health Connect и ФИТА",
+      "description": "Как передать данные Mi Band и Xiaomi в ФИТА через Apple Health или Health Connect. Различия Mi Fitness и Zepp Life, метрики, разрешения и дубли.",
+      "h1": "Xiaomi и Mi Band и Фита",
+      "lead": "Xiaomi и Mi Band могут передавать данные в ФИТА через Apple Health на iPhone или Health Connect на Android, но маршрут зависит от приложения: Mi Fitness и Zepp Life поддерживают разные варианты экспорта.",
+      "sections": [
+        {
+          "heading": "Сначала Mi Fitness или Zepp Life?",
+          "paragraphs": [
+            "Ориентируйтесь на руководство своей модели и приложение, в котором браслет уже синхронизируется. Mi Fitness, прежнее название Xiaomi Wear, и Zepp Life, прежнее Mi Fit, — разные приложения. Возможности Zepp для Amazfit тоже нельзя автоматически переносить на Zepp Life.",
+            "Xiaomi подтверждает штатную связь Mi Fitness с Apple Health и Health Connect. Для Zepp Life официальная инструкция подтверждает запись шагов, сна и веса в Apple Health. Столь же ясного официального подтверждения прямого экспорта Zepp Life в Health Connect при проверке не найдено. Старую инструкцию с Google Fit не следует выдавать за актуальную настройку Health Connect.",
+            "На 27 октября 2026 года Apple указывает Mi Fitness 3.53.0 с iOS 14+ и Zepp Life 6.14.0 с iOS 12.4+. Это требования установки iPhone-приложений, а не обещание одинакового экспорта метрик."
+          ]
+        },
+        {
+          "heading": "Какие данные Xiaomi действительно экспортирует?",
+          "paragraphs": [
+            "✓ — подтверждённая запись; ◐ — ограничение или отсутствие полного официального перечня; ✕ — отсутствует в описанном штатном экспорте. Ниже речь об экспорте, а не о том, что браслет умеет измерять. В Android-столбце указан Mi Fitness; для Zepp Life его возможности не подтверждены."
+          ],
+          "table": {
+            "headers": [
+              "Показатель: экспорт из приложения",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "◐ Mi Fitness: перечень не опубликован; Zepp Life: не подтверждено",
+                "✓ Mi Fitness: записи тренировок"
+              ],
+              [
+                "Шаги",
+                "✓ Zepp Life; ◐ Mi Fitness: проверить запись",
+                "✓ Mi Fitness"
+              ],
+              [
+                "Пульс",
+                "◐ полный перечень для обоих приложений не найден",
+                "◐ подтверждён пульс на тренировках, не весь день"
+              ],
+              [
+                "Пульс в покое",
+                "◐ экспорт не подтверждён",
+                "◐ экспорт не подтверждён"
+              ],
+              [
+                "HRV",
+                "◐ экспорт не подтверждён",
+                "◐ экспорт не подтверждён"
+              ],
+              [
+                "Сон",
+                "✓ Zepp Life; ◐ Mi Fitness: проверить типы и фазы",
+                "✓ Mi Fitness: зависит от переданных стадий"
+              ],
+              [
+                "SpO₂",
+                "◐ экспорт не подтверждён",
+                "◐ экспорт не подтверждён"
+              ],
+              [
+                "Вес",
+                "✓ Zepp Life при наличии измерений; ◐ Mi Fitness",
+                "✓ Mi Fitness при наличии записи"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как включить штатную синхронизацию?",
+          "paragraphs": [
+            "Обновите приложение, подключите браслет и сначала убедитесь, что сегодняшние записи уже есть в нём. Для Health Connect необходим совместимый Android-телефон с этим сервисом; на Android 14 и новее он встроен в систему. Названия разделов могут отличаться в переводе."
+          ],
+          "steps": [
+            "Mi Fitness на iPhone: Profile → Third-party data → Health; выберите категории записи.",
+            "Zepp Life на iPhone: «Здоровье» → аватар → Apps в разделе Privacy → Zepp Life; разрешите нужные типы данных.",
+            "Mi Fitness на Android: Profile → Third-party data → Health Connect; подтвердите соединение и предложенные разрешения. Xiaomi документирует этот маршрут в актуальных FAQ.",
+            "После синхронизации браслета проверьте новые записи в системном хранилище и разрешите ФИТА читать соответствующие категории."
+          ]
+        },
+        {
+          "heading": "Почему показатели отсутствуют или повторяются?",
+          "paragraphs": [
+            "Разберите цепочку по одному дню: есть ли сон в приложении браслета, появился ли он в системном хранилище, доступен ли для чтения ФИТА. Если первый переход не состоялся, повторное подключение ФИТА его не исправит. Xiaomi советует проверить разрешения Health в Mi Fitness, подождать после синхронизации и при сохранении проблемы отправить журнал из Mi Fitness.",
+            "Не подключайте несколько обходных маршрутов для одного измерения. Особенно легко повторно записать тренировку через Strava. Сопоставляйте время начала, длительность и источник; выбирайте одного отправителя. Платный сторонний мост не нужен для штатного поддерживаемого пути, а его покупка не гарантирует экспорт HRV. Перенос истории Zepp Life в Mi Fitness также не равен записи всей этой истории в Apple Health."
+          ]
+        },
+        {
+          "heading": "Как эти данные попадают в ФИТА?",
+          "paragraphs": [
+            "Маршрут заканчивается чтением разрешённых записей: приложение производителя → Apple Health на iPhone или Health Connect на Android → ФИТА. Проверяйте конкретное измерение, его дату и источник. Наличие часов в аккаунте производителя ещё не подтверждает передачу сна или пульса в системное хранилище.",
+            "ФИТА — бесплатная закрытая бета с русским интерфейсом. Версия для iPhone доступна только в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Сборки Android, Windows, macOS и Linux публикуются на https://releases.appfita.ru. Apple Health и Health Connect подключаются на соответствующем телефоне; установка настольной версии сама по себе не переносит данные между платформами. Доступные показатели зависят от устройства, экспорта производителя и выданных разрешений."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Можно ли подключить Mi Band к ФИТА без Apple Watch?",
+          "a": "Да, если приложение браслета записывает нужные показатели в Apple Health или Health Connect и ФИТА имеет разрешение их читать."
+        },
+        {
+          "q": "Zepp Life и Zepp — одно приложение?",
+          "a": "Нет. Zepp Life связан с Mi Fit и рядом старых браслетов; Zepp обслуживает устройства Amazfit. Проверяйте приложение своей модели."
+        },
+        {
+          "q": "Нужно ли сначала устанавливать Google Fit?",
+          "a": "Для подтверждённого маршрута Mi Fitness → Health Connect отдельный Google Fit не требуется. Прямую связь Zepp Life с Health Connect мы не подтвердили."
+        },
+        {
+          "q": "Почему HRV виден в приложении, но отсутствует в ФИТА?",
+          "a": "Измерение на устройстве не доказывает экспорт. Официальные найденные инструкции не подтверждают передачу HRV для всех Xiaomi и Mi Band."
+        },
+        {
+          "q": "Перенос из Zepp Life в Mi Fitness перенесёт всё в «Здоровье»?",
+          "a": "Нет такой гарантии. Внутренний импорт и экспорт в системное хранилище имеют разные наборы типов данных."
+        }
+      ]
+    },
+    "en": {
+      "title": "Xiaomi and Mi Band to Apple Health or Health Connect | FITA",
+      "description": "Connect Xiaomi and Mi Band data to FITA. Choose Mi Fitness or Zepp Life, check directional exports, avoid duplicate workouts and verify missing metrics.",
+      "h1": "Xiaomi & Mi Band & FITA",
+      "lead": "Xiaomi data can reach FITA through Apple Health on iPhone or Health Connect on Android, but Mi Fitness and Zepp Life are separate routes with different export coverage.",
+      "sections": [
+        {
+          "heading": "Choose the companion app first",
+          "paragraphs": [
+            "Use the app required by your exact band. Mi Fitness, formerly Xiaomi Wear, differs from Zepp Life, formerly Mi Fit, and from Amazfit’s Zepp. Xiaomi documents Mi Fitness connections to both phone platforms. Its Zepp Life instructions explicitly name Apple Health steps, sleep and weight; a direct Zepp Life Health Connect export was not verified.",
+            "On October 27, 2026, Apple lists Mi Fitness 3.53.0 requiring iOS 14+ and Zepp Life 6.14.0 requiring iOS 12.4+. Installation compatibility does not establish metric export coverage."
+          ]
+        },
+        {
+          "heading": "What leaves the app?",
+          "paragraphs": [
+            "✓ means documented writing; ◐ means limited or unverified. These are exports into the phone repository, not measurements available inside the companion app."
+          ],
+          "table": {
+            "headers": [
+              "Exported metric",
+              "Apple Health · iPhone",
+              "Health Connect · Mi Fitness Android"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "◐ Mi Fitness/Zepp Life detailed export unverified",
+                "✓ Mi Fitness sessions"
+              ],
+              [
+                "Steps",
+                "✓ Zepp Life; ◐ Mi Fitness list unavailable",
+                "✓ Mi Fitness"
+              ],
+              [
+                "Heart rate",
+                "◐ export list unavailable",
+                "◐ exercise heart rate confirmed; all-day unverified"
+              ],
+              [
+                "Resting heart rate",
+                "◐ unverified",
+                "◐ unverified"
+              ],
+              [
+                "HRV",
+                "◐ unverified",
+                "◐ unverified"
+              ],
+              [
+                "Sleep",
+                "✓ Zepp Life; ◐ Mi Fitness specifics unverified",
+                "✓ Mi Fitness; available stages vary"
+              ],
+              [
+                "SpO₂",
+                "◐ unverified",
+                "◐ unverified"
+              ],
+              [
+                "Weight",
+                "✓ Zepp Life with measurements; ◐ Mi Fitness",
+                "✓ Mi Fitness if recorded"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Enable the documented route",
+          "paragraphs": [],
+          "steps": [
+            "Mi Fitness on iPhone: Profile → Third-party data → Health; select the offered categories.",
+            "Zepp Life on iPhone: Health → profile → Privacy → Apps → Zepp Life; enable its write categories.",
+            "Mi Fitness on Android: Profile → Third-party data → Health Connect; complete the offered authorization.",
+            "Sync the band first, inspect a new repository record, then grant FITA read access."
+          ]
+        },
+        {
+          "heading": "Check one day before adding another bridge",
+          "paragraphs": [
+            "If the record is missing from Apple Health or Health Connect, reconnecting FITA cannot create it. Check companion permissions and synchronization first. A native supported connection does not require a paid bridge. Importing Zepp Life history into Mi Fitness is a separate operation from exporting it to the phone repository.",
+            "Avoid sending a workout both from the device app and Strava. Compare the start time and writer, and keep one export route for that session. A successful steps transfer does not establish HRV coverage."
+          ]
+        },
+        {
+          "heading": "Bring the available records into FITA",
+          "paragraphs": [
+            "The phone route is vendor app → Apple Health on iPhone or Health Connect on Android → FITA. Check the actual record, date and writer before expecting it in FITA. Installing a desktop build does not itself move Apple Health data to Android or Health Connect data to an iPhone.",
+            "FITA is a free closed beta with a Russian interface. Its iPhone release is available only in the Russian App Store at https://apps.apple.com/ru/app/fita/id6794848328; Android, Windows, macOS and Linux builds are published at https://releases.appfita.ru. Metric availability depends on the vendor export and permissions."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Do I need an Apple Watch?",
+          "a": "No. The companion app can write supported data for FITA to read."
+        },
+        {
+          "q": "Is Zepp Life the same as Zepp?",
+          "a": "No. Choose the companion app documented for your device."
+        },
+        {
+          "q": "Do I need Google Fit first?",
+          "a": "Not for the documented Mi Fitness Health Connect route."
+        },
+        {
+          "q": "Will FITA see every metric on my band?",
+          "a": "Only metrics actually exported and permitted for reading. HRV export was not verified for all Xiaomi devices."
+        }
+      ]
+    }
+  },
+  {
+    "id": "huawei-honor",
+    "slug": "huawei-honor-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Huawei publisher: HealthKit workout and weight sharing",
+        "url": "https://apps.apple.com/us/app/huawei-health/id1325481372"
+      },
+      {
+        "label": "HONOR publisher: separate iPhone app and current description",
+        "url": "https://apps.apple.com/ru/app/honor-health/id1640493591"
+      },
+      {
+        "label": "Huawei: cloud sync is a separate operation",
+        "url": "https://consumer.huawei.com/en/support/content/en-us01057432/"
+      },
+      {
+        "label": "Health Sync developer: sources, destinations and paid trial",
+        "url": "https://healthsync.app/about/"
+      }
+    ],
+    "ru": {
+      "title": "Huawei и Honor: Apple Health, Health Connect и ФИТА",
+      "description": "Huawei Health и Honor Health — разные приложения. Проверяем экспорт в Apple Health и Health Connect, платный Health Sync, сон, пульс и дубли в ФИТА.",
+      "h1": "Huawei и Honor и Фита",
+      "lead": "HUAWEI Health на iPhone официально поддерживает обмен тренировками и весом с Apple Health; прямой экспорт Huawei и отдельного HONOR Health в Health Connect нельзя считать подтверждённым для всех устройств и регионов.",
+      "sections": [
+        {
+          "heading": "Почему Huawei и Honor нельзя настраивать одинаково?",
+          "paragraphs": [
+            "Начните с приложения, с которым уже сопряжены часы. HUAWEI Health и HONOR Health имеют разных издателей и отдельные аккаунты. Для старых устройств Honor ориентируйтесь на руководство модели: название на корпусе само по себе не определяет приложение. Совместимость часов с iPhone означает возможность сопряжения, а не автоматическую запись в Apple Health.",
+            "В официальном описании HUAWEI Health прямо заявлены запись веса и тренировок в HealthKit. Описание HONOR Health в российском App Store подтверждает работу приложения на iPhone, но не даёт перечня экспортируемых категорий HealthKit. Поэтому одинаковая таблица с галочками для двух брендов вводила бы в заблуждение.",
+            "При проверке Apple указывает HUAWEI Health 17.0.8.315 с iOS 13+ в американском магазине и HONOR Health 17.24.0.300 с iOS 15.1+ в российском. Региональные редакции и требования различаются; номер версии не доказывает поддержку экспорта."
+          ]
+        },
+        {
+          "heading": "Какие метрики подтверждены для штатного экспорта?",
+          "paragraphs": [
+            "✓ — официально заявлена запись; ◐ — не подтверждено найденной документацией, проверяйте наличие фактических записей. Для HONOR Health все восемь категорий остаются непроверенными для обоих хранилищ. Это предел доступных доказательств, а не утверждение о невозможности будущей поддержки."
+          ],
+          "table": {
+            "headers": [
+              "Показатель: экспорт из приложения",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ HUAWEI Health; ◐ HONOR Health",
+                "◐ прямой экспорт обоих не подтверждён"
+              ],
+              [
+                "Шаги",
+                "◐ отдельная категория записи не подтверждена",
+                "◐ не подтверждено"
+              ],
+              [
+                "Пульс",
+                "◐ не подтверждено",
+                "◐ не подтверждено"
+              ],
+              [
+                "Пульс в покое",
+                "◐ не подтверждено",
+                "◐ не подтверждено"
+              ],
+              [
+                "HRV",
+                "◐ не подтверждено",
+                "◐ не подтверждено"
+              ],
+              [
+                "Сон",
+                "◐ запись и фазы не подтверждены",
+                "◐ не подтверждено"
+              ],
+              [
+                "SpO₂",
+                "◐ не подтверждено",
+                "◐ не подтверждено"
+              ],
+              [
+                "Вес",
+                "✓ HUAWEI Health; ◐ HONOR Health",
+                "◐ не подтверждено"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как проверить iPhone без выдуманных пунктов меню?",
+          "paragraphs": [
+            "Установите актуальное приложение своего производителя, войдите в правильный аккаунт и дождитесь синхронизации часов. Найдите его в списке приложений с доступом к «Здоровью» и проверьте именно разрешения записи. Если приложение ещё не запросило доступ, проверьте его собственные настройки обмена; точное название пункта зависит от редакции и региона.",
+            "Официальная инструкция Huawei описывает ручную отправку в облако через Me → Settings → SYNC. Этот пункт синхронизирует облако Huawei, а не включает Apple Health или Health Connect. После него всё равно требуется проверить отдельный системный экспорт. Не путайте Huawei Health Kit, сервис Huawei для партнёров, с Android Health Connect."
+          ]
+        },
+        {
+          "heading": "Когда нужен платный Health Sync?",
+          "paragraphs": [
+            "Разработчик Health Sync заявляет HUAWEI Health как источник на Android и iOS, Health Connect как получателя на Android и Apple Health как получателя на iOS. Это сторонний маршрут с отдельными разрешениями, а не встроенная функция ФИТА. После недельного пробного периода нужен платный вариант лицензии; цену и доступные способы оплаты проверяйте перед покупкой.",
+            "Выберите HUAWEI Health источником и нужное системное хранилище получателем в Health Sync, затем проверьте предложенные категории. Наличие HRV в общем списке возможностей мостика не гарантирует его получение с конкретных часов Huawei. Для HONOR Health поддержка этим мостом также не подтверждена; не оплачивайте его только по сходству названий."
+          ]
+        },
+        {
+          "heading": "Как найти пропуск и убрать повторные записи?",
+          "paragraphs": [
+            "Проверьте сначала данные в приложении часов, затем облачную синхронизацию, затем запись в Apple Health или Health Connect. Для проблемного дня зафиксируйте источник, время и тип измерения. Это поможет отличить отсутствие экспорта сна от задержки обновления.",
+            "Если включён Health Sync, не оставляйте второй маршрут записи той же тренировки или веса без необходимости. Выберите одного отправителя на категорию; уже созданные дубли проверяйте отдельно. Удаление аккаунта или смена региона не являются первым шагом диагностики: сначала проверьте существующее соединение и доступность сервиса в своём регионе."
+          ]
+        },
+        {
+          "heading": "Как эти данные попадают в ФИТА?",
+          "paragraphs": [
+            "Маршрут заканчивается чтением разрешённых записей: приложение производителя → Apple Health на iPhone или Health Connect на Android → ФИТА. Проверяйте конкретное измерение, его дату и источник. Наличие часов в аккаунте производителя ещё не подтверждает передачу сна или пульса в системное хранилище.",
+            "ФИТА — бесплатная закрытая бета с русским интерфейсом. Версия для iPhone доступна только в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Сборки Android, Windows, macOS и Linux публикуются на https://releases.appfita.ru. Apple Health и Health Connect подключаются на соответствующем телефоне; установка настольной версии сама по себе не переносит данные между платформами. Доступные показатели зависят от устройства, экспорта производителя и выданных разрешений."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Поддерживает ли HONOR Health Apple Health?",
+          "a": "В проверенном официальном описании нет подтверждённого перечня записи. Проверьте наличие HONOR Health среди источников и конкретную запись; обещать все метрики нельзя."
+        },
+        {
+          "q": "Huawei Health Kit — это Health Connect?",
+          "a": "Нет. Это разные платформы. Авторизация Huawei Health Kit для стороннего сервиса не включает Health Connect автоматически."
+        },
+        {
+          "q": "Health Sync бесплатный?",
+          "a": "Есть недельный пробный период, затем требуется платная лицензия или доступный вариант подписки."
+        },
+        {
+          "q": "Все старые Honor работают через Huawei Health?",
+          "a": "Приложение определяется моделью и её официальным руководством. Новое HONOR Health нельзя считать продолжением HUAWEI Health для всех моделей."
+        },
+        {
+          "q": "Почему сон есть в Huawei, но его не видит ФИТА?",
+          "a": "Проверьте запись сна в системном хранилище. Экран производителя может показывать данные, которые вообще не экспортируются."
+        }
+      ]
+    },
+    "en": {
+      "title": "Huawei and Honor to Apple Health or Health Connect | FITA",
+      "description": "Check Huawei Health and Honor Health exports separately. Understand native Apple Health sharing, unverified Android coverage, Health Sync costs and FITA access.",
+      "h1": "Huawei & Honor & FITA",
+      "lead": "HUAWEI Health officially describes Apple Health workout and weight sharing on iPhone. Do not assume the separate HONOR Health app or either Android app exports the same metrics to Health Connect.",
+      "sections": [
+        {
+          "heading": "Identify the app, not just the logo",
+          "paragraphs": [
+            "HUAWEI Health and HONOR Health are separate products. Older Honor devices should follow their model documentation. Pairing with an iPhone is not proof of HealthKit writing. Huawei’s App Store description documents workouts and weight; Honor’s Russian listing does not provide an equivalent export list.",
+            "Apple’s checked listings show HUAWEI Health 17.0.8.315 requiring iOS 13+ in the US and HONOR Health 17.24.0.300 requiring iOS 15.1+ in Russia. Regional editions differ; version numbers alone do not prove exports."
+          ]
+        },
+        {
+          "heading": "Native directional coverage",
+          "paragraphs": [
+            "✓ means explicitly documented writing. ◐ means unverified in the official material reviewed, not a promise or a permanent impossibility. HONOR Health exports remain unverified for all eight categories on both platforms."
+          ],
+          "table": {
+            "headers": [
+              "Exported metric",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ HUAWEI Health; ◐ HONOR Health",
+                "◐ native export unverified"
+              ],
+              [
+                "Steps",
+                "◐ separate write type unverified",
+                "◐ unverified"
+              ],
+              [
+                "Heart rate",
+                "◐ unverified",
+                "◐ unverified"
+              ],
+              [
+                "Resting heart rate",
+                "◐ unverified",
+                "◐ unverified"
+              ],
+              [
+                "HRV",
+                "◐ unverified",
+                "◐ unverified"
+              ],
+              [
+                "Sleep",
+                "◐ export and stages unverified",
+                "◐ unverified"
+              ],
+              [
+                "SpO₂",
+                "◐ unverified",
+                "◐ unverified"
+              ],
+              [
+                "Weight",
+                "✓ HUAWEI Health; ◐ HONOR Health",
+                "◐ native export unverified"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Verify before buying a bridge",
+          "paragraphs": [
+            "Sync the watch to its companion app, then inspect the app’s Health permissions and an actual new record. Huawei’s Me → Settings → SYNC uploads to Huawei cloud; it is not an Apple Health or Health Connect switch. Huawei Health Kit is also a different service from Health Connect.",
+            "Health Sync’s developer lists HUAWEI Health as a source, Apple Health as an iOS destination and Health Connect as an Android destination. It offers a one-week trial followed by a paid license option. Check the categories offered for your connection; a general HRV feature list does not establish Huawei HRV coverage. HONOR Health support by that bridge was not verified."
+          ]
+        },
+        {
+          "heading": "Troubleshoot each hop",
+          "paragraphs": [
+            "Check the device app, cloud upload if using the bridge, then the repository record. Keep the date, writer and metric when reporting a failure. Choose a single writer per category if native sharing and Health Sync overlap. Changing accounts or regions can complicate access to existing history; inspect current permissions first."
+          ]
+        },
+        {
+          "heading": "Bring the available records into FITA",
+          "paragraphs": [
+            "The phone route is vendor app → Apple Health on iPhone or Health Connect on Android → FITA. Check the actual record, date and writer before expecting it in FITA. Installing a desktop build does not itself move Apple Health data to Android or Health Connect data to an iPhone.",
+            "FITA is a free closed beta with a Russian interface. Its iPhone release is available only in the Russian App Store at https://apps.apple.com/ru/app/fita/id6794848328; Android, Windows, macOS and Linux builds are published at https://releases.appfita.ru. Metric availability depends on the vendor export and permissions."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Does pairing with an iPhone guarantee Apple Health?",
+          "a": "No. Pairing and HealthKit writing are separate features."
+        },
+        {
+          "q": "Are Health Kit and Health Connect the same?",
+          "a": "No. The former is Huawei’s service; the latter is Android’s repository."
+        },
+        {
+          "q": "Is Health Sync free?",
+          "a": "It has a one-week trial, then a paid license option."
+        },
+        {
+          "q": "Will Honor work exactly like Huawei?",
+          "a": "That is unverified. Use the correct companion app and inspect its actual exported records."
+        }
+      ]
+    }
+  },
+  {
+    "id": "amazfit",
+    "slug": "amazfit-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Amazfit: Apple Health connection",
+        "url": "https://support.amazfit.com/en/amazfit_gts_2_mini/docs/N6cUdJxDRo6rbfxiLs1cJDBrnRd"
+      },
+      {
+        "label": "Google: Zepp through Apple Health and Health Connect",
+        "url": "https://support.google.com/googlehealth/answer/14236613?hl=en"
+      },
+      {
+        "label": "Amazfit: manual device synchronization",
+        "url": "https://support.amazfit.com/en/amazfit_balance_2/docs/DVPRdWbh9o3djJxZJrEct4sBncg"
+      },
+      {
+        "label": "Zepp publisher: device measurements differ from exports",
+        "url": "https://play.google.com/store/apps/details?id=com.huami.watch.hmwatchmanager"
+      },
+      {
+        "label": "Apple publisher listing: Zepp version and OS requirements",
+        "url": "https://apps.apple.com/us/app/zepp/id1127269366"
+      }
+    ],
+    "ru": {
+      "title": "Amazfit и Zepp: Apple Health, Health Connect и ФИТА",
+      "description": "Как подключить Amazfit через Zepp к Apple Health и Health Connect. Проверка экспорта сна, пульса и HRV, разрешений и повторных тренировок для ФИТА.",
+      "h1": "Amazfit и Фита",
+      "lead": "Amazfit передаёт данные в ФИТА через приложение Zepp: на iPhone используется Apple Health, на Android — Health Connect; конкретные показатели зависят от модели и разрешённых категорий записи.",
+      "sections": [
+        {
+          "heading": "Что требуется до подключения?",
+          "paragraphs": [
+            "Нужны совместимые часы или браслет Amazfit, актуальный Zepp и телефон, с которым устройство синхронизируется. Zepp и Zepp Life — отдельные приложения: найденная инструкция для Zepp Life не подтверждает функции Zepp и наоборот. Сначала проверьте сегодняшнюю тренировку или прошедшую ночь внутри приложения часов.",
+            "Официальная поддержка Amazfit описывает Apple Health, а актуальная справка Google подтверждает передачу Zepp через Apple Health и Health Connect. В старых руководствах Amazfit ещё встречается Google Fit. Наличие такого названия на странице не делает Google Fit обязательным промежуточным звеном для Health Connect.",
+            "На дату проверки Apple указывает Zepp 10.10.1 с требованием iOS 15+. Это актуальная проверенная версия iPhone-приложения, а не минимальная версия поддержки каждого типа данных."
+          ]
+        },
+        {
+          "heading": "Какие показатели Zepp пишет наружу?",
+          "paragraphs": [
+            "✓ — категория названа в официальной справке партнёрского импорта Google через эти хранилища; это условие доступности, а не гарантия каждой модели. ◐ — нет достаточного подтверждения конкретного экспорта. Особенно осторожно относитесь к HRV: упоминание измерения в Zepp не устанавливает формат и полноту записи в HealthKit."
+          ],
+          "table": {
+            "headers": [
+              "Показатель: экспорт из приложения",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ сводки; состав деталей зависит от записи",
+                "✓ сводки"
+              ],
+              [
+                "Шаги",
+                "✓ при разрешении записи",
+                "✓ при разрешении записи"
+              ],
+              [
+                "Пульс",
+                "✓ при наличии измерений",
+                "✓ при наличии измерений"
+              ],
+              [
+                "Пульс в покое",
+                "✓ указан партнёром; проверить свою модель",
+                "✓ указан партнёром; проверить свою модель"
+              ],
+              [
+                "HRV",
+                "◐ общий экспорт для моделей не подтверждён",
+                "◐ не подтверждён для всех моделей"
+              ],
+              [
+                "Сон",
+                "✓ длительность и доступные стадии",
+                "✓ длительность и доступные стадии"
+              ],
+              [
+                "SpO₂",
+                "◐ категория указана партнёром без разбивки по платформам",
+                "◐ категория указана партнёром без разбивки по платформам"
+              ],
+              [
+                "Вес",
+                "◐ экспорт отдельно от импорта не уточнён",
+                "◐ экспорт отдельно от импорта не уточнён"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как включить Apple Health и Health Connect?",
+          "paragraphs": [
+            "Amazfit рекомендует добавить Zepp как источник данных Apple Health. На Android используйте предлагаемое в актуальном Zepp подключение Health Connect и проверьте его системные разрешения. Единый минимальный номер Zepp для всех категорий и моделей официальной найденной справкой не установлен; надёжнее обновить приложение и прошивку устройства.",
+            "На Android 14 и новее Health Connect доступен через настройки телефона; на поддерживаемых более ранних версиях используется отдельное приложение. Проверьте запись Zepp для нужного типа и чтение со стороны ФИТА. Это разные разрешения: доступ Zepp читать вес из хранилища не доказывает, что он пишет туда вес с весов."
+          ],
+          "steps": [
+            "На iPhone откройте «Здоровье» и найдите Zepp среди приложений с доступом. Разрешите предложенные категории записи.",
+            "Синхронизируйте Amazfit с Zepp, затем проверьте свежую запись в Apple Health или Health Connect.",
+            "Подключите ФИТА к соответствующему хранилищу и разрешите чтение нужных типов."
+          ]
+        },
+        {
+          "heading": "Почему пропадает сон или отличаются цифры?",
+          "paragraphs": [
+            "Проверяйте дату начала и окончания сна, источник и наличие стадий в самой системной записи. Сводка в Zepp и запись в хранилище могут иметь разную детализацию. Не переносите выводы о Helio Strap на все часы Amazfit: публичные сообщения об обновлениях конкретного браслета не равны официальной таблице экспорта всей линейки.",
+            "Если записи нет уже в Zepp, проверьте соединение часов. Amazfit рекомендует потянуть главный экран Zepp вниз для ручной синхронизации, а при неудаче перезапустить приложение. Если запись есть в Zepp, но отсутствует в хранилище, проверьте разрешение записи; если она уже там, проверьте разрешение чтения ФИТА."
+          ]
+        },
+        {
+          "heading": "Как избежать дублей и лишней оплаты?",
+          "paragraphs": [
+            "Не отправляйте одну тренировку одновременно из Zepp и через связанную Strava. Сравните одинаковое время начала и выберите одного отправителя. Такой повтор не устраняется покупкой подписки. Для штатных связей с Apple Health и Health Connect отдельный платный мост не является обязательным. Сначала подтвердите передачу одной новой ночи и одной тренировки; перенос всей истории и собственных оценок Zepp нельзя предполагать по этому тесту."
+          ]
+        },
+        {
+          "heading": "Как эти данные попадают в ФИТА?",
+          "paragraphs": [
+            "Маршрут заканчивается чтением разрешённых записей: приложение производителя → Apple Health на iPhone или Health Connect на Android → ФИТА. Проверяйте конкретное измерение, его дату и источник. Наличие часов в аккаунте производителя ещё не подтверждает передачу сна или пульса в системное хранилище.",
+            "ФИТА — бесплатная закрытая бета с русским интерфейсом. Версия для iPhone доступна только в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Сборки Android, Windows, macOS и Linux публикуются на https://releases.appfita.ru. Apple Health и Health Connect подключаются на соответствующем телефоне; установка настольной версии сама по себе не переносит данные между платформами. Доступные показатели зависят от устройства, экспорта производителя и выданных разрешений."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Нужен Zepp или Zepp Life?",
+          "a": "Для своей модели используйте приложение из её инструкции. Современные Amazfit обычно работают с Zepp; возможности Zepp Life нельзя переносить на него автоматически."
+        },
+        {
+          "q": "Все Amazfit экспортируют HRV?",
+          "a": "Это не подтверждено. Проверяйте доступный тип записи и реальные измерения для своей модели и прошивки."
+        },
+        {
+          "q": "Почему вес приходит в Zepp, но не уходит из него?",
+          "a": "Чтение и запись — отдельные направления. Поддержка импорта веса не подтверждает экспорт."
+        },
+        {
+          "q": "Нужен Google Fit на Android?",
+          "a": "Подтверждённый современный маршрут использует Health Connect. Старое руководство с Google Fit не означает, что нужен дополнительный промежуточный сервис."
+        },
+        {
+          "q": "Переносится ли оценка восстановления Zepp в ФИТА?",
+          "a": "Не следует ожидать переноса фирменной оценки как готового показателя. Проверяйте исходные разрешённые записи сна и пульса."
+        }
+      ]
+    },
+    "en": {
+      "title": "Amazfit and Zepp to Apple Health or Health Connect | FITA",
+      "description": "Connect Amazfit data to FITA through Zepp on iPhone or Android. Check actual export permissions, HRV uncertainty, sleep records and duplicate workout routes.",
+      "h1": "Amazfit & FITA",
+      "lead": "Amazfit can send data to FITA through Zepp and the phone’s health repository: Apple Health on iPhone or Health Connect on Android. Export coverage depends on the device and permissions.",
+      "sections": [
+        {
+          "heading": "Confirm the right app and a recent record",
+          "paragraphs": [
+            "Use Zepp for models whose manual requires it. Zepp Life is separate. Verify a recent night or workout inside the companion app before setting up the next connection. Amazfit documents Apple Health sharing; Google’s current partner guide also describes Zepp through Health Connect.",
+            "At verification, Apple lists Zepp 10.10.1 requiring iOS 15+. That is an observed current iPhone build, not an established minimum for each exported metric."
+          ]
+        },
+        {
+          "heading": "Directional export coverage",
+          "paragraphs": [
+            "✓ identifies categories in official partner documentation, conditional on actual device data. ◐ means the exact export is not established. A read permission for body weight does not prove a write permission."
+          ],
+          "table": {
+            "headers": [
+              "Exported metric",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ summaries; details vary",
+                "✓ summaries"
+              ],
+              [
+                "Steps",
+                "✓ with writing allowed",
+                "✓ with writing allowed"
+              ],
+              [
+                "Heart rate",
+                "✓ if recorded",
+                "✓ if recorded"
+              ],
+              [
+                "Resting heart rate",
+                "✓ partner-listed; verify model",
+                "✓ partner-listed; verify model"
+              ],
+              [
+                "HRV",
+                "◐ no all-model confirmation",
+                "◐ unverified"
+              ],
+              [
+                "Sleep",
+                "✓ duration and available stages",
+                "✓ duration and available stages"
+              ],
+              [
+                "SpO₂",
+                "◐ partner list lacks platform split",
+                "◐ partner list lacks platform split"
+              ],
+              [
+                "Weight",
+                "◐ export versus import unclear",
+                "◐ export versus import unclear"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Connect and test",
+          "paragraphs": [
+            "Amazfit instructs users to add Zepp as an Apple Health data source. In the current Android app, use its offered Health Connect connection and inspect the system write permissions. No single minimum Zepp version covering every model and metric was established in the official material.",
+            "Sync the device, inspect a new repository record, then allow FITA to read it. An old support page mentioning Google Fit is not evidence that Google Fit is required in this route."
+          ]
+        },
+        {
+          "heading": "Find the missing hop",
+          "paragraphs": [
+            "Amazfit documents pulling down on Zepp’s home screen to sync manually and reopening the app if the connection fails. If the record is already in Zepp, investigate repository writing; if it is in the repository, investigate FITA reading. Compare sleep timestamps and stages rather than only the nightly summary.",
+            "Keep one workout writer if both Zepp and Strava are connected. Native repository sharing does not require buying an additional bridge. HRV reports about one Helio device do not establish support across all Amazfit watches."
+          ]
+        },
+        {
+          "heading": "Bring the available records into FITA",
+          "paragraphs": [
+            "The phone route is vendor app → Apple Health on iPhone or Health Connect on Android → FITA. Check the actual record, date and writer before expecting it in FITA. Installing a desktop build does not itself move Apple Health data to Android or Health Connect data to an iPhone.",
+            "FITA is a free closed beta with a Russian interface. Its iPhone release is available only in the Russian App Store at https://apps.apple.com/ru/app/fita/id6794848328; Android, Windows, macOS and Linux builds are published at https://releases.appfita.ru. Metric availability depends on the vendor export and permissions."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Does every Amazfit export HRV?",
+          "a": "No all-model export was verified. Inspect actual records from your device."
+        },
+        {
+          "q": "Can Zepp import weight without exporting it?",
+          "a": "Yes, the two directions require separate support and permissions."
+        },
+        {
+          "q": "Should I install Google Fit first?",
+          "a": "The current documented partner route uses Health Connect on Android."
+        },
+        {
+          "q": "Will FITA receive Zepp’s own readiness score?",
+          "a": "Do not assume a proprietary score is exported. Check the underlying sleep and heart records."
+        }
+      ]
+    }
+  },
+  {
+    "id": "samsung",
+    "slug": "samsung-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Samsung: Health Connect setup, data types and timing",
+        "url": "https://developer.samsung.com/health/blog/en/accessing-samsung-health-data-through-health-connect"
+      },
+      {
+        "label": "Samsung: phone compatibility",
+        "url": "https://www.samsung.com/ca/support/mobile-devices/what-phones-are-compatible-with-your-samsung-smartwatch/"
+      },
+      {
+        "label": "Samsung publisher: iOS reads Apple Health steps",
+        "url": "https://apps.apple.com/us/app/samsung-health/id1224541484"
+      },
+      {
+        "label": "Samsung: Health Connect FAQ",
+        "url": "https://developer.samsung.com/health/health-connect-faq.html"
+      }
+    ],
+    "ru": {
+      "title": "Samsung Health: Health Connect, Apple Health и ФИТА",
+      "description": "Как подключить Galaxy Watch и Samsung Health к ФИТА через Health Connect. Ограничения iPhone, таблица экспорта, настройка разрешений и повторные записи.",
+      "h1": "Samsung и Фита",
+      "lead": "Для Galaxy Watch на Android штатный путь в ФИТА — Samsung Health → Health Connect; для современных Galaxy Watch на iPhone официального равноценного пути через Apple Health нет.",
+      "sections": [
+        {
+          "heading": "Какие телефон и версии нужны?",
+          "paragraphs": [
+            "Samsung подтверждает Health Connect начиная с Samsung Health 6.22.5, но для доступных сегодня типов рекомендует актуальную версию приложения. Нужен совместимый Android-телефон; требования конкретных часов могут быть выше требований самого Health Connect. На Android 14 и новее сервис встроен в систему.",
+            "Официальная совместимость Samsung исключает iPhone для Galaxy Watch4, Watch5, Watch6, Watch7, Watch8, FE и Ultra. Старые модели могут сопрягаться с iPhone, однако это не доказывает экспорт их измерений в Apple Health. Описание Samsung Health для iOS прямо говорит о чтении шагов из Apple Health, то есть об обратном направлении.",
+            "В App Store при проверке указан Samsung Health для iPhone 1.15.3 с iOS 9+. Эта отдельная старая ветка не отменяет ограничений совместимости современных часов и не равна Android-версии 6.22.5+."
+          ]
+        },
+        {
+          "heading": "Что Samsung Health пишет в хранилище?",
+          "paragraphs": [
+            "✓ — тип входит в официальную таблицу обмена Samsung Health с Health Connect. ◐ — не подтверждён отдельным типом в этой таблице. ✕ — штатный путь современных Galaxy Watch через iPhone не поддерживается. Пульс на тренировке и пульс в покое — разные категории; их нельзя отмечать одной галочкой."
+          ],
+          "table": {
+            "headers": [
+              "Показатель: экспорт из приложения",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✕ штатный путь современных часов",
+                "✓ сессии тренировок"
+              ],
+              [
+                "Шаги",
+                "✕ подтверждён только обратный импорт в iOS",
+                "✓ All steps"
+              ],
+              [
+                "Пульс",
+                "✕ штатный экспорт не подтверждён",
+                "✓ обычный и тренировочный пульс"
+              ],
+              [
+                "Пульс в покое",
+                "✕ штатный экспорт не подтверждён",
+                "◐ отдельный тип не указан"
+              ],
+              [
+                "HRV",
+                "✕ штатный экспорт не подтверждён",
+                "◐ отдельный тип не указан"
+              ],
+              [
+                "Сон",
+                "✕ штатный экспорт не подтверждён",
+                "✓ сессии и стадии"
+              ],
+              [
+                "SpO₂",
+                "✕ штатный экспорт не подтверждён",
+                "✓ кислород крови"
+              ],
+              [
+                "Вес",
+                "✕ штатный экспорт не подтверждён",
+                "✓ при наличии записей"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как подключить Health Connect на Android?",
+          "paragraphs": [
+            "Данные сначала должны оказаться в Samsung Health на телефоне. Сервис обмена работает на стороне телефона: часы не записывают напрямую в Health Connect. При первом подключении выбирайте категории, которые готовы передать, и проверяйте отдельные разрешения чтения и записи."
+          ],
+          "steps": [
+            "Откройте Samsung Health → Settings → Health Connect.",
+            "При первом запуске нажмите Get started; выберите разрешённые типы и подтвердите Allow.",
+            "Откройте Samsung Health и синхронизируйте часы; затем проверьте новые данные в Health Connect.",
+            "Разрешите ФИТА читать нужные категории Health Connect. Если разрешения выдавались из настроек Android, Samsung рекомендует после этого запустить Samsung Health."
+          ]
+        },
+        {
+          "heading": "Почему пульс или сон приходят с задержкой?",
+          "paragraphs": [
+            "Сначала сравните часы с Samsung Health на телефоне. Samsung отмечает, что непрерывный пульс ради экономии батареи передаётся не сразу, тогда как ручное измерение может прийти быстрее. Открытие главного экрана Samsung Health и жест обновления запускают обмен с часами.",
+            "Если тренировка уже видна в Samsung Health, но отсутствует в Health Connect, проверьте разрешение её записи. Если она есть и там, проверьте чтение ФИТА и дату записи. Данные Samsung Health Data SDK и Health Connect имеют разные интерфейсы: наличие показателя в SDK не доказывает его экспорт через системное хранилище."
+          ]
+        },
+        {
+          "heading": "Как обойтись без дублей и неверных ожиданий?",
+          "paragraphs": [
+            "Одна пробежка может попасть в хранилище от Samsung Health и повторно от Strava. Назначьте одного отправителя этой тренировки; сравнивайте время и длительность, прежде чем удалять повтор. Дневные шаги и тренировочная дистанция также могут иметь разную детализацию — не считайте любое расхождение доказательством потери данных.",
+            "Штатный Android-маршрут не требует платного мостика. Сторонние приложения для соединения Wear OS с iPhone — отдельные продукты; их стоимость, перечень метрик и условия нужно проверять у разработчика. Они не меняют официальную совместимость Samsung и не дают основания обещать HRV, сон или весь архив в Apple Health."
+          ]
+        },
+        {
+          "heading": "Как эти данные попадают в ФИТА?",
+          "paragraphs": [
+            "Маршрут заканчивается чтением разрешённых записей: приложение производителя → Apple Health на iPhone или Health Connect на Android → ФИТА. Проверяйте конкретное измерение, его дату и источник. Наличие часов в аккаунте производителя ещё не подтверждает передачу сна или пульса в системное хранилище.",
+            "ФИТА — бесплатная закрытая бета с русским интерфейсом. Версия для iPhone доступна только в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Сборки Android, Windows, macOS и Linux публикуются на https://releases.appfita.ru. Apple Health и Health Connect подключаются на соответствующем телефоне; установка настольной версии сама по себе не переносит данные между платформами. Доступные показатели зависят от устройства, экспорта производителя и выданных разрешений."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Работает ли Galaxy Watch с iPhone?",
+          "a": "Samsung исключает iPhone для указанных современных серий Watch4–Watch8, FE и Ultra. Для старых моделей совместимость проверяется отдельно."
+        },
+        {
+          "q": "Samsung Health пишет шаги в Apple Health?",
+          "a": "Проверенное описание iOS подтверждает чтение шагов из Apple Health. Это не доказательство обратного экспорта."
+        },
+        {
+          "q": "Нужна подписка для Health Connect?",
+          "a": "Для штатного обмена Samsung Health → Health Connect отдельный платный мост не требуется."
+        },
+        {
+          "q": "Почему HRV отсутствует в ФИТА?",
+          "a": "HRV не указан отдельным экспортируемым типом в найденной таблице Samsung для Health Connect. Наличие HRV в интерфейсе часов само по себе недостаточно."
+        },
+        {
+          "q": "Нужно ли подключать часы прямо к ФИТА?",
+          "a": "Для описанного маршрута сначала синхронизируются часы и Samsung Health на телефоне, затем данные передаются через Health Connect."
+        }
+      ]
+    },
+    "en": {
+      "title": "Samsung Health to Health Connect or Apple Health | FITA",
+      "description": "Use Samsung Health and Health Connect for FITA on Android. Check Galaxy Watch iPhone limits, directional metrics, permissions and duplicate workout paths.",
+      "h1": "Samsung & FITA",
+      "lead": "On Android, the native route is Galaxy Watch → Samsung Health → Health Connect → FITA. Current Galaxy Watch iPhone compatibility does not provide an equivalent official Apple Health route.",
+      "sections": [
+        {
+          "heading": "Requirements and iPhone limits",
+          "paragraphs": [
+            "Health Connect support began with Samsung Health 6.22.5; update for current data coverage. Watch requirements can be higher than Health Connect’s minimum. Samsung explicitly excludes iPhone pairing for Watch4–Watch8, FE and Ultra. Its iOS app description documents reading Apple Health steps, which is the opposite direction to exporting watch records.",
+            "Apple currently lists Samsung Health for iPhone 1.15.3 with iOS 9+. This separate iOS branch does not change modern watch compatibility or equal the Android 6.22.5+ branch."
+          ]
+        },
+        {
+          "heading": "What is exported?",
+          "paragraphs": [
+            "✓ appears in Samsung’s Health Connect exchange table. ◐ lacks a separately documented export. ✕ means no supported native route for current Galaxy Watches on iPhone."
+          ],
+          "table": {
+            "headers": [
+              "Exported metric",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✕ current-watch native route",
+                "✓ sessions"
+              ],
+              [
+                "Steps",
+                "✕ iOS documents the reverse read direction",
+                "✓ all steps"
+              ],
+              [
+                "Heart rate",
+                "✕ native export unverified",
+                "✓ daily and exercise"
+              ],
+              [
+                "Resting heart rate",
+                "✕ native export unverified",
+                "◐ separate type not listed"
+              ],
+              [
+                "HRV",
+                "✕ native export unverified",
+                "◐ separate type not listed"
+              ],
+              [
+                "Sleep",
+                "✕ native export unverified",
+                "✓ sessions and stages"
+              ],
+              [
+                "SpO₂",
+                "✕ native export unverified",
+                "✓ blood oxygen"
+              ],
+              [
+                "Weight",
+                "✕ native export unverified",
+                "✓ if recorded"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Enable Android sharing",
+          "paragraphs": [],
+          "steps": [
+            "Samsung Health → Settings → Health Connect → Get started.",
+            "Choose data types and tap Allow. Read and write permissions are separate.",
+            "Sync the watch to Samsung Health, inspect Health Connect, then allow FITA to read the required types."
+          ]
+        },
+        {
+          "heading": "Check delays and duplicate paths",
+          "paragraphs": [
+            "Samsung notes that continuous watch heart rate can reach the phone later than manual measurements. Open Samsung Health or pull down to refresh before inspecting Health Connect. A type available through Samsung’s separate developer SDK is not automatically a Health Connect export.",
+            "If Strava and Samsung Health both write a workout, keep one writer for that session. The native Android path needs no paid bridge. Third-party Wear OS to iPhone products have independent costs and limits and do not change Samsung’s official pairing support."
+          ]
+        },
+        {
+          "heading": "Bring the available records into FITA",
+          "paragraphs": [
+            "The phone route is vendor app → Apple Health on iPhone or Health Connect on Android → FITA. Check the actual record, date and writer before expecting it in FITA. Installing a desktop build does not itself move Apple Health data to Android or Health Connect data to an iPhone.",
+            "FITA is a free closed beta with a Russian interface. Its iPhone release is available only in the Russian App Store at https://apps.apple.com/ru/app/fita/id6794848328; Android, Windows, macOS and Linux builds are published at https://releases.appfita.ru. Metric availability depends on the vendor export and permissions."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can Watch4 or later pair officially with an iPhone?",
+          "a": "Samsung explicitly excludes Watch4–Watch8, FE and Ultra in its compatibility list."
+        },
+        {
+          "q": "Does the Samsung iOS listing prove step export?",
+          "a": "No. It describes Apple Health steps being read by Samsung Health."
+        },
+        {
+          "q": "Is a paid bridge required on Android?",
+          "a": "No, not for the supported Samsung Health Health Connect connection."
+        },
+        {
+          "q": "Why is HRV missing?",
+          "a": "The official exchange table reviewed does not separately list HRV. Check actual records rather than the watch screen."
+        }
+      ]
+    }
+  },
+  {
+    "id": "fitbit",
+    "slug": "fitbit-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Google: Apple Health read and write table",
+        "url": "https://support.google.com/googlehealth/answer/17037331?hl=en"
+      },
+      {
+        "label": "Google: Health Connect read and write table",
+        "url": "https://support.google.com/googlehealth/answer/14506680?hl=en"
+      },
+      {
+        "label": "Google: Fitbit app renamed in May 2026",
+        "url": "https://support.google.com/googlehealth/answer/17068213?hl=en"
+      },
+      {
+        "label": "Google: current app compatibility requirements",
+        "url": "https://support.google.com/product-documentation/answer/14226283?hl=en"
+      },
+      {
+        "label": "Google: Pixel Watch excludes iPhone",
+        "url": "https://support.google.com/googlepixelwatch/answer/12652073?hl=en"
+      },
+      {
+        "label": "Apple publisher listing: Google Health (Fitbit) version and OS requirements",
+        "url": "https://apps.apple.com/us/app/google-health-fitbit/id462638897"
+      }
+    ],
+    "ru": {
+      "title": "Fitbit и Google Health: Apple Health, Health Connect и ФИТА",
+      "description": "Актуальный маршрут Fitbit в ФИТА через Google Health, Apple Health и Health Connect. Различия экспорта HRV и SpO₂, требования, разрешения и дубли.",
+      "h1": "Fitbit и Фита",
+      "lead": "Fitbit может передавать данные в ФИТА через Google Health — новое название приложения Fitbit — и Apple Health на iPhone либо Health Connect на Android; штатная связь с Apple Health теперь официально поддерживается.",
+      "sections": [
+        {
+          "heading": "Что изменилось и какие требования проверять?",
+          "paragraphs": [
+            "Google объявляет переименование приложения Fitbit в Google Health с 19 мая 2026 года. Поэтому старый ответ «у Fitbit нет официальной связи с Apple Health, купите мостик» уже не описывает текущую ситуацию. Нужны актуальное приложение, Google-аккаунт взрослого пользователя и совместимый телефон; часы или браслет сначала синхронизируются с Google Health.",
+            "В официальных документах есть расхождение: общая страница требований Google Health при проверке указывает Android 14+ и iOS 26+, а инструкции отдельных соединений ещё называют Android 9+ и iOS 16.4+. Для новой установки проверяйте совместимость текущей версии в магазине и общую страницу требований. Нижний порог старой инструкции соединения не гарантирует установку новой версии приложения.",
+            "Pixel Watch — отдельный случай: Google прямо исключает iPhone из совместимых телефонов. Наличие Apple Health внутри Google Health не означает, что Pixel Watch можно официально сопрячь с iPhone. Для браслетов Fitbit проверяйте совместимость своей модели отдельно.",
+            "Дополнительная проверка Apple показывает Google Health (Fitbit) 5.11 с минимальной iOS 16.4. Таким образом, магазин тоже расходится с общей справкой iOS 26+. Для конкретного iPhone проверяйте предлагаемую к установке сборку; мы не называем iOS 26 безусловным минимумом всех доступных сборок."
+          ]
+        },
+        {
+          "heading": "Что Google Health записывает, а что только читает?",
+          "paragraphs": [
+            "✓ — тип указан в официальном столбце записи; ✕ — в этом столбце отсутствует, хотя может присутствовать в столбце чтения. Это особенно заметно для HRV и SpO₂. Поддержка категории не создаёт измерение на устройстве без соответствующего датчика."
+          ],
+          "table": {
+            "headers": [
+              "Показатель: экспорт из приложения",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ сессии и маршруты",
+                "✓ сессии и маршруты"
+              ],
+              [
+                "Шаги",
+                "✓",
+                "✓"
+              ],
+              [
+                "Пульс",
+                "✓",
+                "✓"
+              ],
+              [
+                "Пульс в покое",
+                "✓",
+                "✓"
+              ],
+              [
+                "HRV",
+                "✕ чтение есть, запись не указана",
+                "✓ запись указана"
+              ],
+              [
+                "Сон",
+                "✓ сессии и стадии",
+                "✓ сессии и стадии"
+              ],
+              [
+                "SpO₂",
+                "✓ запись указана",
+                "✕ чтение есть, запись не указана"
+              ],
+              [
+                "Вес",
+                "✓",
+                "✓"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как включить связь на своём телефоне?",
+          "paragraphs": [
+            "Точные подписи ниже взяты из текущей справки Google; переводы и расположение карточек могут меняться. Выбирайте только нужные данные. Если появилась новая категория, ей может требоваться отдельное подтверждение разрешений."
+          ],
+          "steps": [
+            "На iPhone: Google Health → Connections → Apps and services → Apple Health → Get started; подтвердите согласие и разрешения.",
+            "На Android: Google Health → Connections → Partner apps → Sync your favorite health apps → Set up; выполните предложенную настройку и выдайте разрешения.",
+            "Для проверки Android-соединения откройте Connections → Partner apps → Manage Health Connect.",
+            "Проверьте новую запись в системном хранилище, затем разрешите ФИТА её чтение."
+          ]
+        },
+        {
+          "heading": "Почему метрика есть в Fitbit, но отсутствует в ФИТА?",
+          "paragraphs": [
+            "Сравнивайте один день и направление передачи. Например, отсутствие Fitbit HRV в Apple Health согласуется с опубликованным списком записи и не исправляется разрешением читать HRV из Apple Health в Google Health. Аналогично наличие SpO₂ в интерфейсе Google Health не доказывает его запись в Health Connect.",
+            "Если поддерживаемые данные не обновились, проверьте синхронизацию браслета, статус соединения и нужные разрешения. После переустановки Google Health соединение с Apple Health требуется настроить заново. Пустое поле в ФИТА следует разбирать по конкретной категории, а не считать признаком потери всего аккаунта."
+          ]
+        },
+        {
+          "heading": "Нужен ли сторонний платный мост?",
+          "paragraphs": [
+            "Для подтверждённого штатного маршрута отдельный платный посредник не нужен. Мост может предлагать другие категории или работу с архивом, но это отдельный продукт: сначала проверьте конкретный источник, направление и модель. Не покупайте его только потому, что старая статья обещает решить отсутствие любой связи Fitbit с Apple Health.",
+            "При одновременном экспорте через Google Health и Strava одна тренировка может появиться дважды. Выберите одного отправителя; существующие повторы сверяйте по времени начала и длительности. Переключение чтения и записи без проверки источников затрудняет поиск таких дублей."
+          ]
+        },
+        {
+          "heading": "Как эти данные попадают в ФИТА?",
+          "paragraphs": [
+            "Маршрут заканчивается чтением разрешённых записей: приложение производителя → Apple Health на iPhone или Health Connect на Android → ФИТА. Проверяйте конкретное измерение, его дату и источник. Наличие часов в аккаунте производителя ещё не подтверждает передачу сна или пульса в системное хранилище.",
+            "ФИТА — бесплатная закрытая бета с русским интерфейсом. Версия для iPhone доступна только в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Сборки Android, Windows, macOS и Linux публикуются на https://releases.appfita.ru. Apple Health и Health Connect подключаются на соответствующем телефоне; установка настольной версии сама по себе не переносит данные между платформами. Доступные показатели зависят от устройства, экспорта производителя и выданных разрешений."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Fitbit действительно синхронизируется с Apple Health?",
+          "a": "Да, текущая официальная справка Google описывает штатное соединение через приложение Google Health."
+        },
+        {
+          "q": "Почему у Fitbit нет HRV в Apple Health?",
+          "a": "В официальном перечне HRV указан для чтения из Apple Health, но не для записи туда. Для Health Connect запись HRV указана."
+        },
+        {
+          "q": "Пишет ли Fitbit SpO₂ в Health Connect?",
+          "a": "В текущей таблице Google Health SpO₂ указан для чтения, но отсутствует в столбце записи. Для Apple Health запись указана."
+        },
+        {
+          "q": "Можно ли подключить Pixel Watch к iPhone?",
+          "a": "Официально нет: Google исключает iPhone из совместимых телефонов Pixel Watch."
+        },
+        {
+          "q": "Почему разные инструкции называют разные версии ОС?",
+          "a": "Общая страница требований и страницы отдельных соединений расходятся. Проверяйте текущую устанавливаемую версию в магазине и общие требования Google Health."
+        }
+      ]
+    },
+    "en": {
+      "title": "Fitbit and Google Health: Apple Health and Health Connect | FITA",
+      "description": "Use Fitbit’s current Google Health app to share with FITA. Compare native iPhone and Android exports, HRV versus SpO₂, changing OS requirements and duplicates.",
+      "h1": "Fitbit & FITA",
+      "lead": "Fitbit data can reach FITA through the renamed Google Health app and Apple Health on iPhone or Health Connect on Android. Google now officially documents a native Apple Health connection.",
+      "sections": [
+        {
+          "heading": "Use current compatibility requirements",
+          "paragraphs": [
+            "Google dates the Fitbit app rename to May 19, 2026. Its general setup page currently requires Android 14+ or iOS 26+, while the individual connection guides still mention Android 9+ and iOS 16.4+. These official pages conflict. Check the store’s current compatibility and the general setup requirements before installing. An old integration minimum does not establish current app compatibility.",
+            "Use an adult Google Account. Pixel Watch still officially excludes iPhones; adding Apple Health to Google Health does not change watch pairing support.",
+            "Apple’s live listing additionally shows Google Health (Fitbit) 5.11 requiring iOS 16.4, also conflicting with the general iOS 26+ help page. Check the build actually offered for your phone; iOS 26 is not presented here as a universal minimum for every available build."
+          ]
+        },
+        {
+          "heading": "Export direction matters",
+          "paragraphs": [
+            "✓ is present in Google’s write column. ✕ is absent there, even when the read column supports it. Hardware must actually produce the measurement."
+          ],
+          "table": {
+            "headers": [
+              "Exported metric",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ sessions and routes",
+                "✓ sessions and routes"
+              ],
+              [
+                "Steps",
+                "✓",
+                "✓"
+              ],
+              [
+                "Heart rate",
+                "✓",
+                "✓"
+              ],
+              [
+                "Resting heart rate",
+                "✓",
+                "✓"
+              ],
+              [
+                "HRV",
+                "✕ read supported, write not listed",
+                "✓ writing listed"
+              ],
+              [
+                "Sleep",
+                "✓ sessions and stages",
+                "✓ sessions and stages"
+              ],
+              [
+                "SpO₂",
+                "✓ writing listed",
+                "✕ read supported, write not listed"
+              ],
+              [
+                "Weight",
+                "✓",
+                "✓"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Connect the repository",
+          "paragraphs": [],
+          "steps": [
+            "iPhone: Google Health → Connections → Apps and services → Apple Health → Get started; accept and choose permissions.",
+            "Android: Connections → Partner apps → Sync your favorite health apps → Set up; follow the permission prompts.",
+            "Inspect a new repository record before allowing FITA to read the categories you need."
+          ]
+        },
+        {
+          "heading": "Diagnose a missing category",
+          "paragraphs": [
+            "An HRV reading visible in Google Health is not proof of an Apple Health write; the same distinction applies to Android SpO₂. Sync the tracker first and inspect the connection status. Reinstalling Google Health requires reconnecting Apple Health.",
+            "A paid third-party bridge is no longer a general prerequisite for Fitbit Apple Health sharing. If considering one for a specific gap, verify that exact export. Avoid writing the same workout through both Google Health and Strava."
+          ]
+        },
+        {
+          "heading": "Bring the available records into FITA",
+          "paragraphs": [
+            "The phone route is vendor app → Apple Health on iPhone or Health Connect on Android → FITA. Check the actual record, date and writer before expecting it in FITA. Installing a desktop build does not itself move Apple Health data to Android or Health Connect data to an iPhone.",
+            "FITA is a free closed beta with a Russian interface. Its iPhone release is available only in the Russian App Store at https://apps.apple.com/ru/app/fita/id6794848328; Android, Windows, macOS and Linux builds are published at https://releases.appfita.ru. Metric availability depends on the vendor export and permissions."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is Fitbit’s native Apple Health connection real?",
+          "a": "Yes. It is now documented by Google for the Google Health app."
+        },
+        {
+          "q": "Does Fitbit export HRV to both platforms?",
+          "a": "The current write lists include Health Connect HRV but omit Apple Health HRV."
+        },
+        {
+          "q": "Does it export SpO₂ to Health Connect?",
+          "a": "The current Google Health write list omits it; Apple Health writing is listed."
+        },
+        {
+          "q": "Does this make Pixel Watch compatible with an iPhone?",
+          "a": "No. Official Pixel Watch compatibility still excludes iPhones."
+        }
+      ]
+    }
+  },
+  {
+    "id": "strava",
+    "slug": "strava-apple-health-health-connect",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Strava: Apple Health sharing and route restrictions",
+        "url": "https://support.strava.com/en-us/articles/15402024-apple-health-and-strava"
+      },
+      {
+        "label": "Strava: Health Connect GPS export and weight import",
+        "url": "https://support.strava.com/en-us/articles/15401554-health-connect-and-strava"
+      },
+      {
+        "label": "Strava: Apple Watch permissions and heart-rate reading",
+        "url": "https://support.strava.com/en-us/articles/15401820-strava-apple-watch-app"
+      },
+      {
+        "label": "Apple publisher listing: Strava: Run, Bike, Walk version and OS requirements",
+        "url": "https://apps.apple.com/us/app/strava-run-bike-walk/id426826309"
+      }
+    ],
+    "ru": {
+      "title": "Strava: синхронизация Apple Health, Health Connect и ФИТА",
+      "description": "Как передать тренировки Strava в ФИТА через Apple Health и Health Connect. Направления обмена, ограничения пульса и веса, маршруты, разрешения и дубли.",
+      "h1": "Strava и Фита",
+      "lead": "Strava передаёт тренировки в Apple Health на iPhone и данные GPS-активностей в Health Connect на Android; ФИТА читает доступные записи из соответствующего хранилища, но Strava не заменяет источник сна, HRV или суточного пульса.",
+      "sections": [
+        {
+          "heading": "Какой маршрут выбрать и что подготовить?",
+          "paragraphs": [
+            "Нужны актуальная Strava на телефоне, вход в аккаунт и разрешение записывать поддерживаемые категории. На Android необходим Health Connect: в Android 14 и новее он находится в настройках системы, на поддерживаемых более ранних версиях используется отдельное приложение. Отдельный платный мост для штатной связи не требуется.",
+            "Сначала выясните, кто записал тренировку. Если часы уже передают её в Apple Health или Health Connect своим приложением, дополнительный экспорт из Strava может создать повтор. Если тренировка записана только в Strava, её системный экспорт становится основным маршрутом в ФИТА. Не включайте все соединения без проверки одного тестового занятия.",
+            "При проверке Apple указывает Strava 487.0.0 с iOS 17+. Требование относится к приложению iPhone; совместимость watchOS и отдельных функций проверяется отдельно."
+          ]
+        },
+        {
+          "heading": "Что Strava экспортирует в системное хранилище?",
+          "paragraphs": [
+            "✓ — подтверждённый тип; ◐ — ограниченная или непроверенная передача; ✕ — не входит в описанный экспорт. Android-интеграция принимает вес из Health Connect: это чтение, а не отправка веса обратно. Таблица касается именно Strava → хранилище."
+          ],
+          "table": {
+            "headers": [
+              "Показатель: экспорт из приложения",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Тренировки",
+                "✓ тип, время, дистанция, калории; ограничение маршрутов",
+                "◐ GPS-активности: время, дистанция, калории"
+              ],
+              [
+                "Шаги",
+                "✕ суточные шаги не заявлены",
+                "✕ не заявлены"
+              ],
+              [
+                "Пульс",
+                "◐ в перечне экспорта не указан",
+                "◐ в перечне экспорта не указан"
+              ],
+              [
+                "Пульс в покое",
+                "✕ не заявлен",
+                "✕ не заявлен"
+              ],
+              [
+                "HRV",
+                "✕ не заявлен",
+                "✕ не заявлен"
+              ],
+              [
+                "Сон",
+                "✕ не заявлен",
+                "✕ не заявлен"
+              ],
+              [
+                "SpO₂",
+                "✕ не заявлен",
+                "✕ не заявлен"
+              ],
+              [
+                "Вес",
+                "✕ не заявлен",
+                "✕ Strava читает вес, не заявляет запись"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как включить отправку на iPhone и Android?",
+          "paragraphs": [
+            "Для iPhone не путайте Send to Health с Automatic Uploads: первое отправляет из Strava в «Здоровье», второе относится к импорту тренировок Apple в Strava. Названия ниже соответствуют проверенной справке Strava от сентября 2026 года."
+          ],
+          "steps": [
+            "На iPhone: вкладка You → значок настроек → Manage Apps and Devices → Health → «+» → Connect; разрешите Workouts & Routes.",
+            "В этом же разделе Health включите Send to Health для направления Strava → Apple Health.",
+            "На Android: You → настройки → Manage Apps and Devices → Health Connect; выполните предложенное подключение.",
+            "Проверьте запись после нового занятия и разрешите ФИТА читать нужную категорию."
+          ]
+        },
+        {
+          "heading": "Почему тренировка приходит без карты или пульса?",
+          "paragraphs": [
+            "Strava ограничивает передачу маршрутов в Apple Health: карта занятия из стороннего приложения, например Garmin или Zwift, не пересылается тем же образом, что маршрут Strava. Это не означает отсутствия самой тренировки. Сверяйте сначала время, дистанцию и калории, затем отдельные дополнительные данные.",
+            "Импорт в Strava из Apple Health также ограничен: принимаются занятия, записанные стандартным приложением Apple «Тренировка», за последние 30 дней. Тренировки, которые стороннее приложение уже записало в «Здоровье», не становятся автоматически доступными для такого импорта. Это правило обратного направления и не следует переносить на экспорт из Strava."
+          ]
+        },
+        {
+          "heading": "Что делать при пропусках и дублях?",
+          "paragraphs": [
+            "При отсутствии Android-записи Strava рекомендует проверить разрешения Health Connect, закрыть и заново открыть Strava либо обновить ленту. Для iPhone в справке предложено закрыть «Здоровье», открыть Strava и потянуть ленту You вниз. Если запись уже появилась в хранилище, проверьте чтение ФИТА.",
+            "При повторе сохраните одного отправителя: приложение часов или Strava. Запишите время начала и сравните две записи перед удалением. Приоритет источников дневных показателей не следует считать универсальным удалением повторных тренировок. Даже исправно подключённая Strava не даст ФИТА отсутствующий ночной сон или HRV: для них нужен отдельный источник, который действительно пишет эти категории."
+          ]
+        },
+        {
+          "heading": "Как эти данные попадают в ФИТА?",
+          "paragraphs": [
+            "Маршрут заканчивается чтением разрешённых записей: приложение производителя → Apple Health на iPhone или Health Connect на Android → ФИТА. Проверяйте конкретное измерение, его дату и источник. Наличие часов в аккаунте производителя ещё не подтверждает передачу сна или пульса в системное хранилище.",
+            "ФИТА — бесплатная закрытая бета с русским интерфейсом. Версия для iPhone доступна только в российском App Store: https://apps.apple.com/ru/app/fita/id6794848328. Сборки Android, Windows, macOS и Linux публикуются на https://releases.appfita.ru. Apple Health и Health Connect подключаются на соответствующем телефоне; установка настольной версии сама по себе не переносит данные между платформами. Доступные показатели зависят от устройства, экспорта производителя и выданных разрешений."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Strava передаёт сон и HRV в ФИТА?",
+          "a": "В проверенных официальных описаниях экспорта Strava эти категории не заявлены. Нужен другой источник Apple Health или Health Connect."
+        },
+        {
+          "q": "Что означает Send to Health?",
+          "a": "Это отправка тренировок Strava в Apple Health. Automatic Uploads относится к обратному импорту из Apple в Strava."
+        },
+        {
+          "q": "Почему Android-вес не появился в ФИТА через Strava?",
+          "a": "Strava описывает получение веса из Health Connect, а не запись туда. Вес должен записывать другой поддерживаемый источник."
+        },
+        {
+          "q": "Почему одна пробежка видна дважды?",
+          "a": "Вероятно, её записали и приложение часов, и Strava. Проверьте источники и оставьте один путь экспорта."
+        },
+        {
+          "q": "Может Strava импортировать любую тренировку из Apple Health?",
+          "a": "Нет. Официально описан импорт из стандартного приложения Apple «Тренировка» за последние 30 дней, а не произвольных сторонних записей."
+        }
+      ]
+    },
+    "en": {
+      "title": "Strava to Apple Health and Health Connect | FITA",
+      "description": "Send Strava workouts to FITA through the correct phone repository. Compare iPhone and Android limits, weight import direction, missing metrics and duplicates.",
+      "h1": "Strava & FITA",
+      "lead": "Strava can send workouts to Apple Health on iPhone and GPS activity data to Health Connect on Android for FITA to read. It does not provide a complete daily health or recovery feed.",
+      "sections": [
+        {
+          "heading": "Choose one workout writer",
+          "paragraphs": [
+            "If the watch’s companion app already exports the session, another Strava export may create a duplicate. If Strava is the only recorder, its repository connection can provide the workout route into FITA. Use a current app and grant the write permissions it requests; a separate paid bridge is unnecessary for native sharing.",
+            "Apple’s checked listing shows Strava 487.0.0 requiring iOS 17+. This concerns the iPhone app; watchOS and individual feature requirements are separate."
+          ]
+        },
+        {
+          "heading": "Directional coverage",
+          "paragraphs": [
+            "✓ is documented export, ◐ is limited or unverified, and ✕ is absent from the described export. Reading weight from Health Connect is not exporting weight to it."
+          ],
+          "table": {
+            "headers": [
+              "Exported metric",
+              "Apple Health · iPhone",
+              "Health Connect · Android"
+            ],
+            "rows": [
+              [
+                "Workouts",
+                "✓ type, time, distance, calories; route limits",
+                "◐ GPS activities: time, distance, calories"
+              ],
+              [
+                "Steps",
+                "✕ no daily feed documented",
+                "✕ not documented"
+              ],
+              [
+                "Heart rate",
+                "◐ not in export list",
+                "◐ not in export list"
+              ],
+              [
+                "Resting heart rate",
+                "✕ not documented",
+                "✕ not documented"
+              ],
+              [
+                "HRV",
+                "✕ not documented",
+                "✕ not documented"
+              ],
+              [
+                "Sleep",
+                "✕ not documented",
+                "✕ not documented"
+              ],
+              [
+                "SpO₂",
+                "✕ not documented",
+                "✕ not documented"
+              ],
+              [
+                "Weight",
+                "✕ not documented",
+                "✕ weight is read, not written"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Enable the correct direction",
+          "paragraphs": [],
+          "steps": [
+            "iPhone: You → settings → Manage Apps and Devices → Health → + → Connect; allow Workouts & Routes and enable Send to Health.",
+            "Android: You → settings → Manage Apps and Devices → Health Connect; follow the prompts.",
+            "Inspect a new repository session, then allow FITA to read workouts."
+          ]
+        },
+        {
+          "heading": "Understand the remaining gaps",
+          "paragraphs": [
+            "The iPhone guide limits forwarded routes from activities recorded by other companies. Its reverse import accepts only native Apple Workout sessions from the last 30 days. Neither rule makes Strava a general daily heart rate or sleep exporter.",
+            "If a workout is missing, inspect repository permissions and refresh Strava. If it already exists in the repository, inspect FITA’s access. Compare writers and start times when two sessions appear. Keeping one workout writer is more reliable than assuming daily metric source priority will delete duplicate sessions."
+          ]
+        },
+        {
+          "heading": "Bring the available records into FITA",
+          "paragraphs": [
+            "The phone route is vendor app → Apple Health on iPhone or Health Connect on Android → FITA. Check the actual record, date and writer before expecting it in FITA. Installing a desktop build does not itself move Apple Health data to Android or Health Connect data to an iPhone.",
+            "FITA is a free closed beta with a Russian interface. Its iPhone release is available only in the Russian App Store at https://apps.apple.com/ru/app/fita/id6794848328; Android, Windows, macOS and Linux builds are published at https://releases.appfita.ru. Metric availability depends on the vendor export and permissions."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can Strava provide sleep and HRV?",
+          "a": "Those categories are not in its documented native exports."
+        },
+        {
+          "q": "Are Send to Health and Automatic Uploads the same?",
+          "a": "No. They control opposite directions on iPhone."
+        },
+        {
+          "q": "Does Strava write Android weight?",
+          "a": "Its official integration describes receiving weight from Health Connect, not writing it."
+        },
+        {
+          "q": "Why are workouts duplicated?",
+          "a": "The device app and Strava may both write the same session. Choose one exporter."
+        }
+      ]
+    }
+  }
+]

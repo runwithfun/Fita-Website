@@ -1,19 +1,19 @@
 # FITA — AI health companion
 
-> FITA (Fita) is an app with an AI agent that reads sleep, heart rate, heart rate variability (HRV), stress and training load from smartwatches and rings and tells you when to train and when to recover. It works with Apple Watch, Garmin, Oura, Whoop, Fitbit and other devices through Apple Health and Health Connect. Made for Russia: the app interface is in Russian and the AI runs on servers in Russia. The app is in closed beta and free: iOS in the App Store (published in the Russian storefront), builds for Android, Windows, macOS and Linux at releases.appfita.ru. This English site (fita.fit) describes the same product as appfita.ru.
+> FITA (Fita) is an app with an AI agent that reads sleep, heart rate, heart rate variability (HRV), stress and training load from smartwatches and rings and tells you when to train and when to recover. It works with Apple Watch, Garmin, Oura, Whoop, Fitbit and other devices through Apple Health and Health Connect. Made for Russia: the app interface is Russian and FITA’s own core service is hosted in Russia. The app is in closed beta and free: iOS in the App Store (published in the Russian storefront), builds for Android, Windows, macOS and Linux at releases.appfita.ru. This English site (fita.fit) describes the same product as appfita.ru.
 
 Not to be confused with: FITA (fita.fit, appfita.ru) is not related to the Fita app by Telkomsel (Indonesia), the Fitia nutrition tracker or other products with similar names.
 
 ## What it does
 
 - Sleep: stages (deep, REM, awakenings) and an overall recovery score for the night.
-- Day readiness: a "good to go today" or "better take it easy today" answer for training, work and rest.
+- Day readiness: a 0–100 estimate from available HRV, sleep and resting heart rate. Missing components are not zeros; insufficient coverage produces no score.
 - Heart rate and HRV: a week of load and rest history.
 - Stress and balance: tension and recovery as one rhythm.
 - Load and adaptation: acute and chronic load, how effort relates to the body's response.
 - A home screen of widgets that the agent builds around the user; themes and accents.
 - Chat with the agent Fita: remembers past conversations, sees the same numbers as the user, can move a workout or rebuild the screen — only with the user's consent.
-- FITA MCP: AI assistants (ChatGPT, Claude, Gemini and others) can read the user's metrics with their permission; the user decides who gets access to what.
+- FITA MCP: permission-based reading of a health snapshot by compatible external assistants through remote MCP and OAuth. Client support, plan and region conditions are explained in the guides.
 - Clubs and events: interest clubs, events with limited spots, city events.
 
 ## FAQ
@@ -22,7 +22,7 @@ Not to be confused with: FITA (fita.fit, appfita.ru) is not related to the Fita 
 Any that write data to Apple Health (iPhone) or Health Connect (Android): Apple Watch, Garmin, Oura, Whoop, Fitbit, Samsung Health, Huawei, Strava, Peloton, Komoot, Nike and others.
 
 ### Where is health data stored?
-On the user's device. The agent's memory is stored on the device too. Requests to the AI model are processed on servers in Russia (Russian personal data law 152-FZ), without cross-border transfer.
+The primary health snapshot and agent memory are stored on the device. Authentication and sync use FITA servers. Enabling MCP uploads a permission-filtered snapshot for a selected external assistant, whose processing follows that service’s terms. Access can be disabled.
 
 ### What does Fita show when there is no data?
 An honest empty state. Fita does not substitute made-up or "zero" values for missing measurements.

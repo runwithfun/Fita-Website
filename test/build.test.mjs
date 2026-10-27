@@ -7,10 +7,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { execFileSync } from 'node:child_process';
+import { loadContent } from '../scripts/content-pages.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const build = (env = {}) =>
-  execFileSync(process.execPath, ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, FITA_LOCALE: '', FITA_HREFLANG: '', FITA_APP_REFERRAL_LINK: '', FITA_ANALYTICS: '', ...env }, stdio: 'pipe' });
+  execFileSync(process.execPath, ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, FITA_LOCALE: '', FITA_HREFLANG: '', FITA_APP_REFERRAL_LINK: '', FITA_ANALYTICS: '', FITA_BUILD_OFFLINE: '1', ...env }, stdio: 'pipe' });
 const read = (dir, f) => fs.readFileSync(path.join(ROOT, dir, f), 'utf8');
 const CYR = /[А-Яа-яЁё]/;
 const hrefs = (html) => [...new Set([...html.matchAll(/<(?:a|link)\b[^>]*?\shref="([^"]+)"/g)].map((m) => m[1]).filter((h) => !h.startsWith('/assets/') && !h.startsWith('/favicon')))].sort();
@@ -82,7 +83,20 @@ test('английская версия: правовые документы р�
     assert.equal(doc(h), doc(ru[`${f}.html`]), f);
   }
   const sitemap = read('_site-en', 'sitemap.xml');
-  assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]), ['https://fita.fit/', 'https://fita.fit/space']);
+  assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]), ['https://fita.fit/', 'https://fita.fit/space', ...loadContent(ROOT).map(p => `https://fita.fit/${p.slug}`)]);
+});
+
+test('текстовая карта: те же канонические URL, что в XML, на обоих доменах', () => {
+  for (const [dir, site] of [['_site', 'https://appfita.ru'], ['_site-en', 'https://fita.fit']]) {
+    const text = read(dir, 'sitemap.txt');
+    const urls = text.trimEnd().split('\n');
+    const xmlUrls = [...read(dir, 'sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    assert.deepEqual(urls, xmlUrls);
+    assert.equal(new Set(urls).size, urls.length);
+    assert.ok(urls.every((url) => new URL(url).origin === site && !/\s/.test(url)));
+    assert.ok(text.endsWith('\n'));
+    assert.doesNotMatch(text, /^\uFEFF/);
+  }
 });
 
 test('английская версия: ни одного русского слова вне правовых документов', () => {
@@ -161,4 +175,37 @@ test('переключатели сборки: hreflang в русской, сб�
   assert.match(scriptTag(h, 'referral'), /data-app-link="https:\/\/link\.appfita\.ru\/r\/\{code\}"/);
   build(); // вернуть обычные сборки
   build({ FITA_LOCALE: 'en' });
+});
+
+const CONTENT_PAGES = loadContent(ROOT);
+test('content routes have complete SSR, reciprocal languages and matching structured data', () => {
+  for (const lang of ['ru','en']) for (const page of CONTENT_PAGES) {
+    const site = lang === 'ru' ? 'https://appfita.ru' : 'https://fita.fit';
+    const html = read(lang === 'ru' ? '_site' : '_site-en', `${page.slug}.html`);
+    assert.equal((html.match(/<h1[\s>]/g)||[]).length, 1, page.slug);
+    assert.ok(html.includes(`<link rel="canonical" href="${site}/${page.slug}">`));
+    assert.match(html, /hreflang="ru"/); assert.match(html, /hreflang="en"/); assert.match(html, /hreflang="x-default"/);
+    const graph = jsonLd(html)['@graph'];
+    assert.ok(graph.some(n=>n['@type']==='WebPage'));
+    assert.ok(graph.some(n=>n['@type']==='BreadcrumbList'));
+    const faq=graph.find(n=>n['@type']==='FAQPage');
+    assert.equal(faq.mainEntity.length,page[lang].faq.length);
+    for(const item of page[lang].faq){assert.ok(html.includes(item.q.replaceAll('&','&amp;').replaceAll('"','&quot;')));}
+    const visible=html.replace(/<script[^>]*>[\s\S]*?<\/script>/g,'');
+    assert.ok(visible.includes('<h2>'));assert.ok(visible.includes('MCP'));
+    assert.ok(visible.includes(page[lang].lead.replaceAll('&','&amp;').replaceAll('"','&quot;')));
+    assert.ok(visible.includes(lang==='ru'?'не являются медицинской консультацией':'not medical advice'));
+    assert.ok(!html.includes('type="text/babel"'));
+    if(page.calculator){assert.doesNotMatch(html,/<form\b/i);assert.ok(html.includes('<button type="button">'));}
+    if(lang==='en')assert.ok(!CYR.test(html),page.slug);
+    const sitemap=read(lang==='ru'?'_site':'_site-en','sitemap.xml');
+    assert.ok(sitemap.includes(`<loc>${site}/${page.slug}</loc>`));
+    assert.ok(read(lang==='ru'?'_site':'_site-en','llms.txt').includes(`${site}/${page.slug}`));
+  }
+});
+test('home first screen remains in source and free tools link every calculator',()=>{
+  for (const lang of ['ru','en']) {const html=(lang==='ru'?ru:en)['index.html'];
+    assert.ok(html.includes('class="seo-tools"'));
+    for(const page of CONTENT_PAGES.filter(p=>p.calculator))assert.ok(html.includes(`href="/${page.slug}"`));
+  }
 });
