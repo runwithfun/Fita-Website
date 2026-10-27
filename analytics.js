@@ -150,6 +150,8 @@
         });
       } catch (e) {}
       if (tagged) campaign = cleanCampaign(values);
+      // A new invite is a new arrival. The server resolves its code before assigning a channel.
+      else if (refFromUrl(w.location)) campaign = {};
       campaignSearch = search;
     }
     campaignAt = now;
@@ -157,7 +159,7 @@
     return cleanCampaign(campaign);
   }
 
-  // Свойства этой загрузки страницы: одинаковые для всех её событий.
+  // Refresh campaign expiry for each event, including clicks on a long-open page.
   function context(loc, referrer, ref) {
     var out = {}, values = campaignContext(), v;
     UTM_KEYS.forEach(function (key) {
@@ -253,11 +255,12 @@
     return null;
   }
 
-  // Keep long campaign names distinct within Apple's 40-character limit.
+  // Hash the tuple, not its ambiguous joined label; keep ct within Apple's 40-character limit.
   function appleCampaignTag(source, campaign) {
     var ct = [source, campaign].filter(Boolean).join('-'), hash = 2166136261;
-    if (ct.length <= 40) return ct;
-    for (var i = 0; i < ct.length; i++) hash = Math.imul(hash ^ ct.charCodeAt(i), 16777619);
+    if (!ct) return '';
+    var tuple = JSON.stringify([source || '', campaign || '']);
+    for (var i = 0; i < tuple.length; i++) hash = Math.imul(hash ^ tuple.charCodeAt(i), 16777619);
     return ct.slice(0, 31) + '-' + ('00000000' + (hash >>> 0).toString(16)).slice(-8);
   }
 
@@ -287,8 +290,9 @@
 
   if (enabled) {
     // capture: событие фиксируется до того, как чужой обработчик что-то отменит.
-    d.addEventListener('click', function (e) {
+    function downloadClick(e) {
       try {
+        if (e.type === 'auxclick' && e.button !== 1) return;
         var a = e.target && e.target.closest && e.target.closest('a[href]');
         var store = a && downloadStore(a);
         if (!store) return;
@@ -299,7 +303,9 @@
         track('download_clicked', { store: store });
         flush(true);
       } catch (err) {}
-    }, true);
+    }
+    d.addEventListener('click', downloadClick, true);
+    d.addEventListener('auxclick', downloadClick, true);
     w.addEventListener('pagehide', function () { flush(true); });
     d.addEventListener('visibilitychange', function () {
       if (d.visibilityState === 'hidden') flush(true);
