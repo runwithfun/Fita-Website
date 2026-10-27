@@ -57,7 +57,7 @@
     "ru": {
       "title": "MCP для Apple Health и Health Connect — FITA",
       "description": "Как FITA передаёт разрешённые сводки здоровья AI-ассистентам через MCP: поддержка клиентов, OAuth, приватность и статус подключения на 27 октября 2026.",
-      "h1": "MCP FITA: данные здоровья в AI-ассистенте",
+      "h1": "MCP Фиты",
       "lead": "MCP FITA передаёт AI-ассистенту разрешённую сводку Apple Health или Health Connect. Для подключения нужен клиент с удалённым MCP и OAuth; документированная поддержка клиента и проверенное соединение FITA — разные вещи.",
       "sections": [
         {
@@ -165,7 +165,7 @@
     "en": {
       "title": "Apple Health and Health Connect MCP — FITA",
       "description": "Understand FITA’s health snapshot MCP, OAuth permissions, assistant compatibility, privacy controls and connection status, checked on October 27, 2026.",
-      "h1": "FITA MCP: health context for AI assistants",
+      "h1": "FITA MCP",
       "lead": "FITA implements an MCP bridge for a permitted Apple Health or Health Connect snapshot. A client needs remote MCP and OAuth support; documented client capability and a verified FITA connection are separate checks.",
       "sections": [
         {
