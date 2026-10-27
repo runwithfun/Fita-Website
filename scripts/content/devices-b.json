@@ -37,7 +37,7 @@
     "ru": {
       "title": "Mi Band и Xiaomi: Apple Health, Health Connect и ФИТА",
       "description": "Как передать данные Mi Band и Xiaomi в ФИТА через Apple Health или Health Connect. Различия Mi Fitness и Zepp Life, метрики, разрешения и дубли.",
-      "h1": "Как подключить Xiaomi и Mi Band к Apple Health и Health Connect",
+      "h1": "Xiaomi и Mi Band и Фита",
       "lead": "Xiaomi и Mi Band могут передавать данные в ФИТА через Apple Health на iPhone или Health Connect на Android, но маршрут зависит от приложения: Mi Fitness и Zepp Life поддерживают разные варианты экспорта.",
       "sections": [
         {
@@ -156,7 +156,7 @@
     "en": {
       "title": "Xiaomi and Mi Band to Apple Health or Health Connect | FITA",
       "description": "Connect Xiaomi and Mi Band data to FITA. Choose Mi Fitness or Zepp Life, check directional exports, avoid duplicate workouts and verify missing metrics.",
-      "h1": "Xiaomi and Mi Band: Apple Health and Health Connect setup",
+      "h1": "Xiaomi & Mi Band & FITA",
       "lead": "Xiaomi data can reach FITA through Apple Health on iPhone or Health Connect on Android, but Mi Fitness and Zepp Life are separate routes with different export coverage.",
       "sections": [
         {
@@ -292,7 +292,7 @@
     "ru": {
       "title": "Huawei и Honor: Apple Health, Health Connect и ФИТА",
       "description": "Huawei Health и Honor Health — разные приложения. Проверяем экспорт в Apple Health и Health Connect, платный Health Sync, сон, пульс и дубли в ФИТА.",
-      "h1": "Huawei и Honor: как передать данные в Apple Health и Health Connect",
+      "h1": "Huawei и Honor и Фита",
       "lead": "HUAWEI Health на iPhone официально поддерживает обмен тренировками и весом с Apple Health; прямой экспорт Huawei и отдельного HONOR Health в Health Connect нельзя считать подтверждённым для всех устройств и регионов.",
       "sections": [
         {
@@ -413,7 +413,7 @@
     "en": {
       "title": "Huawei and Honor to Apple Health or Health Connect | FITA",
       "description": "Check Huawei Health and Honor Health exports separately. Understand native Apple Health sharing, unverified Android coverage, Health Sync costs and FITA access.",
-      "h1": "Huawei and Honor health data: choose a verified route",
+      "h1": "Huawei & Honor & FITA",
       "lead": "HUAWEI Health officially describes Apple Health workout and weight sharing on iPhone. Do not assume the separate HONOR Health app or either Android app exports the same metrics to Health Connect.",
       "sections": [
         {
@@ -549,7 +549,7 @@
     "ru": {
       "title": "Amazfit и Zepp: Apple Health, Health Connect и ФИТА",
       "description": "Как подключить Amazfit через Zepp к Apple Health и Health Connect. Проверка экспорта сна, пульса и HRV, разрешений и повторных тренировок для ФИТА.",
-      "h1": "Как синхронизировать Amazfit с Apple Health и Health Connect",
+      "h1": "Amazfit и Фита",
       "lead": "Amazfit передаёт данные в ФИТА через приложение Zepp: на iPhone используется Apple Health, на Android — Health Connect; конкретные показатели зависят от модели и разрешённых категорий записи.",
       "sections": [
         {
@@ -674,7 +674,7 @@
     "en": {
       "title": "Amazfit and Zepp to Apple Health or Health Connect | FITA",
       "description": "Connect Amazfit data to FITA through Zepp on iPhone or Android. Check actual export permissions, HRV uncertainty, sleep records and duplicate workout routes.",
-      "h1": "Amazfit and Zepp: iPhone and Android data sharing",
+      "h1": "Amazfit & FITA",
       "lead": "Amazfit can send data to FITA through Zepp and the phone’s health repository: Apple Health on iPhone or Health Connect on Android. Export coverage depends on the device and permissions.",
       "sections": [
         {
@@ -807,7 +807,7 @@
     "ru": {
       "title": "Samsung Health: Health Connect, Apple Health и ФИТА",
       "description": "Как подключить Galaxy Watch и Samsung Health к ФИТА через Health Connect. Ограничения iPhone, таблица экспорта, настройка разрешений и повторные записи.",
-      "h1": "Samsung Health и Galaxy Watch: Apple Health или Health Connect?",
+      "h1": "Samsung и Фита",
       "lead": "Для Galaxy Watch на Android штатный путь в ФИТА — Samsung Health → Health Connect; для современных Galaxy Watch на iPhone официального равноценного пути через Apple Health нет.",
       "sections": [
         {
@@ -933,7 +933,7 @@
     "en": {
       "title": "Samsung Health to Health Connect or Apple Health | FITA",
       "description": "Use Samsung Health and Health Connect for FITA on Android. Check Galaxy Watch iPhone limits, directional metrics, permissions and duplicate workout paths.",
-      "h1": "Galaxy Watch and Samsung Health: the route to FITA",
+      "h1": "Samsung & FITA",
       "lead": "On Android, the native route is Galaxy Watch → Samsung Health → Health Connect → FITA. Current Galaxy Watch iPhone compatibility does not provide an equivalent official Apple Health route.",
       "sections": [
         {
@@ -1076,7 +1076,7 @@
     "ru": {
       "title": "Fitbit и Google Health: Apple Health, Health Connect и ФИТА",
       "description": "Актуальный маршрут Fitbit в ФИТА через Google Health, Apple Health и Health Connect. Различия экспорта HRV и SpO₂, требования, разрешения и дубли.",
-      "h1": "Как подключить Fitbit к Apple Health и Health Connect",
+      "h1": "Fitbit и Фита",
       "lead": "Fitbit может передавать данные в ФИТА через Google Health — новое название приложения Fitbit — и Apple Health на iPhone либо Health Connect на Android; штатная связь с Apple Health теперь официально поддерживается.",
       "sections": [
         {
@@ -1203,7 +1203,7 @@
     "en": {
       "title": "Fitbit and Google Health: Apple Health and Health Connect | FITA",
       "description": "Use Fitbit’s current Google Health app to share with FITA. Compare native iPhone and Android exports, HRV versus SpO₂, changing OS requirements and duplicates.",
-      "h1": "Fitbit data in FITA through Google Health",
+      "h1": "Fitbit & FITA",
       "lead": "Fitbit data can reach FITA through the renamed Google Health app and Apple Health on iPhone or Health Connect on Android. Google now officially documents a native Apple Health connection.",
       "sections": [
         {
@@ -1339,7 +1339,7 @@
     "ru": {
       "title": "Strava: синхронизация Apple Health, Health Connect и ФИТА",
       "description": "Как передать тренировки Strava в ФИТА через Apple Health и Health Connect. Направления обмена, ограничения пульса и веса, маршруты, разрешения и дубли.",
-      "h1": "Как синхронизировать Strava с Apple Health и Health Connect",
+      "h1": "Strava и Фита",
       "lead": "Strava передаёт тренировки в Apple Health на iPhone и данные GPS-активностей в Health Connect на Android; ФИТА читает доступные записи из соответствующего хранилища, но Strava не заменяет источник сна, HRV или суточного пульса.",
       "sections": [
         {
@@ -1465,7 +1465,7 @@
     "en": {
       "title": "Strava to Apple Health and Health Connect | FITA",
       "description": "Send Strava workouts to FITA through the correct phone repository. Compare iPhone and Android limits, weight import direction, missing metrics and duplicates.",
-      "h1": "Strava, Apple Health and Health Connect: workout sharing",
+      "h1": "Strava & FITA",
       "lead": "Strava can send workouts to Apple Health on iPhone and GPS activity data to Health Connect on Android for FITA to read. It does not provide a complete daily health or recovery feed.",
       "sections": [
         {

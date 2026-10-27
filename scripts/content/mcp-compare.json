@@ -270,5 +270,1153 @@
         }
       ]
     }
+  },
+  {
+    "id": "mcp-chatgpt",
+    "slug": "apple-health-health-connect-chatgpt",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "OpenAI: Add custom MCP server",
+        "url": "https://developers.openai.com/api/docs/guides/custom-mcp-server"
+      },
+      {
+        "label": "OpenAI: ChatGPT Supported Countries",
+        "url": "https://help.openai.com/en/articles/7947663-chatgpt-supported-countries"
+      },
+      {
+        "label": "FITA: Releases for supported platforms",
+        "url": "https://releases.appfita.ru"
+      },
+      {
+        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "url": "https://apps.apple.com/ru/app/id6794848328"
+      },
+      {
+        "label": "FITA MCP service address",
+        "url": "https://mcp.appfita.ru"
+      }
+    ],
+    "ru": {
+      "title": "Apple Health и Health Connect в ChatGPT — MCP FITA",
+      "description": "Как подключить сводки Apple Health и Health Connect к ChatGPT через MCP FITA: официальный путь настройки, разрешения и ограничения на 27 октября 2026.",
+      "h1": "Данные здоровья в ChatGPT",
+      "lead": "Для обсуждения здоровья в ChatGPT FITA реализует удалённый MCP с OAuth и чтением разрешённого снимка данных. Возможности клиента подтверждены документацией OpenAI; работу FITA с конкретным аккаунтом следует проверить отдельно.",
+      "sections": [
+        {
+          "heading": "Что именно соединяет MCP FITA?",
+          "paragraphs": [
+            "Это пользовательский коннектор: FITA собирает сводку на телефоне и передаёт её на сервер, а ChatGPT запрашивает доступные разделы после вашего согласия. Само приложение ChatGPT не получает через FITA прямой доступ к базе Apple Health или Health Connect. Описанный путь относится к MCP FITA, а не к встроенным функциям здоровья OpenAI."
+          ],
+          "table": {
+            "headers": [
+              "Этап",
+              "iPhone",
+              "Android"
+            ],
+            "rows": [
+              [
+                "MCP → ChatGPT",
+                "Одна архитектура: OAuth и снимок FITA",
+                "Одна архитектура: OAuth и снимок FITA"
+              ],
+              [
+                "Источник",
+                "Разрешённые записи Apple Health",
+                "Разрешённые записи Health Connect"
+              ],
+              [
+                "Фактическое подключение FITA",
+                "Не проверено в ChatGPT",
+                "Не проверено в ChatGPT"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Что нужно проверить до настройки?",
+          "paragraphs": [
+            "Нужны FITA на телефоне, вход по почте, разрешения здоровья и ChatGPT с доступом к пользовательским MCP. Официальная документация OpenAI указывает веб-интерфейс, OAuth и ограничения рабочего пространства. Наличие платного тарифа само по себе не доказывает, что функция доступна конкретному аккаунту.",
+            "FITA — бесплатная закрытая бета, интерфейс русский. Сборки находятся на releases.appfita.ru; iPhone-карточка App Store доступна в российском магазине, ID 6794848328. Россия не входит в опубликованный список поддерживаемых стран ChatGPT. Коннектор не меняет региональную политику OpenAI."
+          ]
+        },
+        {
+          "heading": "Как выглядит официальный путь подключения?",
+          "paragraphs": [
+            "По документации OpenAI, проверенной 27 октября 2026, пользовательский MCP добавляется через Plugins. Включать Developer Mode для этого пути больше не требуется. Подписи могут отличаться при поэтапном обновлении интерфейса; если пункта нет, сначала проверьте доступность функции и правила рабочего пространства."
+          ],
+          "steps": [
+            "В FITA откройте Профиль → «Доступ для AI-ассистентов», включите доступ и скопируйте актуальный адрес.",
+            "В веб-версии ChatGPT откройте Plugins → плюс → Add custom MCP server.",
+            "Укажите имя FITA, публичный HTTPS-адрес сервера и OAuth, затем продолжите авторизацию.",
+            "Войдите той же почтой, что в FITA, проверьте согласие, список инструментов и установите созданный плагин.",
+            "В новом разговоре выберите установленный FITA через @ и попросите проверить свежесть снимка."
+          ]
+        },
+        {
+          "heading": "О чём можно спросить ChatGPT?",
+          "paragraphs": [
+            "Начните с конкретного вопроса: «Используй FITA, покажи время данных и суммируй мою активность за семь дней». Затем можно обсудить продолжительность сна, последние тренировки или динамику пульса покоя. Для оценки готовности сначала проверьте, какие компоненты действительно измерены.",
+            "Инструменты FITA читают данные и не записывают их в системное здоровье. Карточки шагов, калорий, сердца и сна предусмотрены кодом MCP Apps, но их отображение именно в FITA с ChatGPT не проверено. Тренировочный план или заметки тренера этот сервер отдельными инструментами не предоставляет."
+          ]
+        },
+        {
+          "heading": "Почему данных нет и как остановить передачу?",
+          "paragraphs": [
+            "Откройте FITA на телефоне и проверьте последнее обновление, разрешения источника и видимость категорий. Фоновые выгрузки ограничены 15 минутами; старый снимок может отставать сильнее. Отсутствующее измерение нельзя подменять нулём.",
+            "Для прекращения доступа выключите переключатель в FITA: MCP-снимок удалится, подключения будут отозваны. Уже полученные ChatGPT ответы останутся под правилами OpenAI. При включённом MCP разрешённая сводка хранится на сервере FITA в России; ответы внешнему ассистенту выходят за пределы этого сервера."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "FITA бесплатна, а ChatGPT тоже?",
+          "a": "Бета FITA бесплатна. Доступность пользовательского MCP и условия аккаунта ChatGPT нужно проверить отдельно."
+        },
+        {
+          "q": "Можно настроить всё в приложении ChatGPT на телефоне?",
+          "a": "Официальный путь добавления пользовательского MCP описан для веб-версии. Настройка FITA в мобильном ChatGPT не проверена."
+        },
+        {
+          "q": "Можно ли сравнить произвольные годы здоровья?",
+          "a": "Нет гарантии. Сервер читает текущий снимок с ограниченной историей, а не всю базу здоровья."
+        },
+        {
+          "q": "Нужны ли скриншоты и ручной экспорт?",
+          "a": "Архитектура MCP использует структурированный снимок после разрешения. Автоматическая передача требует успешного подключения выбранного аккаунта."
+        }
+      ]
+    },
+    "en": {
+      "title": "Apple Health and Health Connect in ChatGPT — FITA MCP",
+      "description": "Connect permitted Apple Health or Health Connect summaries through FITA MCP: official ChatGPT setup, privacy controls and limits checked October 27, 2026.",
+      "h1": "Your health data in ChatGPT",
+      "lead": "FITA implements a remote OAuth MCP for discussing a permitted health snapshot in ChatGPT. OpenAI documents the client capability; interoperability with a particular FITA account needs a separate check.",
+      "sections": [
+        {
+          "heading": "What does FITA MCP connect?",
+          "paragraphs": [
+            "FITA collects a phone snapshot and uploads it to its server. ChatGPT can request permitted sections after OAuth consent; it does not directly open the phone’s Apple Health or Health Connect database. This guide covers FITA’s custom MCP route rather than OpenAI’s built-in health features."
+          ],
+          "table": {
+            "headers": [
+              "Stage",
+              "iPhone",
+              "Android"
+            ],
+            "rows": [
+              [
+                "MCP → ChatGPT",
+                "OAuth plus a FITA snapshot",
+                "OAuth plus a FITA snapshot"
+              ],
+              [
+                "Source",
+                "Permitted Apple Health records",
+                "Permitted Health Connect records"
+              ],
+              [
+                "Actual FITA connection",
+                "Not tested in ChatGPT",
+                "Not tested in ChatGPT"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "What should be checked before setup?",
+          "paragraphs": [
+            "You need FITA on the phone, email sign-in, health permissions and a ChatGPT account that can add custom MCP servers. OpenAI documents web setup and OAuth; workspace permissions apply. A paid account alone does not establish access.",
+            "FITA is a free closed beta with a Russian interface. Platform builds are listed at releases.appfita.ru; the iPhone App Store listing is Russia-only, ID 6794848328. Russia is not on ChatGPT’s published supported-country list. FITA does not change OpenAI’s regional rules."
+          ]
+        },
+        {
+          "heading": "What is the documented setup path?",
+          "paragraphs": [
+            "Current official OpenAI documentation uses Plugins; this path no longer requires enabling Developer Mode. Interfaces may vary during rollout."
+          ],
+          "steps": [
+            "In FITA open Profile → the AI-assistant access option (translated from Russian), enable access and copy the current connector URL.",
+            "On ChatGPT web open Plugins → plus → Add custom MCP server.",
+            "Enter FITA, its public HTTPS endpoint and OAuth, then continue authorization.",
+            "Authorize with your FITA email, inspect the tools and install the resulting plugin.",
+            "Select FITA using @ in a conversation and request snapshot freshness."
+          ]
+        },
+        {
+          "heading": "What can you ask?",
+          "paragraphs": [
+            "Ask FITA to report its data timestamp and summarize your activity week, then discuss recorded sleep, recent workouts or resting heart rate. Check missing readiness components before drawing conclusions.",
+            "The MCP reads health summaries and cannot write system health data. Steps, energy, heart and sleep cards are defined in the code but have not been verified with FITA in ChatGPT. This server has no dedicated training-plan or coach-note tools."
+          ]
+        },
+        {
+          "heading": "Why might data be missing and how do you revoke access?",
+          "paragraphs": [
+            "Open FITA on the phone and check source permissions, category visibility and upload time. Background updates are limited to one per 15 minutes and may be much older. Missing values are not zeros.",
+            "Turning FITA access off deletes the MCP snapshot and revokes connections. ChatGPT responses already received remain subject to OpenAI’s retention rules. An enabled MCP stores a permitted summary on FITA’s Russian server and shares requested responses with the external assistant."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Does free FITA mean free ChatGPT MCP access?",
+          "a": "No. FITA beta is free; account feature availability must be checked separately."
+        },
+        {
+          "q": "Can the mobile ChatGPT app add the connector?",
+          "a": "The official setup path is documented for the web. Mobile setup with FITA has not been tested."
+        },
+        {
+          "q": "Can it analyze arbitrary years of history?",
+          "a": "Not guaranteed. Tools read a bounded current snapshot, not the complete health database."
+        },
+        {
+          "q": "Does MCP need screenshots or manual exports?",
+          "a": "Its architecture uses structured data after consent. Public FITA connectivity still needs verification."
+        }
+      ]
+    }
+  },
+  {
+    "id": "mcp-claude",
+    "slug": "apple-health-health-connect-claude",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Claude: Get started with custom connectors using remote MCP",
+        "url": "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp"
+      },
+      {
+        "label": "Claude: Use connectors to extend capabilities",
+        "url": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+      },
+      {
+        "label": "Claude: Where can I access Claude?",
+        "url": "https://support.claude.com/en/articles/8461763-where-can-i-access-claude"
+      },
+      {
+        "label": "FITA: Releases for supported platforms",
+        "url": "https://releases.appfita.ru"
+      },
+      {
+        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "url": "https://apps.apple.com/ru/app/id6794848328"
+      },
+      {
+        "label": "FITA MCP service address",
+        "url": "https://mcp.appfita.ru"
+      }
+    ],
+    "ru": {
+      "title": "Apple Health и Health Connect в Claude — MCP FITA",
+      "description": "Как передать разрешённые сводки Apple Health и Health Connect в Claude через MCP FITA: тарифы, OAuth, свежесть и приватность на 27 октября 2026.",
+      "h1": "Данные здоровья в Claude",
+      "lead": "Claude поддерживает пользовательские удалённые MCP-коннекторы с OAuth; FITA реализует такой доступ к разрешённому снимку здоровья. Документированная поддержка Claude и проверенное подключение конкретного аккаунта FITA — разные уровни подтверждения.",
+      "sections": [
+        {
+          "heading": "Что даёт MCP FITA для Claude?",
+          "paragraphs": [
+            "Коннектор предназначен для вопросов о вашем сне, активности, пульсе, ВСР и тренировках. На iPhone источник — Apple Health, на Android — Health Connect; полнота зависит от записей устройств, разрешений и выбранных категорий. Claude читает загруженную сводку с сервера, а не обращается к телефону напрямую."
+          ],
+          "table": {
+            "headers": [
+              "Проверка",
+              "Статус на 27 октября 2026"
+            ],
+            "rows": [
+              [
+                "Удалённый MCP и OAuth в Claude",
+                "Подтверждены официальной документацией"
+              ],
+              [
+                "Реализация MCP FITA",
+                "Есть в коде приложения и сервера"
+              ],
+              [
+                "Проверка конкретного аккаунта FITA",
+                "Требуется отдельная проверка подключения"
+              ],
+              [
+                "Авторизация FITA и вызовы из Claude",
+                "Не выполнялись; успешное соединение не подтверждено"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Нужен ли Claude Pro и где доступна функция?",
+          "paragraphs": [
+            "Официальная справка относит remote MCP к Free, Pro, Max, Team и Enterprise; на Free допускается один пользовательский коннектор. В организациях добавление может зависеть от администратора. Точное состояние своего аккаунта нужно проверить в интерфейсе.",
+            "Россия отсутствует в опубликованном списке стран доступа Claude. Поэтому российский сервер FITA и русская инструкция не означают, что Claude официально доступен из России. Для других стран также действуют собственные условия сервиса. Региональный доступ и совместимость конкретного коннектора — разные проверки."
+          ]
+        },
+        {
+          "heading": "Как добавить FITA в коннекторы Claude?",
+          "paragraphs": [
+            "В справках Claude встречаются разные подписи добавления: Customize → Connectors, затем Add custom connector либо Add → Custom → Web. Названия зависят от плана и версии интерфейса. Пользовательский сервер получает соединение от облака Anthropic, поэтому одного открытия адреса на вашем телефоне недостаточно."
+          ],
+          "steps": [
+            "В FITA на телефоне войдите по почте и разрешите нужные записи здоровья.",
+            "Откройте Профиль → «Доступ для AI-ассистентов», включите доступ, проверьте время выгрузки и скопируйте адрес.",
+            "В Claude откройте Customize → Connectors и добавление пользовательского коннектора.",
+            "Укажите FITA и актуальный HTTPS-адрес; выберите вход OAuth и автоматическую регистрацию клиента, если такой выбор предложен.",
+            "Подтвердите вход той же почтой, что в FITA, затем включите коннектор для разговора."
+          ]
+        },
+        {
+          "heading": "Какие вопросы полезны в первом разговоре?",
+          "paragraphs": [
+            "Попросите Claude сначала проверить время снимка и перечислить доступные разделы. Затем задайте вопрос с ограниченным периодом: «Суммируй мои тренировки за доступный период и укажи пропуски» или «Покажи продолжительность сна за последние записанные ночи». Не просите восстановить отсутствующие показатели.",
+            "Сервер предлагает семь инструментов чтения и show_widget. Карточки предусмотрены для шагов, калорий, сердца и сна, но фактическое отображение FITA в Claude не подтверждено. Отдельных инструментов записи тренировочного плана, заметок или здоровья у этого MCP нет."
+          ]
+        },
+        {
+          "heading": "Как управлять данными и свежестью?",
+          "paragraphs": [
+            "Снимок отправляется с телефона после фильтрации видимости; фоновые обновления не чаще раза в 15 минут. Переписка FITA, память, вес, вода, цикл, настроение, осознанность и биоданные профиля исключены. При отключении доступа сервер удаляет снимок и отзывает подключения; полученные Claude ответы этим не стираются.",
+            "FITA доступна как бесплатная закрытая бета с русским интерфейсом. Сборки для платформ — на releases.appfita.ru, iPhone App Store — только российский магазин, ID 6794848328. Перед использованием MCP нужен доступ к бете и проверка подключения выбранного клиента."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Можно ли использовать Claude Free?",
+          "a": "Справка Claude допускает один пользовательский коннектор на Free. Работу FITA с конкретным аккаунтом ещё нужно проверить."
+        },
+        {
+          "q": "Должен ли компьютер читать Apple Health?",
+          "a": "Нет. Сводку загружает телефон; компьютер или веб-интерфейс ассистента использует серверный снимок."
+        },
+        {
+          "q": "Почему сон пустой?",
+          "a": "В источнике может не быть записи, доступ может быть закрыт или снимок устарел. Пустое поле не означает бессонную ночь."
+        },
+        {
+          "q": "Гарантированы ли красивые карточки?",
+          "a": "Нет. В коде есть MCP Apps, но поддержка клиента и фактическое отображение FITA требуют проверки."
+        }
+      ]
+    },
+    "en": {
+      "title": "Apple Health and Health Connect in Claude — FITA MCP",
+      "description": "Use permitted Apple Health and Health Connect summaries with Claude through FITA MCP. OAuth, plan access, freshness and privacy checked October 27, 2026.",
+      "h1": "Your health data in Claude",
+      "lead": "Claude documents custom remote MCP connectors with OAuth, and FITA implements a matching health snapshot service. Documented support and an actual connection to a particular FITA account are separate levels of verification.",
+      "sections": [
+        {
+          "heading": "What does FITA MCP provide?",
+          "paragraphs": [
+            "It is designed for questions about recorded sleep, activity, heart rate, HRV and workouts. Apple Health supplies iPhone data and Health Connect supplies Android data, subject to device records, permissions and visible categories. Claude reads a server snapshot rather than directly querying the phone."
+          ],
+          "table": {
+            "headers": [
+              "Check",
+              "Status on October 27, 2026"
+            ],
+            "rows": [
+              [
+                "Claude remote MCP and OAuth",
+                "Documented"
+              ],
+              [
+                "FITA implementation",
+                "Present in app and server code"
+              ],
+              [
+                "Specific FITA account",
+                "Separate connection check required"
+              ],
+              [
+                "FITA OAuth and Claude tool calls",
+                "Not performed; connection unverified"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Do you need Claude Pro?",
+          "paragraphs": [
+            "Official help lists Free, Pro, Max, Team and Enterprise. Free is limited to one custom connector, and organizations may require administrator setup. Check your account’s actual interface.",
+            "Russia is absent from Claude’s published supported-country list. FITA’s Russian hosting and Russian interface do not establish official Claude access from Russia. Regional access and connector interoperability are separate checks."
+          ]
+        },
+        {
+          "heading": "How do you add FITA as a Claude connector?",
+          "paragraphs": [
+            "Claude help uses Customize → Connectors, followed by Add custom connector or Add → Custom → Web depending on the interface and plan. Remote connections originate from Anthropic’s cloud, so local reachability alone does not establish compatibility."
+          ],
+          "steps": [
+            "Sign into FITA on the phone and permit the intended health records.",
+            "Open Profile → the AI-assistant access option (translated from Russian), enable access, check upload time and copy the URL.",
+            "In Claude open Customize → Connectors and add a custom connector.",
+            "Enter FITA and its current HTTPS endpoint; use OAuth and automatic client registration if offered.",
+            "Authorize with the same FITA email and enable the connector for your conversation."
+          ]
+        },
+        {
+          "heading": "What should the first conversation ask?",
+          "paragraphs": [
+            "First ask for the snapshot timestamp and available sections. Then request a summary of recent recorded workouts or sleep duration, explicitly preserving missing values.",
+            "The server implements seven read tools plus show_widget. Steps, energy, heart and sleep cards are defined, but actual FITA card rendering in Claude is untested. Dedicated tools for writing a training plan, coach notes or health records are not provided."
+          ]
+        },
+        {
+          "heading": "How do you control sharing and freshness?",
+          "paragraphs": [
+            "The phone filters permitted categories before upload. Background updates are limited to one per 15 minutes. FITA chats, memory, weight, water, cycle, mood, mindfulness and profile biodata are excluded. Disabling access deletes the snapshot and revokes connections; it does not erase Claude responses already received.",
+            "FITA is a free closed beta with a Russian interface. Platform builds are listed at releases.appfita.ru; the iPhone App Store listing is Russia-only, ID 6794848328. Beta admission and a connection check for the intended client are required."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can Claude Free be used?",
+          "a": "Claude documents one custom connector on Free. FITA compatibility with an actual account still needs verification."
+        },
+        {
+          "q": "Does a computer read Apple Health?",
+          "a": "No. The phone uploads a snapshot which the assistant reads from FITA’s server."
+        },
+        {
+          "q": "Why is sleep missing?",
+          "a": "The source may contain no record, access may be hidden or the snapshot may be stale. Missing sleep is not a sleepless night."
+        },
+        {
+          "q": "Are interactive cards guaranteed?",
+          "a": "No. FITA defines MCP Apps cards, but host support and rendering need verification."
+        }
+      ]
+    }
+  },
+  {
+    "id": "compare",
+    "slug": "compare",
+    "kind": "comparison",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Welltory: Subscription options, cancellation and data deletion",
+        "url": "https://help.welltory.com/en/articles/11659476-welltory-subscription-which-one-to-choose-how-to-cancel-or-get-a-refund-and-how-to-delete-your-data"
+      },
+      {
+        "label": "Welltory: Data sources and how to connect them",
+        "url": "https://help.welltory.com/en/articles/11130907-data-sources-and-how-to-connect-them"
+      },
+      {
+        "label": "Welltory: Device compatibility for HRV and activity",
+        "url": "https://help.welltory.com/en/articles/4998580-is-my-device-compatible-with-welltory-for-hrv-measurements-and-activity-tracking"
+      },
+      {
+        "label": "Welltory: Subscription plans",
+        "url": "https://welltory.com/plans/"
+      },
+      {
+        "label": "Welltory: Payment plans",
+        "url": "https://app.welltory.com/payments/plans/main/"
+      },
+      {
+        "label": "WHOOP: Membership options, US",
+        "url": "https://www.whoop.com/us/en/membership/"
+      },
+      {
+        "label": "WHOOP: Integrations",
+        "url": "https://www.whoop.com/us/en/integrations/"
+      },
+      {
+        "label": "Amazfit: Syncing Zepp with Apple Health and other services",
+        "url": "https://support.amazfit.com/en/amazfit_gts_2_mini/docs/N6cUdJxDRo6rbfxiLs1cJDBrnRd"
+      },
+      {
+        "label": "Zepp Aura: Subscription Service Terms",
+        "url": "https://upload-cdn.zepp.com/tposts/5845154"
+      },
+      {
+        "label": "HUAWEI: Pairing a watch or band with Android",
+        "url": "https://consumer.huawei.com/en/support/content/en-us16008856/"
+      },
+      {
+        "label": "HUAWEI: Syncing steps to iOS Health",
+        "url": "https://consumer.huawei.com/cn/support/content/zh-cn15923276/"
+      },
+      {
+        "label": "HUAWEI: Health+ campaign and service terms",
+        "url": "https://consumer.huawei.com/nl/shop/health-plus/"
+      },
+      {
+        "label": "FITA: Releases for supported platforms",
+        "url": "https://releases.appfita.ru"
+      },
+      {
+        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "url": "https://apps.apple.com/ru/app/id6794848328"
+      },
+      {
+        "label": "FITA MCP service address",
+        "url": "https://mcp.appfita.ru"
+      },
+      {
+        "label": "Google: Zepp through Apple Health and Health Connect",
+        "url": "https://support.google.com/googlehealth/answer/14236613?hl=en"
+      },
+      {
+        "label": "HUAWEI publisher: Apple Health workout and weight sharing",
+        "url": "https://apps.apple.com/us/app/huawei-health/id1325481372"
+      }
+    ],
+    "ru": {
+      "title": "Welltory, WHOOP, Zepp, Huawei Health и FITA — сравнение",
+      "description": "Сравнение FITA с Welltory, WHOOP, Zepp и Huawei Health: MCP для AI, источники здоровья, устройства и подписки. Проверено 27 октября 2026 года.",
+      "h1": "Что выбрать для здоровья?",
+      "lead": "FITA стоит рассмотреть для русскоязычного обсуждения уже собранных данных и управляемого MCP-доступа к AI. Welltory, WHOOP, Zepp и Huawei Health решают пересекающиеся задачи, но различаются устройствами, аналитикой и оплатой.",
+      "sections": [
+        {
+          "heading": "Чем различаются MCP, источники данных и расходы?",
+          "paragraphs": [
+            "Сравнение проверено 27 октября 2026. MCP FITA даёт внешнему AI доступ к разрешённым сводкам здоровья. Для конкурентов пользовательский удалённый OAuth MCP не установлен по рассмотренным официальным источникам. Это граница проверки, а не доказательство отсутствия функции."
+          ],
+          "table": {
+            "headers": [
+              "Критерий",
+              "FITA",
+              "Welltory",
+              "WHOOP",
+              "Zepp",
+              "Huawei Health"
+            ],
+            "rows": [
+              [
+                "MCP для внешнего AI",
+                "Реализован, доступ по разрешению пользователя",
+                "Не подтверждён",
+                "Не подтверждён",
+                "Не подтверждён",
+                "Не подтверждён"
+              ],
+              [
+                "Основная роль",
+                "Сводки здоровья и AI-диалог",
+                "Аналитика ВСР и контекста здоровья",
+                "Носимое устройство и Sleep/Strain/Recovery",
+                "Приложение экосистемы Amazfit",
+                "Приложение экосистемы HUAWEI"
+              ],
+              [
+                "Источник",
+                "Apple Health / Health Connect",
+                "Apple Health / Health Connect / Samsung Health",
+                "Устройство WHOOP; интеграции Apple Health / Health Connect",
+                "Устройства Amazfit; Apple Health / Health Connect",
+                "Устройства HUAWEI; Apple Health: тренировки и вес"
+              ],
+              [
+                "Оплата",
+                "Бесплатная закрытая бета",
+                "Бесплатный режим и Premium",
+                "Платное членство с устройством",
+                "Устройство отдельно; Zepp Aura Premium — подписка",
+                "Устройство отдельно; Health+ — отдельная услуга"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Когда полезнее FITA, а когда Welltory?",
+          "paragraphs": [
+            "FITA подходит, если вы хотите обсуждать разрешённые сводки на русском и контролировать передачу категорий внешнему ассистенту. Телефон формирует снимок, который хранится на сервере FITA в России при включённом MCP. Полнота зависит от того, что реально записано в Apple Health или Health Connect.",
+            "Welltory документирует анализ ВСР и импорт через системные агрегаторы. У него есть бесплатный режим с ограничениями и Premium для расширенных возможностей. Если вам нужны конкретные отчёты Welltory или измерения по камере, их замену в FITA считать подтверждённой нельзя."
+          ]
+        },
+        {
+          "heading": "Когда выбрать WHOOP, Zepp или Huawei Health?",
+          "paragraphs": [
+            "WHOOP объединяет собственное носимое устройство и членство с оценками сна, нагрузки и восстановления. FITA — приложение поверх доступных источников, поэтому она не воспроизводит датчики WHOOP или его шкалы один в один.",
+            "Zepp нужен для поддерживаемых Amazfit, Huawei Health — для устройств HUAWEI и их настроек. FITA не заменяет приложение производителя для сопряжения, прошивки или фирменных функций часов. Для Zepp подтверждены связи с Apple Health и Health Connect, но набор записей зависит от модели. HUAWEI Health на iPhone заявляет обмен тренировками и весом; прямой Health Connect требует отдельной проверки. Экспорт не означает доступ ко всем показателям часов."
+          ]
+        },
+        {
+          "heading": "Как сравнивать подписки без ложной экономии?",
+          "paragraphs": [
+            "На официальной странице WHOOP для США 27 октября 2026 указаны One — 199 долларов в год, Peak — 239, Life — 359; состав устройства зависит от уровня. Это не российские цены и не подтверждение доставки или оплаты из России.",
+            "У Welltory обнаружены разные годовые предложения на официальных страницах, поэтому единую цену здесь не приводим. У Zepp Aura и Huawei Health+ есть отдельные платные услуги; их наличие не означает, что всё базовое приложение платное. Проверяйте регион, период, продление и итоговый экран заказа."
+          ]
+        },
+        {
+          "heading": "Как проверить вариант на своих данных?",
+          "paragraphs": [
+            "Начните с одного сценария: сон за неделю, последние тренировки или динамика пульса. Убедитесь, что записи дошли в системное здоровье, а затем сравните наличие дней, единицы и время обновления. Оценки разных сервисов могут использовать разные данные и алгоритмы, поэтому одинаковое число ждать не следует.",
+            "FITA сейчас — бесплатная закрытая бета с русским интерфейсом. Сборки всех платформ перечислены на releases.appfita.ru; App Store iPhone — только российский магазин, ID 6794848328. Установка и доступ к бете, поддержка MCP клиентом и фактическое соединение проверяются отдельно."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Можно ли оставить приложение часов?",
+          "a": "Да. Для сопряжения и настроек часов приложение производителя часто необходимо; FITA использует доступные записи здоровья."
+        },
+        {
+          "q": "Все ли показатели часов появятся в FITA?",
+          "a": "Нет гарантии. Устройство, приложение производителя, системный агрегатор и разрешения ограничивают набор данных."
+        },
+        {
+          "q": "У кого точно нет MCP?",
+          "a": "Такой вывод не сделан. Для конкурентов пользовательский OAuth MCP не подтверждён рассмотренными источниками."
+        },
+        {
+          "q": "Российский сервер означает сертификацию?",
+          "a": "Нет. Место размещения само по себе не подтверждает сертификацию или соответствие требованиям 152-ФЗ."
+        }
+      ]
+    },
+    "en": {
+      "title": "Welltory, WHOOP, Zepp, Huawei Health vs FITA",
+      "description": "Compare FITA with Welltory, WHOOP, Zepp and Huawei Health for external AI MCP, data sources, devices and subscriptions. Checked October 27, 2026.",
+      "h1": "Which health app fits you?",
+      "lead": "Consider FITA for Russian-language discussion of existing health records and controlled external AI access. These services overlap in health tracking but differ in devices, analytics and payment models.",
+      "sections": [
+        {
+          "heading": "How do MCP, data sources and costs differ?",
+          "paragraphs": [
+            "Checked October 27, 2026. FITA MCP gives an external AI access to permitted health summaries. A consumer remote OAuth MCP was not established for competitors in reviewed official sources. This is a research limit rather than proof of absence."
+          ],
+          "table": {
+            "headers": [
+              "Criterion",
+              "FITA",
+              "Welltory",
+              "WHOOP",
+              "Zepp",
+              "Huawei Health"
+            ],
+            "rows": [
+              [
+                "External AI MCP",
+                "Implemented; access with user permission",
+                "Unconfirmed",
+                "Unconfirmed",
+                "Unconfirmed",
+                "Unconfirmed"
+              ],
+              [
+                "Main role",
+                "Health summaries and AI dialogue",
+                "HRV and contextual analytics",
+                "Wearable with Sleep/Strain/Recovery",
+                "Amazfit ecosystem app",
+                "HUAWEI ecosystem app"
+              ],
+              [
+                "Sources",
+                "Apple Health / Health Connect",
+                "Apple Health / Health Connect / Samsung Health",
+                "WHOOP device; Apple Health / Health Connect integrations",
+                "Amazfit devices; Apple Health / Health Connect",
+                "HUAWEI devices; Apple Health workouts and weight"
+              ],
+              [
+                "Payment",
+                "Free closed beta",
+                "Free mode plus Premium",
+                "Paid membership with device",
+                "Hardware; separate Aura Premium",
+                "Hardware; separate Health+ service"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "When would FITA or Welltory fit?",
+          "paragraphs": [
+            "FITA is designed for discussing permitted summaries in Russian and controlling categories shared with external assistants. The phone uploads a snapshot stored on FITA’s Russian server while MCP is enabled. Available records determine completeness.",
+            "Welltory documents HRV analysis, health aggregator imports, a limited free mode and Premium. FITA has not been verified as a replacement for Welltory-specific reports or camera measurements."
+          ]
+        },
+        {
+          "heading": "When should you keep WHOOP, Zepp or Huawei Health?",
+          "paragraphs": [
+            "WHOOP bundles its wearable and membership. FITA reads existing sources rather than reproducing WHOOP sensors or proprietary scores.",
+            "Zepp manages supported Amazfit devices, and Huawei Health manages HUAWEI devices. FITA does not replace pairing, firmware or device-specific settings. Zepp has documented Apple Health and Health Connect routes, with model-specific coverage. HUAWEI Health describes iPhone workout and weight sharing; direct Health Connect export needs a separate check. None of these connections guarantees every watch metric."
+          ]
+        },
+        {
+          "heading": "How should subscription costs be compared?",
+          "paragraphs": [
+            "WHOOP’s US page showed One at $199/year, Peak at $239 and Life at $359 on October 27, 2026. These are US offers, not Russian pricing or a delivery guarantee.",
+            "Official Welltory pages showed differing annual offers, so no universal amount is quoted. Zepp Aura and Huawei Health+ have separate paid services; that does not make every basic app function paid. Check local checkout terms."
+          ]
+        },
+        {
+          "heading": "How can you compare using your own records?",
+          "paragraphs": [
+            "Choose a specific week of sleep or workouts, verify source records, and compare days, units and timestamps. Scores may use different inputs and methods.",
+            "FITA is a free closed beta with a Russian interface. Platform builds are at releases.appfita.ru; its iPhone App Store listing is Russia-only, ID 6794848328. Beta access, client support and an actual MCP connection remain separate checks."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can I keep the watch app?",
+          "a": "Yes. It may still be needed for pairing and settings."
+        },
+        {
+          "q": "Will every watch metric appear in FITA?",
+          "a": "Not guaranteed. Devices, export permissions and health stores limit available records."
+        },
+        {
+          "q": "Which competitors definitely have no MCP?",
+          "a": "No such conclusion was made. Consumer OAuth MCP was not confirmed in reviewed sources."
+        },
+        {
+          "q": "Does Russian hosting mean certification?",
+          "a": "No. Hosting location alone does not establish certification or legal compliance."
+        }
+      ]
+    }
+  },
+  {
+    "id": "welltory-alternative",
+    "slug": "welltory-alternative",
+    "kind": "comparison",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "Welltory: Subscription options, cancellation and data deletion",
+        "url": "https://help.welltory.com/en/articles/11659476-welltory-subscription-which-one-to-choose-how-to-cancel-or-get-a-refund-and-how-to-delete-your-data"
+      },
+      {
+        "label": "Welltory: Data sources and how to connect them",
+        "url": "https://help.welltory.com/en/articles/11130907-data-sources-and-how-to-connect-them"
+      },
+      {
+        "label": "Welltory: Device compatibility for HRV and activity",
+        "url": "https://help.welltory.com/en/articles/4998580-is-my-device-compatible-with-welltory-for-hrv-measurements-and-activity-tracking"
+      },
+      {
+        "label": "Welltory: Subscription plans",
+        "url": "https://welltory.com/plans/"
+      },
+      {
+        "label": "Welltory: Payment plans",
+        "url": "https://app.welltory.com/payments/plans/main/"
+      },
+      {
+        "label": "FITA: Releases for supported platforms",
+        "url": "https://releases.appfita.ru"
+      },
+      {
+        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "url": "https://apps.apple.com/ru/app/id6794848328"
+      },
+      {
+        "label": "FITA MCP service address",
+        "url": "https://mcp.appfita.ru"
+      }
+    ],
+    "ru": {
+      "title": "Альтернатива Welltory бесплатно — FITA и MCP",
+      "description": "FITA как альтернатива Welltory: бесплатная закрытая бета, Apple Health и Health Connect, AI-диалог и MCP. Различия проверены 27 октября 2026 года.",
+      "h1": "Альтернатива Welltory",
+      "lead": "FITA можно рассмотреть как бесплатную в закрытой бете альтернативу Welltory для обсуждения сна, активности и тренировок. Через MCP разрешённые сводки можно использовать в поддерживаемом AI-ассистенте и задавать вопросы привычным языком.",
+      "sections": [
+        {
+          "heading": "Чем FITA отличается от Welltory?",
+          "paragraphs": [
+            "MCP позволяет обсуждать одни и те же разрешённые данные с поддерживаемым внешним ассистентом. Вы сами включаете доступ и подтверждаете подключение. Для Welltory пользовательский OAuth MCP не подтверждён рассмотренными официальными источниками."
+          ],
+          "table": {
+            "headers": [
+              "Вопрос",
+              "FITA",
+              "Welltory"
+            ],
+            "rows": [
+              [
+                "MCP для внешнего AI",
+                "Реализован, доступ по разрешению пользователя",
+                "Не подтверждён проверенными источниками"
+              ],
+              [
+                "Здоровье с телефона",
+                "Apple Health / Health Connect",
+                "Apple Health / Health Connect / Samsung Health"
+              ],
+              [
+                "Бесплатное использование",
+                "Закрытая бета",
+                "Ограниченный бесплатный режим"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Кому подойдёт переход?",
+          "paragraphs": [
+            "Если вам нужен разговор на русском о уже записанных тренировках, сне и активности, FITA позволяет начать с доступных системных данных. Вы выбираете категории, которые приложение может использовать. Наличие часов определённого бренда ещё не гарантирует, что все их показатели попадут в Apple Health или Health Connect.",
+            "Если вы опираетесь на конкретные отчёты Welltory, измерения по камере или привычную оценку стресса, проверьте соответствующий сценарий отдельно. В FITA нет подтверждённого воспроизведения всех функций Welltory. Показатели готовности и стресса разных продуктов нельзя считать одинаковыми измерениями."
+          ]
+        },
+        {
+          "heading": "Правда ли Welltory обязательно требует подписку?",
+          "paragraphs": [
+            "Нет. Официальная справка описывает бесплатный режим после пробного периода с ограничениями, включая одно измерение ВСР в день. Premium расширяет аналитику и возможности. Поэтому корректно сравнивать конкретные нужные функции, а не утверждать, что Welltory целиком платный.",
+            "На официальных страницах оплаты 27 октября 2026 были разные годовые предложения. Универсальную сумму в рублях мы не указываем: она зависит от экрана заказа, региона, предложения и канала оплаты. Бесплатность FITA относится к текущей закрытой бете, а не к обещанию неизменных условий навсегда."
+          ]
+        },
+        {
+          "heading": "Как проверить FITA без потери привычного сценария?",
+          "paragraphs": [
+            "Параллельная проверка помогает понять, хватает ли исходных записей. Не переносите оценки Welltory как будто это исходные показатели часов: приложение может вычислять их самостоятельно. Сопоставляйте доступность сна, пульса и тренировок за одинаковые даты."
+          ],
+          "steps": [
+            "Проверьте реальные записи в Apple Health или Health Connect и источники, которые их создают.",
+            "Установите доступную сборку FITA из releases.appfita.ru; для iPhone карточка App Store относится к России, ID 6794848328.",
+            "В бесплатной закрытой бете разрешите нужные категории и сравните один полный день и одну неделю.",
+            "Если нужен внешний ассистент, отдельно проверьте доступность MCP, включите «Доступ для AI-ассистентов» в профиле и авторизуйте только выбранный клиент."
+          ]
+        },
+        {
+          "heading": "Где окажутся данные при подключении AI?",
+          "paragraphs": [
+            "Включённый MCP загружает отфильтрованную сводку на сервер FITA в России. Из неё исключены переписка, память Фиты, вес, вода, цикл, настроение, осознанность и биоданные профиля. Внешний ассистент получает ответы на свои запросы после OAuth-разрешения.",
+            "Отключение удаляет MCP-снимок и отзывает подключения FITA. Оно не удаляет уже переданные ответы у другого сервиса. Российское размещение не служит доказательством сертификации по 152-ФЗ. Для качества ответов также проверяйте время снимка: фоновые выгрузки ограничены интервалом 15 минут и зависят от телефона."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "FITA полностью заменит Welltory?",
+          "a": "Не для каждого сценария. Проверьте нужные отчёты, способ измерения ВСР и доступные записи; полное совпадение функций не подтверждено."
+        },
+        {
+          "q": "Можно ли пользоваться обоими приложениями?",
+          "a": "Да, если вы предоставите каждому нужные разрешения здоровья. Проверьте источники и дубли записей."
+        },
+        {
+          "q": "Нужно ли покупать новые часы?",
+          "a": "FITA читает уже доступные системные записи; отдельные часы FITA не требуются. Для сна и пульса нужен источник измерений."
+        },
+        {
+          "q": "Будет ли FITA бесплатной всегда?",
+          "a": "Подтверждена бесплатная закрытая бета. Будущие коммерческие условия пока не установлены."
+        }
+      ]
+    },
+    "en": {
+      "title": "Free Welltory Alternative — FITA and MCP",
+      "description": "Consider FITA as a Welltory alternative: free closed beta, Apple Health and Health Connect, Russian AI dialogue and MCP. Checked October 27, 2026.",
+      "h1": "A Welltory alternative",
+      "lead": "FITA is a free closed-beta option for discussing recorded sleep, activity and workouts. Its MCP gives a supported AI assistant permitted health context for questions in ordinary language.",
+      "sections": [
+        {
+          "heading": "How does FITA differ from Welltory?",
+          "paragraphs": [
+            "MCP lets a supported external assistant discuss the same permitted health records. You enable access and authorize the connection. A Welltory consumer OAuth MCP was not confirmed in reviewed official sources."
+          ],
+          "table": {
+            "headers": [
+              "Question",
+              "FITA",
+              "Welltory"
+            ],
+            "rows": [
+              [
+                "External AI MCP",
+                "Implemented; access with user permission",
+                "Not confirmed in reviewed sources"
+              ],
+              [
+                "Phone health sources",
+                "Apple Health / Health Connect",
+                "Apple Health / Health Connect / Samsung Health"
+              ],
+              [
+                "Free use",
+                "Closed beta",
+                "Limited free mode"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Who might consider switching?",
+          "paragraphs": [
+            "FITA suits Russian-language discussion of recorded health and workouts with chosen visibility categories. A watch brand alone does not guarantee every metric will reach a system health store.",
+            "If you depend on specific Welltory reports, camera measurements or familiar stress scores, test those scenarios separately. FITA has not been verified as a replacement for every Welltory function. Scores from different products are not identical measurements."
+          ]
+        },
+        {
+          "heading": "Does Welltory always require payment?",
+          "paragraphs": [
+            "No. Its help documents a limited free mode after the trial, including one daily HRV measurement. Premium expands capabilities. Compare the features you actually need.",
+            "Official payment pages showed differing annual offers on October 27, 2026, so no universal ruble price is quoted. Region, offer and purchasing channel affect checkout. FITA’s free status describes its current closed beta rather than a permanent pricing promise."
+          ]
+        },
+        {
+          "heading": "How can you test FITA alongside your current workflow?",
+          "paragraphs": [
+            "Compare original sleep, heart and workout records across identical dates. Do not treat app-derived Welltory scores as raw watch measurements."
+          ],
+          "steps": [
+            "Verify source records in Apple Health or Health Connect.",
+            "Find an available build at releases.appfita.ru; the iPhone App Store listing is Russia-only, ID 6794848328.",
+            "During the free closed beta, permit selected categories and compare one complete day and week.",
+            "For external AI, check MCP availability separately, enable profile access and authorize only the intended client."
+          ]
+        },
+        {
+          "heading": "Where does data go when AI is connected?",
+          "paragraphs": [
+            "Enabled MCP uploads a filtered snapshot to FITA’s Russian server. Chats, memory, weight, water, cycle, mood, mindfulness and profile biodata are excluded. An external assistant receives requested responses after OAuth consent.",
+            "Disabling access deletes the snapshot and revokes FITA connections, but does not erase responses already held elsewhere. Russian hosting alone does not establish legal certification. Check snapshot timestamps: background uploads are limited to every 15 minutes and depend on the phone."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Does FITA replace every Welltory function?",
+          "a": "No such claim is established. Test the reports, measurement method and records you need."
+        },
+        {
+          "q": "Can both apps be used?",
+          "a": "Yes, subject to each app’s health permissions. Check sources and duplicate records."
+        },
+        {
+          "q": "Do I need a new watch?",
+          "a": "FITA has no dedicated watch requirement. Sleep and heart metrics still need a recording source."
+        },
+        {
+          "q": "Will FITA remain free permanently?",
+          "a": "Only the current free closed beta is confirmed. Future terms are not established."
+        }
+      ]
+    }
+  },
+  {
+    "id": "whoop-alternative",
+    "slug": "whoop-alternative",
+    "kind": "comparison",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "WHOOP: Membership options, US",
+        "url": "https://www.whoop.com/us/en/membership/"
+      },
+      {
+        "label": "WHOOP: Integrations",
+        "url": "https://www.whoop.com/us/en/integrations/"
+      },
+      {
+        "label": "FITA: Releases for supported platforms",
+        "url": "https://releases.appfita.ru"
+      },
+      {
+        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "url": "https://apps.apple.com/ru/app/id6794848328"
+      },
+      {
+        "label": "FITA MCP service address",
+        "url": "https://mcp.appfita.ru"
+      }
+    ],
+    "ru": {
+      "title": "Альтернатива WHOOP без нового браслета — FITA",
+      "description": "FITA как альтернатива WHOOP для анализа существующих данных: MCP для AI, сон, пульс, тренировки и ограничения бесплатной закрытой беты на 27 октября 2026.",
+      "h1": "Альтернатива WHOOP",
+      "lead": "FITA можно рассмотреть вместо покупки WHOOP, если вы хотите обсуждать уже записанные сон, пульс и тренировки. Это бесплатная закрытая бета приложения; она не заменяет датчики WHOOP и не обещает повторить его оценки.",
+      "sections": [
+        {
+          "heading": "Чем различаются MCP, устройство и подписка?",
+          "paragraphs": [
+            "У FITA реализован MCP для управляемого доступа внешнего AI к снимку здоровья: вы выбираете категории и разрешаете подключение. Пользовательский удалённый OAuth MCP WHOOP не установлен по рассмотренным официальным источникам."
+          ],
+          "table": {
+            "headers": [
+              "Критерий",
+              "FITA",
+              "WHOOP"
+            ],
+            "rows": [
+              [
+                "MCP для внешнего AI",
+                "Реализован, доступ по разрешению пользователя",
+                "Не подтверждён рассмотренными источниками"
+              ],
+              [
+                "Откуда измерения",
+                "Apple Health / Health Connect",
+                "Носимое устройство WHOOP"
+              ],
+              [
+                "Основные результаты",
+                "Сводки и обсуждение доступных данных",
+                "Sleep, Strain, Recovery и функции выбранного членства"
+              ],
+              [
+                "Оплата",
+                "Бесплатная закрытая бета",
+                "Членство с устройством"
+              ],
+              [
+                "Совпадение шкал восстановления",
+                "Не заявлено",
+                "Фирменные показатели WHOOP"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Когда можно обойтись без нового браслета?",
+          "paragraphs": [
+            "Если ваши часы уже записывают сон и пульс в системное здоровье, сначала проверьте, хватает ли этих записей для ваших вопросов. FITA использует доступные показатели и помогает обсуждать их вместе с тренировками. Она не создаст отсутствующую ночь сна или ВСР, которую устройство не экспортировало.",
+            "Если вам нужны именно измерения и фирменные функции WHOOP, приложение поверх другого устройства не станет их точным эквивалентом. Непрерывность ношения, модель датчика, экспорт и алгоритмы отличаются. Нельзя переносить целевые значения Recovery или Strain WHOOP на показатели FITA без отдельной валидации."
+          ]
+        },
+        {
+          "heading": "Сколько стоит WHOOP по официальной странице?",
+          "paragraphs": [
+            "На странице членства WHOOP для США 27 октября 2026 указаны One — 199 долларов в год, Peak — 239 и Life — 359. Членство включает устройство; One и Peak используют WHOOP 5.0, Life — WHOOP MG. Функции и комплектация различаются.",
+            "Эти суммы относятся к американской странице, а не к российскому рынку. Доставка в Россию, поддержка оплаты и местные условия в этой проверке не установлены. Сравнивайте итоговую стоимость периода, устройство и нужный уровень членства. FITA бесплатна на этапе закрытой беты; условия после неё не объявлены."
+          ]
+        },
+        {
+          "heading": "Можно ли использовать FITA вместе с WHOOP?",
+          "paragraphs": [
+            "Официальный WHOOP описывает интеграции с Apple Health и Health Connect. Наличие интеграции не означает экспорт всей внутренней аналитики. В FITA появятся только те поддерживаемые записи, которые дошли до системного хранилища и разрешены для чтения."
+          ],
+          "steps": [
+            "Проверьте подключение WHOOP к Apple Health или Health Connect по актуальной инструкции WHOOP.",
+            "Откройте системное здоровье и убедитесь, что нужные записи действительно появились, с корректными временем и источником.",
+            "В FITA разрешите нужные категории и сравните несколько полных дней.",
+            "Для внешнего AI отдельно проверьте доступность MCP и клиента, затем включите разрешение в профиле FITA."
+          ]
+        },
+        {
+          "heading": "Какие ограничения важны перед началом?",
+          "paragraphs": [
+            "Сборки FITA для платформ находятся на releases.appfita.ru, интерфейс русский. iPhone App Store доступен только в российском магазине, ID 6794848328; участие в закрытой бете требует доступной сборки и допуска.",
+            "При MCP телефон отправляет разрешённую сводку на сервер FITA в России. Фоновые обновления не чаще раза в 15 минут, поэтому проверяйте время данных. Отключение удаляет MCP-снимок и отзывает подключения, но не ответы, уже полученные внешним AI. Оценка готовности зависит от полноты измерений и не является медицинским заключением."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Это полноценная замена WHOOP?",
+          "a": "Нет. FITA может закрыть часть задач обсуждения здоровья, но не заменяет устройство и фирменные измерения WHOOP."
+        },
+        {
+          "q": "Нужен ли WHOOP для FITA?",
+          "a": "Нет. Достаточны поддерживаемые записи Apple Health или Health Connect из доступных источников."
+        },
+        {
+          "q": "Появятся ли Recovery и Strain в FITA?",
+          "a": "Их перенос не подтверждён. Интеграция системного здоровья не гарантирует передачу фирменных оценок."
+        },
+        {
+          "q": "Можно ли пользоваться без подписки?",
+          "a": "FITA бесплатна в закрытой бете. Для использования WHOOP действуют условия его членства; будущая цена FITA не установлена."
+        }
+      ]
+    },
+    "en": {
+      "title": "WHOOP Alternative Without a New Band — FITA",
+      "description": "Consider FITA for existing sleep, heart and workout records: external AI MCP, a free closed beta and clear limits compared with WHOOP, October 27, 2026.",
+      "h1": "A WHOOP alternative",
+      "lead": "Consider FITA before buying another band if you mainly want to discuss existing sleep, heart and workout records. It is a free closed-beta app, not a replacement for WHOOP’s sensors or proprietary scores.",
+      "sections": [
+        {
+          "heading": "How do MCP, hardware and payment differ?",
+          "paragraphs": [
+            "FITA implements controlled external AI access through MCP: you choose permitted categories and authorize the connection. A WHOOP consumer remote OAuth MCP was not confirmed in reviewed official sources."
+          ],
+          "table": {
+            "headers": [
+              "Criterion",
+              "FITA",
+              "WHOOP"
+            ],
+            "rows": [
+              [
+                "External AI MCP",
+                "Implemented; access with user permission",
+                "Unconfirmed in reviewed sources"
+              ],
+              [
+                "Measurements",
+                "Apple Health / Health Connect",
+                "WHOOP wearable"
+              ],
+              [
+                "Main output",
+                "Summaries and discussion of available records",
+                "Sleep, Strain, Recovery and plan-specific features"
+              ],
+              [
+                "Payment",
+                "Free closed beta",
+                "Membership including device"
+              ],
+              [
+                "Matching recovery scales",
+                "Not claimed",
+                "WHOOP proprietary scores"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "When might another band be unnecessary?",
+          "paragraphs": [
+            "If your watch already writes useful sleep and heart records to a system health store, test whether they answer your questions. FITA uses available records and workout context. It cannot manufacture missing sleep or HRV that was never exported.",
+            "If you need WHOOP-specific measurements or features, software using another device is not an exact substitute. Wearing patterns, sensors, export and algorithms differ. WHOOP Recovery or Strain targets should not be applied to FITA scores without separate validation."
+          ]
+        },
+        {
+          "heading": "What did WHOOP’s official pricing show?",
+          "paragraphs": [
+            "On October 27, 2026, its US page listed One at $199/year, Peak at $239 and Life at $359. Membership includes hardware: One and Peak use WHOOP 5.0; Life uses WHOOP MG. Included features and accessories differ.",
+            "These are US prices. Russian delivery, payment access and local terms were not established. Compare the full commitment, hardware and required tier. FITA is free during the closed beta; later pricing is not established."
+          ]
+        },
+        {
+          "heading": "Can FITA be used alongside WHOOP?",
+          "paragraphs": [
+            "WHOOP documents Apple Health and Health Connect integrations. This does not guarantee export of all internal analytics. FITA can only read supported records actually present and permitted in the system health store."
+          ],
+          "steps": [
+            "Check WHOOP’s current instructions for Apple Health or Health Connect.",
+            "Verify the intended records, timestamps and sources in the health store.",
+            "Permit selected FITA categories and compare complete days.",
+            "For external AI, check MCP and client availability separately before enabling FITA profile access."
+          ]
+        },
+        {
+          "heading": "What should you check before starting?",
+          "paragraphs": [
+            "Platform builds are listed at releases.appfita.ru. FITA has a Russian interface and a Russia-only iPhone App Store listing, ID 6794848328. Closed-beta access must be available.",
+            "MCP uploads a permitted snapshot to FITA’s Russian server. Background uploads are limited to one per 15 minutes, so check freshness. Disabling access deletes the snapshot and revokes connections, not responses already received by another AI. Readiness depends on available measurements and is not a medical conclusion."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is this a complete WHOOP replacement?",
+          "a": "No. FITA may cover some discussion tasks but not WHOOP hardware or proprietary measurements."
+        },
+        {
+          "q": "Does FITA require WHOOP?",
+          "a": "No. It reads supported Apple Health or Health Connect records from available sources."
+        },
+        {
+          "q": "Will WHOOP Recovery and Strain appear?",
+          "a": "Their transfer is not established. Health integrations do not guarantee export of proprietary scores."
+        },
+        {
+          "q": "Can I avoid a subscription?",
+          "a": "FITA is free during the closed beta. WHOOP has its own membership terms, and FITA’s future pricing is not established."
+        }
+      ]
+    }
   }
 ]
