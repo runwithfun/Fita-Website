@@ -23,6 +23,14 @@ const PAGES = ['index.html', 'space.html', 'privacy.html', 'consent.html', 'term
 const ru = Object.fromEntries(PAGES.map((f) => [f, read('_site', f)]));
 const en = Object.fromEntries(PAGES.map((f) => [f, read('_site-en', f)]));
 
+test('контент: короткие EN-сниппеты и единый русский бренд', () => {
+  for (const page of loadContent(ROOT)) {
+    assert.ok(page.en.description.length <= 155, `${page.id}: description`);
+    assert.ok(page.en.title.length <= 60, `${page.id}: title`);
+    assert.doesNotMatch(JSON.stringify(page.ru), /\bFITA\b/, page.id);
+  }
+});
+
 test('русская версия: appfita.ru, без hreflang по умолчанию', () => {
   assert.match(ru['index.html'], /<html lang="ru">/);
   assert.match(ru['index.html'], /<link rel="canonical" href="https:\/\/appfita.ru\/">/);
