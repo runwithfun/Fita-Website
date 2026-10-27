@@ -36,7 +36,6 @@
   var DOWNLOAD_HOSTS = ['apps.apple.com', 'releases.appfita.ru'];
   // Те же шаблоны, что проверяет сервер (server/app/routes/analytics.py).
   var CODE = /^[A-Za-z0-9]{4,16}$/;
-  var SLUG = /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/;
   var HOST = /^[a-z0-9]([a-z0-9-]{0,62}\.)+[a-z]{2,63}$/;
   var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
@@ -114,14 +113,55 @@
     }
   }
 
+  // Only campaign slugs are retained. A visit expires after 30 minutes of inactivity;
+  // a newly tagged landing replaces the complete campaign, never mixes two campaigns.
+  var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+  var CAMPAIGN_TTL = 30 * 60 * 1000;
+  var campaign = {}, campaignAt = 0, campaignSearch = null;
+  function campaignSlug(value) {
+    return typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/.test(value) ? value.toLowerCase() : null;
+  }
+  function cleanCampaign(value) {
+    var out = {};
+    UTM_KEYS.forEach(function (key) {
+      var v = campaignSlug(value && value[key]);
+      if (v) out[key] = v;
+    });
+    return out;
+  }
+  try {
+    var savedCampaign = JSON.parse(w.sessionStorage.getItem('fita_acquisition_v1') || 'null');
+    if (savedCampaign && Date.now() >= savedCampaign.at && Date.now() - savedCampaign.at < CAMPAIGN_TTL) {
+      campaign = cleanCampaign(savedCampaign.values);
+      campaignAt = savedCampaign.at;
+    }
+  } catch (e) {}
+  function campaignContext() {
+    var now = Date.now(), search = w.location.search || '';
+    if (now < campaignAt || now - campaignAt >= CAMPAIGN_TTL) campaign = {};
+    if (search !== campaignSearch) {
+      var values = {}, tagged = false;
+      try {
+        var query = new w.URLSearchParams(search);
+        UTM_KEYS.forEach(function (key) {
+          if (query.has(key)) tagged = true;
+          values[key] = query.get(key);
+        });
+      } catch (e) {}
+      if (tagged) campaign = cleanCampaign(values);
+      campaignSearch = search;
+    }
+    campaignAt = now;
+    try { w.sessionStorage.setItem('fita_acquisition_v1', JSON.stringify({ at: now, values: campaign })); } catch (e) {}
+    return cleanCampaign(campaign);
+  }
+
   // Свойства этой загрузки страницы: одинаковые для всех её событий.
   function context(loc, referrer, ref) {
-    var q = params(loc.search), out = {}, keys = ['source', 'medium', 'campaign'], v, i;
-    for (i = 0; i < keys.length; i++) {
-      v = q.get('utm_' + keys[i]);
-      v = v && v.toLowerCase();
-      if (v && SLUG.test(v)) out[keys[i]] = v;
-    }
+    var out = {}, values = campaignContext(), v;
+    UTM_KEYS.forEach(function (key) {
+      if (values[key]) out[key === 'utm_term' || key === 'utm_content' ? key : key.slice(4)] = values[key];
+    });
     v = referrerHost(referrer, String(loc.hostname || '').toLowerCase());
     if (v) out.referrer_host = v;
     if (ref) out.referral_code = ref;

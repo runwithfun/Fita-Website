@@ -104,7 +104,7 @@ test('page_view: только pathname, slug-метки, хост referrer и к
   assert.equal(opts.headers, undefined); // text/plain: без CORS-preflight
   assert.match(body.visitor_id, UUID);
   assert.deepEqual(Object.keys(body).sort(), ['events', 'visitor_id']);
-  const props = { source: 'telegram', medium: 'post', campaign: 'spring-26', referrer_host: 't.me', referral_code: 'ABCD2345' };
+  const props = { source: 'telegram', medium: 'post', campaign: 'spring-26', utm_term: 'secret', utm_content: 'x', referrer_host: 't.me', referral_code: 'ABCD2345' };
   assert.deepEqual(body.events.map((e) => [e.name, e.path, e.properties]), [
     ['page_view', '/', props],
     ['referral_link_opened', '/', props],
@@ -114,7 +114,7 @@ test('page_view: только pathname, slug-метки, хост referrer и к
     assert.deepEqual(Object.keys(e).sort(), ['event_id', 'name', 'path', 'properties']);
   }
   assert.notEqual(body.events[0].event_id, body.events[1].event_id);
-  assert.doesNotMatch(opts.body, /[?#@]|utm_|secret|channel|faq/);
+  assert.doesNotMatch(opts.body, /[?#@]|channel|faq/);
 });
 
 test('мусор в метках, referrer и коде отбрасывается', async () => {
