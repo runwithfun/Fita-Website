@@ -15,6 +15,7 @@ import crypto from 'node:crypto';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import { CYR, translateHtml, babelTranslate, checkTranslation } from './i18n.mjs';
+import { loadContent, renderContent, homeTools, homeToolsCss } from './content-pages.mjs';
 
 const require = createRequire(import.meta.url);
 const Babel = require('@babel/standalone');
@@ -150,6 +151,8 @@ const PAGES = [
 ];
 
 const T = (page) => (EN ? page.en : page);
+const CONTENT = loadContent(ROOT);
+const CONTENT_ROUTES = CONTENT.map(page => ({ ...page, path: `/${page.slug}`, file: `${page.slug}.html`, content: true }));
 
 // Словарь перевода. Нет строки в словаре — сборка падает и пишет недостающие
 // в i18n/en.missing.json: так в английской версии не останется русского.
@@ -389,6 +392,9 @@ starts.forEach(([id, i], n) => {
 let head = src.slice(0, bodyOpen);
 let footer = src.slice(footerStart, scriptsStart);
 let tailScripts = src.slice(scriptsStart, bodyEnd);
+const contentCss = writeHashed('assets/css', 'content', 'css', fs.readFileSync(path.join(ROOT, 'assets/content.css')));
+const toolsCss = writeHashed('assets/css', 'tools', 'css', Buffer.from(homeToolsCss));
+const calculatorJs = writeHashed('assets/js', 'calculators', 'js', fs.readFileSync(path.join(ROOT, 'scripts/calculators.mjs')));
 
 // Видимая ссылка на английскую версию — пара к «Russian version» на fita.fit.
 if (!EN && HREFLANG) {
@@ -503,7 +509,7 @@ function jsonLd() {
 // страниц 404.html сразу уводит на адрес без слэша. Приглашение —
 // appfita.ru/?ref=<code> (так его выдаёт ядро); короткий вариант /r/<code>
 // статический хостинг отдаёт как 404, поэтому отсюда — на /?ref=<code>.
-const known = PAGES.filter((p) => p.path && p.path !== '/').map((p) => p.path);
+const known = [...PAGES, ...CONTENT_ROUTES].filter((p) => p.path && p.path !== '/').map((p) => p.path);
 const slashRedirect = `<script>(function(){var k=${JSON.stringify(known)},p=location.pathname.replace(/\\/+$/,''),r=p.match(/^\\/r\\/([A-Za-z0-9]{4,16})$/);if(r)location.replace('/?ref='+r[1]);else if(p!==location.pathname&&k.indexOf(p)>=0)location.replace(p+location.search+location.hash);})();</script>`;
 
 function headFor(page) {
@@ -569,6 +575,7 @@ for (const page of PAGES) {
     headFor(page) +
     `<body class="${bodyClass(page.view)}">\n` +
     body +
+    (page.view === 'view-home' ? `<link rel="stylesheet" href="${toolsCss}">${homeTools(CONTENT, LOCALE)}` : '') +
     footer +
     scripts +
     '</body>\n</html>\n';
@@ -578,6 +585,15 @@ for (const page of PAGES) {
   if (EN) residual(page.file, html.replace(/<div id="view-[a-z]+" lang="ru"[\s\S]*?(?=<footer class="site-footer">)/, ''));
   fs.writeFileSync(path.join(OUT, page.file), html);
 }
+
+for (const page of CONTENT) {
+  const html = renderContent(page, { lang: LOCALE, site: SITE, pages: CONTENT, fontHead: fontHead.app, cssUrl: contentCss, jsUrl: calculatorJs, analyticsTag });
+  if ((html.match(/<h1[\s>]/g) || []).length !== 1) throw new Error(`${page.slug}: expected one h1`);
+  if (EN) residual(`${page.slug}.html`, html);
+  fs.writeFileSync(path.join(OUT, `${page.slug}.html`), html);
+}
+const contentIndex = CONTENT.map(page => `- [${page[LOCALE].h1}](${SITE}/${page.slug}): ${page[LOCALE].description}`).join('\n');
+fs.appendFileSync(path.join(OUT, 'llms.txt'), `\n## ${EN ? 'Tools, device guides and MCP' : 'Инструменты, устройства и MCP'}\n\n${contentIndex}\n`);
 
 if (EN) fs.writeFileSync(path.join(OUT, 'spa.js'), minifyJs(fs.readFileSync(path.join(ROOT, 'spa.js'), 'utf8')));
 else fs.copyFileSync(path.join(ROOT, 'spa.js'), path.join(OUT, 'spa.js'));
@@ -623,6 +639,7 @@ const textOf = (html) =>
 const textHash = (html) => crypto.createHash('sha256').update(textOf(html)).digest('hex');
 
 async function fetchText(url) {
+  if (process.env.FITA_BUILD_OFFLINE === '1') return null;
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
     return res.ok ? await res.text() : null;
@@ -646,6 +663,7 @@ const liveLastmod = new Map(
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, '+00:00');
 
 async function lastmod(page) {
+  if (page.content) return page.updated;
   const m = views[page.view].match(/Редакция от (\d{2})\.(\d{2})\.(\d{4})/);
   if (m) return `${m[3]}-${m[2]}-${m[1]}`;
   const url = `${SITE}${page.path}`;
@@ -656,7 +674,7 @@ async function lastmod(page) {
 }
 
 const urls = [];
-for (const p of PAGES.filter((x) => x.path && !(EN && x.legal))) {
+for (const p of [...PAGES, ...CONTENT_ROUTES].filter((x) => x.path && !(EN && x.legal))) {
   const mod = await lastmod(p);
   urls.push(`  <url><loc>${SITE}${p.path}</loc><lastmod>${mod}</lastmod></url>`);
   console.log(`sitemap ${p.path}: ${mod}`);

@@ -1,0 +1,274 @@
+[
+  {
+    "id": "mcp",
+    "slug": "mcp",
+    "kind": "guide",
+    "updated": "2026-10-27",
+    "sources": [
+      {
+        "label": "OpenAI: Add custom MCP server",
+        "url": "https://developers.openai.com/api/docs/guides/custom-mcp-server"
+      },
+      {
+        "label": "OpenAI: ChatGPT Supported Countries",
+        "url": "https://help.openai.com/en/articles/7947663-chatgpt-supported-countries"
+      },
+      {
+        "label": "Claude: Get started with custom connectors using remote MCP",
+        "url": "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp"
+      },
+      {
+        "label": "Claude: Where can I access Claude?",
+        "url": "https://support.claude.com/en/articles/8461763-where-can-i-access-claude"
+      },
+      {
+        "label": "Google: Connect and manage custom apps for Gemini Apps",
+        "url": "https://support.google.com/gemini/answer/17209137?co=GENIE.Platform%3DDesktop&hl=en"
+      },
+      {
+        "label": "Perplexity: Adding Custom Remote Connectors",
+        "url": "https://www.perplexity.ai/help-center/en/articles/13915507-adding-custom-remote-connectors"
+      },
+      {
+        "label": "Sber — Connect GigaChat agents to MCP servers (in Russian)",
+        "url": "https://developers.sber.ru/docs/ru/gigachain/tutorials/agent-gigachat-mcp"
+      },
+      {
+        "label": "Yandex Cloud — MCP automation in AI Studio (in Russian)",
+        "url": "https://yandex.cloud/ru/blog/mcp-yandex-ai-studio-ai-agents-automation"
+      },
+      {
+        "label": "DeepSeek API Docs: Crush integration",
+        "url": "https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/crush"
+      },
+      {
+        "label": "FITA: Releases for supported platforms",
+        "url": "https://releases.appfita.ru"
+      },
+      {
+        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "url": "https://apps.apple.com/ru/app/id6794848328"
+      },
+      {
+        "label": "FITA MCP service address",
+        "url": "https://mcp.appfita.ru"
+      }
+    ],
+    "ru": {
+      "title": "MCP для Apple Health и Health Connect — FITA",
+      "description": "Как FITA передаёт разрешённые сводки здоровья AI-ассистентам через MCP: поддержка клиентов, OAuth, приватность и статус подключения на 27 октября 2026.",
+      "h1": "MCP FITA: данные здоровья в AI-ассистенте",
+      "lead": "MCP FITA передаёт AI-ассистенту разрешённую сводку Apple Health или Health Connect. Для подключения нужен клиент с удалённым MCP и OAuth; документированная поддержка клиента и проверенное соединение FITA — разные вещи.",
+      "sections": [
+        {
+          "heading": "Какие ассистенты поддерживают удалённый MCP?",
+          "paragraphs": [
+            "Официальная документация описывает пользовательские подключения у ChatGPT, Claude, Gemini и Perplexity. Это подтверждает возможности клиентов, но не успешное подключение FITA: авторизацию и чтение персонального здоровья в этих сервисах мы не выполняли. Совместимость конкретного аккаунта нужно проверить отдельно."
+          ],
+          "table": {
+            "headers": [
+              "Ассистент",
+              "Что подтверждено документацией",
+              "Подключение FITA"
+            ],
+            "rows": [
+              [
+                "ChatGPT",
+                "Удалённый MCP и OAuth; права аккаунта и рабочего пространства",
+                "Не проверено"
+              ],
+              [
+                "Claude",
+                "Remote MCP и OAuth; Free — один пользовательский коннектор",
+                "Не проверено"
+              ],
+              [
+                "Gemini",
+                "Custom apps; США, 18+, личный аккаунт, английский интерфейс",
+                "Не проверено"
+              ],
+              [
+                "Perplexity",
+                "Remote connectors с OAuth 2.0; доступ зависит от аккаунта и политик",
+                "Не проверено"
+              ],
+              [
+                "GigaChat",
+                "MCP в собственном агенте через API; пользовательский OAuth-коннектор не подтверждён",
+                "Не проверено"
+              ],
+              [
+                "Алиса / YandexGPT",
+                "MCP в AI Studio; подключение в обычной Алисе не подтверждено",
+                "Не проверено"
+              ],
+              [
+                "DeepSeek",
+                "MCP через сторонние агентские клиенты; пользовательский OAuth-коннектор не подтверждён",
+                "Не проверено"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "Как данные попадают к ассистенту?",
+          "paragraphs": [
+            "Телефон читает доступные записи здоровья, применяет настройки видимости FITA и загружает снимок на сервер. Ассистент после отдельного согласия OAuth читает этот снимок. Он не обращается напрямую к Apple Health или Health Connect на вашем телефоне.",
+            "В коде есть инструменты для активности, сна, пульса и ВСР, тренировок, готовности, нагрузки, стресса, целей и свежести данных. show_widget описывает карточки шагов, калорий, сердца и сна; их отображение зависит от поддержки MCP Apps конкретным клиентом. Запись здоровья через этот MCP не предусмотрена."
+          ]
+        },
+        {
+          "heading": "Какие данные можно открыть и как отключить доступ?",
+          "paragraphs": [
+            "Сводка ограничена разрешёнными категориями: активность, сон, сердце и тренировки. Переписка с Фитой, её память, вес, вода, цикл, настроение, осознанность и биоданные профиля в MCP-снимок не включаются. Готовность передаётся только при доступе к сердцу и сну.",
+            "Отключение удаляет MCP-снимок с сервера FITA и отзывает подключения. Это не удаляет ответы, уже полученные внешним ассистентом: к ним применяются его настройки и правила хранения. Размещение сервера в России само по себе не подтверждает соответствие или сертификацию по 152-ФЗ."
+          ]
+        },
+        {
+          "heading": "С чего начать проверку подключения?",
+          "paragraphs": [
+            "FITA сейчас находится в бесплатной закрытой бете с русским интерфейсом. Сборки для платформ собраны на releases.appfita.ru; карточка iPhone в App Store относится к российскому магазину, ID 6794848328. Доступ к установке не означает автоматическое участие в бете."
+          ],
+          "steps": [
+            "Откройте FITA на телефоне, войдите по почте и разрешите нужные категории здоровья.",
+            "В профиле выберите «Доступ для AI-ассистентов» и включите доступ.",
+            "Скопируйте актуальный адрес коннектора с экрана FITA; публичный адрес сервиса — https://mcp.appfita.ru.",
+            "Добавьте адрес в поддерживаемом клиенте, проверьте настройки и подтвердите OAuth той же почтой."
+          ]
+        },
+        {
+          "heading": "Почему ответы могут отставать от часов?",
+          "paragraphs": [
+            "Фоновая выгрузка ограничена интервалом 15 минут и зависит от обновления здоровья на телефоне. Это не непрерывная трансляция: снимок может оказаться значительно старше. Попросите ассистента проверить свежесть, откройте FITA и сверяйте время данных. Пропуск измерения означает отсутствие записи или скрытую категорию, а не нулевое значение."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Работает ли MCP FITA с любым AI?",
+          "a": "Нет. Нужен клиент с подходящим удалённым MCP, OAuth и доступом к этой функции. Каждое подключение требует проверки."
+        },
+        {
+          "q": "Нужен ли телефон рядом с компьютером?",
+          "a": "Компьютер читает уже загруженный снимок. Обновляет здоровье FITA на телефоне."
+        },
+        {
+          "q": "Можно ли подключить сервис из России?",
+          "a": "Российское размещение FITA не отменяет ограничений ассистента. Россия отсутствует в опубликованных списках ChatGPT и Claude; доступность остальных клиентов отдельно не подтверждена."
+        },
+        {
+          "q": "Можно ли поставить диагноз по готовности?",
+          "a": "Показатель помогает обсуждать тренировочный контекст. Он не устанавливает диагноз и зависит от полноты исходных записей."
+        }
+      ]
+    },
+    "en": {
+      "title": "Apple Health and Health Connect MCP — FITA",
+      "description": "Understand FITA’s health snapshot MCP, OAuth permissions, assistant compatibility, privacy controls and connection status, checked on October 27, 2026.",
+      "h1": "FITA MCP: health context for AI assistants",
+      "lead": "FITA implements an MCP bridge for a permitted Apple Health or Health Connect snapshot. A client needs remote MCP and OAuth support; documented client capability and a verified FITA connection are separate checks.",
+      "sections": [
+        {
+          "heading": "Which assistants document remote MCP support?",
+          "paragraphs": [
+            "ChatGPT, Claude, Gemini and Perplexity document custom remote connections. Client documentation is separate from an actual FITA connection: no account sign-in or personal health read was performed. Check actual interoperability with the intended account separately."
+          ],
+          "table": {
+            "headers": [
+              "Assistant",
+              "Documented capability",
+              "FITA connection"
+            ],
+            "rows": [
+              [
+                "ChatGPT",
+                "Remote MCP with OAuth; account and workspace permissions apply",
+                "Untested"
+              ],
+              [
+                "Claude",
+                "Remote MCP with OAuth; Free allows one custom connector",
+                "Untested"
+              ],
+              [
+                "Gemini",
+                "Custom apps; US adults, personal accounts, English",
+                "Untested"
+              ],
+              [
+                "Perplexity",
+                "Remote MCP with OAuth 2.0; account policies apply",
+                "Untested"
+              ],
+              [
+                "GigaChat",
+                "MCP in an API-based agent; consumer OAuth connector unconfirmed",
+                "Untested"
+              ],
+              [
+                "Alice / YandexGPT",
+                "AI Studio MCP; consumer Alice connection unconfirmed",
+                "Untested"
+              ],
+              [
+                "DeepSeek",
+                "MCP through external agent clients; consumer OAuth connector unconfirmed",
+                "Untested"
+              ]
+            ]
+          }
+        },
+        {
+          "heading": "How does health data reach the assistant?",
+          "paragraphs": [
+            "The phone reads available health records, applies FITA visibility settings, and uploads a snapshot to the server. After separate OAuth consent, the assistant reads that snapshot rather than accessing the phone’s health store directly.",
+            "Tools cover activity, sleep, heart rate and HRV, workouts, readiness, load, stress, goals and snapshot freshness. show_widget defines steps, energy, heart and sleep cards; rendering depends on the client’s MCP Apps support. This MCP does not write health records."
+          ]
+        },
+        {
+          "heading": "What is shared and how can access be revoked?",
+          "paragraphs": [
+            "Only permitted activity, sleep, heart and workout categories enter the snapshot. FITA conversations, memory, weight, water, cycle, mood, mindfulness and profile biodata are excluded. Readiness requires both heart and sleep access.",
+            "Turning access off deletes the server’s MCP snapshot and revokes connections. It does not erase responses already received by another assistant. Russian hosting alone does not establish certification or legal compliance."
+          ]
+        },
+        {
+          "heading": "How should a connection be checked?",
+          "paragraphs": [
+            "FITA is a free closed beta with a Russian interface. Platform releases are listed at releases.appfita.ru. The iPhone App Store listing is Russia-only, ID 6794848328; a listing does not guarantee beta admission."
+          ],
+          "steps": [
+            "Sign into FITA on your phone and permit the health categories you want to share.",
+            "Open your profile, then the AI-assistant access option (translated from Russian), and enable access.",
+            "Copy the current connector address shown in FITA; the public service address is https://mcp.appfita.ru.",
+            "Add it to a supported client, check its settings and authorize using the same FITA email."
+          ]
+        },
+        {
+          "heading": "Why might a snapshot be out of date?",
+          "paragraphs": [
+            "Background uploads occur no more frequently than every 15 minutes and depend on phone health updates. This is not live streaming. Ask the assistant to check freshness and open FITA on the phone when needed. Missing records are not zero measurements."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Does every AI assistant work?",
+          "a": "No. Remote MCP, suitable OAuth support and feature access must all be checked."
+        },
+        {
+          "q": "Must the phone stay beside the computer?",
+          "a": "The computer reads an uploaded snapshot. FITA on the phone supplies updates."
+        },
+        {
+          "q": "Does this guarantee access from Russia?",
+          "a": "No. Russia is absent from ChatGPT and Claude published supported-country lists; other clients need separate checks."
+        },
+        {
+          "q": "Is readiness a diagnosis?",
+          "a": "No. It is a training context indicator that depends on available measurements."
+        }
+      ]
+    }
+  }
+]
