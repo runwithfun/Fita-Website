@@ -674,7 +674,8 @@ async function lastmod(page) {
 }
 
 const urls = [];
-for (const p of [...PAGES, ...CONTENT_ROUTES].filter((x) => x.path && !(EN && x.legal))) {
+const sitemapPages = [...PAGES, ...CONTENT_ROUTES].filter((x) => x.path && !(EN && x.legal));
+for (const p of sitemapPages) {
   const mod = await lastmod(p);
   urls.push(`  <url><loc>${SITE}${p.path}</loc><lastmod>${mod}</lastmod></url>`);
   console.log(`sitemap ${p.path}: ${mod}`);
@@ -682,6 +683,10 @@ for (const p of [...PAGES, ...CONTENT_ROUTES].filter((x) => x.path && !(EN && x.
 fs.writeFileSync(
   path.join(OUT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
+);
+fs.writeFileSync(
+  path.join(OUT, 'sitemap.txt'),
+  sitemapPages.map((p) => `${SITE}${p.path}`).join('\n') + '\n',
 );
 
 const size = (f) => (fs.statSync(path.join(OUT, f)).size / 1024).toFixed(0) + ' КБ';

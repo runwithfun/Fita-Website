@@ -66,6 +66,19 @@ test('английская версия: правовые документы р�
   assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]), ['https://fita.fit/', 'https://fita.fit/space', ...loadContent(ROOT).map(p => `https://fita.fit/${p.slug}`)]);
 });
 
+test('текстовая карта: те же канонические URL, что в XML, на обоих доменах', () => {
+  for (const [dir, site] of [['_site', 'https://appfita.ru'], ['_site-en', 'https://fita.fit']]) {
+    const text = read(dir, 'sitemap.txt');
+    const urls = text.trimEnd().split('\n');
+    const xmlUrls = [...read(dir, 'sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    assert.deepEqual(urls, xmlUrls);
+    assert.equal(new Set(urls).size, urls.length);
+    assert.ok(urls.every((url) => new URL(url).origin === site && !/\s/.test(url)));
+    assert.ok(text.endsWith('\n'));
+    assert.doesNotMatch(text, /^\uFEFF/);
+  }
+});
+
 test('английская версия: ни одного русского слова вне правовых документов', () => {
   for (const f of PAGES) {
     const visible = en[f]
