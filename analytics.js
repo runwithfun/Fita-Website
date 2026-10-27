@@ -7,7 +7,9 @@
  *   path — нормализованный pathname известной маркетинговой страницы (без query/hash);
  *   source/medium/campaign — utm_* этой загрузки, только slug;
  *   referrer_host — хост внешнего referrer, без пути;
- *   referral_code — код приглашения из ?ref= (appfita.ru/?ref=CODE), только A-Z0-9.
+ *   referral_code — код приглашения из ?ref= (appfita.ru/?ref=CODE), только A-Z0-9;
+ *   visit facts (visitContext): ad click id, in-app browser, visit number, landing page,
+ *   landing parameter names (never values) and the first touch of this browser.
  * Ни email, ни текста, ни данных здоровья здесь нет и быть не должно.
  *
  * Всё best effort: ошибки сети, CORS и хранилища глотаются, на клики
@@ -40,7 +42,9 @@
   var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
   var MAX_QUEUE = 50; // больше за одну загрузку страницы не бывает; лишнее отбрасываем
-  var BATCH = 20; // лимит сервера на запрос
+  // The server takes 20 events and 16 KB per request; 5 of the largest possible events
+  // (with the visit facts of visitContext) stay under 16 KB, 20 would not.
+  var BATCH = 5;
   var MAX_FAILURES = 3; // подряд — дальше молчим до следующей загрузки
   var REF_TTL = 7 * 864e5; // временная атрибуция на сайте, не в приложении
   var VID_KEY = 'fita_vid';
@@ -107,7 +111,7 @@
   function referrerHost(ref, ownHost) {
     try {
       var h = new w.URL(ref).hostname.toLowerCase();
-      return h !== ownHost && HOSTS.indexOf(h) < 0 && HOST.test(h) ? h : null;
+      return h !== ownHost && HOSTS.indexOf(h) < 0 && h.length <= 253 && HOST.test(h) ? h : null;
     } catch (e) {
       return null;
     }
@@ -156,15 +160,104 @@
     return cleanCampaign(campaign);
   }
 
+  // Everything else a visit can tell about where it came from, kept raw so channels can be
+  // decided later: ad click ids (the visit came from an ad even when its UTM got lost), the
+  // in-app browser (those apps usually strip the referrer), the very first touch of this
+  // browser, the visit number and the names (not values) of the landing link's parameters.
+  // A click id never becomes a campaign source. The server checks the same shapes
+  // (PublicProps in server/app/routes/analytics.py) and refuses a whole batch for one bad value.
+  var CLICK_IDS = ['gclid', 'gbraid', 'wbraid', 'fbclid', 'ttclid', 'msclkid', 'twclid', 'rdt_cid', 'li_fat_id',
+                   'igsh', 'yclid', 'epik', 'sccid', 'dclid', 'oppref', 'olref'];  // oppref/olref: ChatGPT ads
+  var CLICK_VALUE = /^[A-Za-z0-9_.-]{1,300}$/;
+  var PARAM_NAMES = /^[a-z0-9_.-]{1,40}(,[a-z0-9_.-]{1,40}){0,11}$/;
+  var LOWER_SLUG = /^[a-z0-9][a-z0-9_.-]{0,63}$/;
+  var IN_APP = [[/Instagram/, 'instagram'], [/FBAN|FBAV|FB_IAB/, 'facebook'], [/Barcelona/, 'threads'],
+                [/musical_ly|BytedanceWebview|TikTok/i, 'tiktok'], [/Twitter/, 'x'], [/Reddit/i, 'reddit'],
+                [/LinkedInApp/, 'linkedin'], [/Snapchat/, 'snapchat'], [/Pinterest/, 'pinterest'],
+                [/\bLine\//, 'line'], [/Telegram/, 'telegram'], [/GSA\//, 'google_app']];
+  var VISIT_TTL = 30 * 60 * 1000;
+  var MAX_COUNT = 999999999;
+  function inAppBrowser() {
+    var ua = (w.navigator && w.navigator.userAgent) || '';
+    for (var i = 0; i < IN_APP.length; i++) if (IN_APP[i][0].test(ua)) return IN_APP[i][1];
+    return '';
+  }
+  // The storage is named, not passed: reading w.localStorage itself throws where storage is blocked.
+  function storedJSON(store, key) { try { return JSON.parse(w[store].getItem(key) || 'null'); } catch (e) { return null; } }
+  function saveJSON(store, key, value) { try { w[store].setItem(key, JSON.stringify(value)); } catch (e) {} }
+  // Empty or a string of that shape; a number would pass a bare regex test and fail the server.
+  function fits(re, v) { return v === '' || (typeof v === 'string' && re.test(v)); }
+  function isHost(v) { return typeof v === 'string' && v.length <= 253 && HOST.test(v); }
+  function isCount(v) { return typeof v === 'number' && v % 1 === 0 && v >= 1 && v <= MAX_COUNT; }
+  function isSource(v) {
+    return typeof v === 'string' && (v.indexOf('click:') === 0 ? CLICK_IDS.indexOf(v.slice(6)) >= 0 : LOWER_SLUG.test(v) || isHost(v));
+  }
+  // Stored facts are checked again before use: anything malformed starts afresh.
+  function validVisit(v) {
+    return !!v && typeof v.at === 'number' && isCount(v.number) && pagePath(v.landing) === v.landing &&
+      (v.click === '' ? v.clickId === '' : CLICK_IDS.indexOf(v.click) >= 0 && fits(CLICK_VALUE, v.clickId) && v.clickId !== '') &&
+      fits(PARAM_NAMES, v.params) && (v.referrer === '' || isHost(v.referrer));
+  }
+  function validFirst(f) {
+    return !!f && typeof f.at === 'number' && f.at > 0 && isFinite(f.at) && isSource(f.source) &&
+      fits(LOWER_SLUG, f.medium) && fits(LOWER_SLUG, f.campaign) &&
+      (f.referrer === '' || isHost(f.referrer)) && pagePath(f.landing) === f.landing;
+  }
+  // A visit starts after 30 minutes without events; its landing facts are fixed for the visit.
+  function visitContext(values, landing, referrer) {
+    var now = Date.now(), visit = storedJSON('sessionStorage', 'fita_visit_v1');
+    if (!validVisit(visit) || now < visit.at || now - visit.at >= VISIT_TTL) {
+      var count = parseInt(get('fita_visits') || '0', 10);
+      count = count >= 0 && count < MAX_COUNT ? count + 1 : 1;
+      put('fita_visits', String(count));
+      var click = '', clickId = '', keys = [];
+      try {
+        var q = new w.URLSearchParams(w.location.search);
+        q.forEach(function (value, key) {
+          key = /^[A-Za-z0-9_.-]{1,40}$/.test(key) ? key.toLowerCase() : '';
+          if (key && keys.length < 12 && keys.indexOf(key) < 0) keys.push(key);
+        });
+        for (var i = 0; i < CLICK_IDS.length && !click; i++) {
+          var v = q.get(CLICK_IDS[i]);
+          if (v && CLICK_VALUE.test(v)) { click = CLICK_IDS[i]; clickId = v; }
+        }
+      } catch (e) {}
+      visit = { number: count, click: click, clickId: clickId, params: keys.join(','), landing: landing, referrer: referrer || '' };
+    }
+    visit.at = now;
+    saveJSON('sessionStorage', 'fita_visit_v1', visit);
+    var first = storedJSON('localStorage', 'fita_first_touch_v1');
+    if (!validFirst(first)) {
+      first = { at: now, source: values.utm_source || (visit.click ? 'click:' + visit.click : '') || visit.referrer || 'direct',
+                medium: values.utm_medium || '', campaign: values.utm_campaign || '', referrer: visit.referrer, landing: visit.landing };
+      saveJSON('localStorage', 'fita_first_touch_v1', first);
+    }
+    var out = { visit_number: visit.number, landing_path: visit.landing,
+                days_since_first_visit: Math.min(100000, Math.max(0, Math.floor((now - first.at) / 864e5))) };
+    if (visit.params) out.landing_params = visit.params;
+    if (visit.click) { out.click_id_type = visit.click; out.click_id = visit.clickId; }
+    var app = inAppBrowser();
+    if (app) out.in_app_browser = app;
+    ['source', 'medium', 'campaign', 'referrer', 'landing'].forEach(function (key) {
+      if (first[key]) out['first_' + key] = first[key];
+    });
+    return out;
+  }
+
   // Свойства этой загрузки страницы: одинаковые для всех её событий.
   function context(loc, referrer, ref) {
-    var out = {}, values = campaignContext(), v;
+    var out = {}, values = campaignContext(), v, k;
     UTM_KEYS.forEach(function (key) {
       if (values[key]) out[key === 'utm_term' || key === 'utm_content' ? key : key.slice(4)] = values[key];
     });
     v = referrerHost(referrer, String(loc.hostname || '').toLowerCase());
     if (v) out.referrer_host = v;
     if (ref) out.referral_code = ref;
+    // Only a collecting page counts visits: previews and other hosts leave no trace in storage.
+    if (enabled) {
+      var facts = visitContext(values, path, v);
+      for (k in facts) if (Object.prototype.hasOwnProperty.call(facts, k)) out[k] = facts[k];
+    }
     return out;
   }
 

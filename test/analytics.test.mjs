@@ -83,6 +83,9 @@ function page({ url = 'https://appfita.ru/', referrer = '', storage = memoryStor
   return { win, calls, timers, listeners, elements, run, runTimers, click, events };
 }
 
+// Visit facts every collecting page adds (a fresh browser landing on / with no tags).
+const visit = (extra = {}) => ({ visit_number: 1, landing_path: '/', days_since_first_visit: 0, first_source: 'direct', first_landing: '/', ...extra });
+
 async function load(opts) {
   const p = page(opts);
   p.run(ANALYTICS);
@@ -104,7 +107,8 @@ test('page_view: только pathname, slug-метки, хост referrer и к
   assert.equal(opts.headers, undefined); // text/plain: без CORS-preflight
   assert.match(body.visitor_id, UUID);
   assert.deepEqual(Object.keys(body).sort(), ['events', 'visitor_id']);
-  const props = { source: 'telegram', medium: 'post', campaign: 'spring-26', utm_term: 'secret', utm_content: 'x', referrer_host: 't.me', referral_code: 'ABCD2345' };
+  const props = { source: 'telegram', medium: 'post', campaign: 'spring-26', utm_term: 'secret', utm_content: 'x', referrer_host: 't.me', referral_code: 'ABCD2345',
+    ...visit({ landing_params: 'utm_source,utm_medium,utm_campaign,utm_term,utm_content,email,ref', first_source: 'telegram', first_medium: 'post', first_campaign: 'spring-26', first_referrer: 't.me' }) };
   assert.deepEqual(body.events.map((e) => [e.name, e.path, e.properties]), [
     ['page_view', '/', props],
     ['referral_link_opened', '/', props],
@@ -122,10 +126,10 @@ test('мусор в метках, referrer и коде отбрасываетс�
     url: 'https://appfita.ru/space/?utm_source=a%20b&utm_medium=x@y.ru&utm_campaign=' + 'a'.repeat(65) + '&ref=<script>',
     referrer: 'https://appfita.ru/',
   });
-  assert.deepEqual(p.events().map((e) => [e.name, e.path, e.properties]), [['page_view', '/space', {}]]);
+  assert.deepEqual(p.events().map((e) => [e.name, e.path, e.properties]), [['page_view', '/space', visit({ landing_path: '/space', first_landing: '/space', landing_params: 'utm_source,utm_medium,utm_campaign,ref' })]]);
   for (const referrer of ['http://localhost:3000/', 'https://192.168.0.1/', 'not a url', 'https://www.fita.fit/x']) {
     const q = await load({ url: 'https://appfita.ru/', referrer });
-    assert.deepEqual(q.events()[0].properties, {}, referrer);
+    assert.deepEqual(q.events()[0].properties, visit(), referrer);
   }
 });
 
@@ -147,7 +151,7 @@ test('код приглашения живёт 7 дней и не порожда
   assert.deepEqual(later.events().map((e) => [e.name, e.properties.referral_code]), [['page_view', 'WXYZ2345']]);
   storage.setItem('fita_ref', JSON.stringify({ c: 'WXYZ2345', t: Date.now() - 8 * 864e5 }));
   const expired = await load({ url: 'https://appfita.ru/', storage });
-  assert.deepEqual(expired.events()[0].properties, {});
+  assert.deepEqual(expired.events()[0].properties, visit({ visit_number: 3 }));
   assert.equal(storage.getItem('fita_ref'), null);
 });
 
@@ -167,6 +171,7 @@ test('правовые страницы, превью-хосты и сборка
   assert.equal(preview.win.FITA_ANALYTICS.referral(), 'ABCD2345');
   assert.equal(preview.win.FITA_ANALYTICS.visitorId(), null);
   assert.equal(preview.win.localStorage.getItem('fita_vid'), null);
+  for (const key of ['fita_visits', 'fita_first_touch_v1']) assert.equal(preview.win.localStorage.getItem(key), null, key);
 });
 
 test('visitor_id: один на браузер; без localStorage — один на загрузку', async () => {
