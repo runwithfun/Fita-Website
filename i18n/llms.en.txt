@@ -13,7 +13,7 @@ Not to be confused with: FITA (fita.fit, appfita.ru) is not related to the Fita 
 - Load and adaptation: acute and chronic load, how effort relates to the body's response.
 - A home screen of widgets that the agent builds around the user; themes and accents.
 - Chat with the agent Fita: remembers past conversations, sees the same numbers as the user, can move a workout or rebuild the screen — only with the user's consent.
-- FITA MCP: permission-based reading of a health snapshot by compatible external assistants through remote MCP and OAuth. Client support, plan and region conditions are explained in the guides.
+- FITA MCP: permission-based reading of a health snapshot by compatible external assistants through remote MCP and OAuth. Choose data categories for conversations in ChatGPT, Claude, Gemini or Perplexity. Disconnecting deletes the server snapshot and revokes connections.
 - Clubs and events: interest clubs, events with limited spots, city events.
 
 ## FAQ

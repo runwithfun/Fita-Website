@@ -43,6 +43,18 @@ test('built short invite redirects preserve campaign tags and anchors, with the 
   }
 });
 
+test('контент: короткие EN-сниппеты и единый русский бренд', () => {
+  for (const file of fs.readdirSync(path.join(ROOT, '_site-en')).filter(f => f.endsWith('.html'))) {
+    const description = read('_site-en', file).match(/<meta name="description" content="([^"]*)"/);
+    if (description) assert.ok(description[1].length <= 155, `${file}: description`);
+  }
+  for (const page of loadContent(ROOT)) {
+    assert.ok(page.en.description.length <= 155, `${page.id}: description`);
+    assert.ok(page.en.title.length <= 60, `${page.id}: title`);
+    assert.doesNotMatch(JSON.stringify(page.ru), /\bFITA\b/, page.id);
+  }
+});
+
 test('русская версия: appfita.ru, без hreflang по умолчанию', () => {
   assert.match(ru['index.html'], /<html lang="ru">/);
   assert.match(ru['index.html'], /<link rel="canonical" href="https:\/\/appfita.ru\/">/);
