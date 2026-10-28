@@ -35,7 +35,8 @@
   var HOSTS = ['appfita.ru', 'www.appfita.ru', 'fita.fit', 'www.fita.fit'];
   // Только маркетинговые страницы; правовые, 404 и всё прочее — никогда.
   var PAGES = { '/': '/', '/index.html': '/', '/space': '/space', '/space.html': '/space' };
-  var DOWNLOAD_HOSTS = ['apps.apple.com', 'releases.appfita.ru'];
+  // App Store Connect provider token. Empty keeps App Store links unchanged.
+  var APP_STORE_PROVIDER_TOKEN = '';
   // Те же шаблоны, что проверяет сервер (server/app/routes/analytics.py).
   var CODE = /^[A-Za-z0-9]{4,16}$/;
   var HOST = /^[a-z0-9]([a-z0-9-]{0,62}\.)+[a-z]{2,63}$/;
@@ -153,6 +154,8 @@
         });
       } catch (e) {}
       if (tagged) campaign = cleanCampaign(values);
+      // A new invite is a new arrival. The server resolves its code before assigning a channel.
+      else if (refFromUrl(w.location)) campaign = {};
       campaignSearch = search;
     }
     campaignAt = now;
@@ -204,8 +207,10 @@
       (f.referrer === '' || isHost(f.referrer)) && pagePath(f.landing) === f.landing;
   }
   // A visit starts after 30 minutes without events; its landing facts are fixed for the visit.
+  // The page keeps its own copy too, so blocked storage does not start a new visit on every event.
+  var pageVisit = null, pageFirst = null;
   function visitContext(values, landing, referrer) {
-    var now = Date.now(), visit = storedJSON('sessionStorage', 'fita_visit_v1');
+    var now = Date.now(), visit = storedJSON('sessionStorage', 'fita_visit_v1') || pageVisit;
     if (!validVisit(visit) || now < visit.at || now - visit.at >= VISIT_TTL) {
       var count = parseInt(get('fita_visits') || '0', 10);
       count = count >= 0 && count < MAX_COUNT ? count + 1 : 1;
@@ -225,13 +230,14 @@
       visit = { number: count, click: click, clickId: clickId, params: keys.join(','), landing: landing, referrer: referrer || '' };
     }
     visit.at = now;
-    saveJSON('sessionStorage', 'fita_visit_v1', visit);
-    var first = storedJSON('localStorage', 'fita_first_touch_v1');
+    saveJSON('sessionStorage', 'fita_visit_v1', pageVisit = visit);
+    var first = storedJSON('localStorage', 'fita_first_touch_v1') || pageFirst;
     if (!validFirst(first)) {
       first = { at: now, source: values.utm_source || (visit.click ? 'click:' + visit.click : '') || visit.referrer || 'direct',
                 medium: values.utm_medium || '', campaign: values.utm_campaign || '', referrer: visit.referrer, landing: visit.landing };
       saveJSON('localStorage', 'fita_first_touch_v1', first);
     }
+    pageFirst = first;
     var out = { visit_number: visit.number, landing_path: visit.landing,
                 days_since_first_visit: Math.min(100000, Math.max(0, Math.floor((now - first.at) / 864e5))) };
     if (visit.params) out.landing_params = visit.params;
@@ -244,7 +250,7 @@
     return out;
   }
 
-  // Свойства этой загрузки страницы: одинаковые для всех её событий.
+  // Refresh campaign expiry for each event, including clicks on a long-open page.
   function context(loc, referrer, ref) {
     var out = {}, values = campaignContext(), v, k;
     UTM_KEYS.forEach(function (key) {
@@ -277,10 +283,12 @@
   var failures = 0;
   var lastDownload = { href: '', at: 0 };
 
-  function track(name) {
+  function track(name, properties) {
     if (!enabled || queue.length >= MAX_QUEUE) return;
+    ctx = context(loc, d.referrer, ref);
     var props = {}, k;
     for (k in ctx) props[k] = ctx[k];
+    if (properties && properties.store) props.store = properties.store;
     queue.push({ event_id: uuid(), name: name, path: path, properties: props });
     schedule(1000);
   }
@@ -333,23 +341,67 @@
     send(queue.splice(0, BATCH), false);
   }
 
-  function isDownload(a) {
-    try { return DOWNLOAD_HOSTS.indexOf(new w.URL(a.href, loc.href).hostname) >= 0; } catch (e) { return false; }
+  function downloadStore(a) {
+    try {
+      var url = new w.URL(a.href, loc.href);
+      if (url.protocol !== 'https:' || url.username || url.password || url.port) return null;
+      if (url.hostname === 'releases.appfita.ru') return 'apk';
+      if (url.hostname === 'apps.apple.com' && /\/id6794848328\/?$/.test(url.pathname)) return 'app_store';
+    } catch (e) {}
+    return null;
+  }
+
+  // Hash the tuple, not its ambiguous joined label; keep ct within Apple's 40-character limit.
+  function appleCampaignTag(source, campaign) {
+    var ct = [source, campaign].filter(Boolean).join('-'), hash = 2166136261;
+    if (!ct) return '';
+    var tuple = JSON.stringify([source || '', campaign || '']);
+    for (var i = 0; i < tuple.length; i++) hash = Math.imul(hash ^ tuple.charCodeAt(i), 16777619);
+    return ct.slice(0, 31) + '-' + ('00000000' + (hash >>> 0).toString(16)).slice(-8);
+  }
+
+  var downloadLinks = new WeakMap();
+  function decorateDownload(a, store) {
+    if (store === 'app_store' && !/^[0-9]{1,32}$/.test(APP_STORE_PROVIDER_TOKEN)) return;
+    try {
+      var saved = downloadLinks.get(a);
+      var original = saved && a.href === saved.decorated ? saved.original : a.href;
+      var url = new w.URL(original, loc.href), values = campaignContext();
+      if (store === 'apk' && Object.keys(values).length) {
+        Array.from(url.searchParams.keys()).forEach(function (key) {
+          if (/^utm_(source|medium|campaign|term|content)$/i.test(key)) url.searchParams.delete(key);
+        });
+        UTM_KEYS.forEach(function (key) { if (values[key]) url.searchParams.set(key, values[key]); });
+      } else if (store === 'app_store') {
+        var ct = appleCampaignTag(values.utm_source, values.utm_campaign);
+        if (ct) {
+          url.searchParams.set('pt', APP_STORE_PROVIDER_TOKEN);
+          url.searchParams.set('ct', ct);
+        }
+      }
+      if (url.href !== a.href) a.href = url.href;
+      downloadLinks.set(a, { original: original, decorated: a.href });
+    } catch (e) {}
   }
 
   if (enabled) {
     // capture: событие фиксируется до того, как чужой обработчик что-то отменит.
-    d.addEventListener('click', function (e) {
+    function downloadClick(e) {
       try {
+        if (e.type === 'auxclick' && e.button !== 1) return;
         var a = e.target && e.target.closest && e.target.closest('a[href]');
-        if (!a || !isDownload(a)) return;
+        var store = a && downloadStore(a);
+        if (!store) return;
+        decorateDownload(a, store);
         var t = Date.now();
         if (a.href === lastDownload.href && t - lastDownload.at < 1000) return; // двойной клик — одно событие
         lastDownload = { href: a.href, at: t };
-        track('download_clicked');
+        track('download_clicked', { store: store });
         flush(true);
       } catch (err) {}
-    }, true);
+    }
+    d.addEventListener('click', downloadClick, true);
+    d.addEventListener('auxclick', downloadClick, true);
     w.addEventListener('pagehide', function () { flush(true); });
     d.addEventListener('visibilitychange', function () {
       if (d.visibilityState === 'hidden') flush(true);

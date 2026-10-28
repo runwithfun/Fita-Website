@@ -510,7 +510,7 @@ function jsonLd() {
 // appfita.ru/?ref=<code> (так его выдаёт ядро); короткий вариант /r/<code>
 // статический хостинг отдаёт как 404, поэтому отсюда — на /?ref=<code>.
 const known = [...PAGES, ...CONTENT_ROUTES].filter((p) => p.path && p.path !== '/').map((p) => p.path);
-const slashRedirect = `<script>(function(){var k=${JSON.stringify(known)},p=location.pathname.replace(/\\/+$/,''),r=p.match(/^\\/r\\/([A-Za-z0-9]{4,16})$/);if(r)location.replace('/?ref='+r[1]);else if(p!==location.pathname&&k.indexOf(p)>=0)location.replace(p+location.search+location.hash);})();</script>`;
+const slashRedirect = `<script>(function(){var k=${JSON.stringify(known)},p=location.pathname.replace(/\\/+$/,''),r=p.match(/^\\/r\\/([A-Za-z0-9]{4,16})$/);if(r){var q=new URLSearchParams(location.search);q.set('ref',r[1]);location.replace('/?'+q.toString()+location.hash);}else if(p!==location.pathname&&k.indexOf(p)>=0)location.replace(p+location.search+location.hash);})();</script>`;
 
 function headFor(page) {
   // Правовые документы английской версии — копия русских: canonical на appfita.ru.
