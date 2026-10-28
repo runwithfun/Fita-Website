@@ -5,6 +5,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { execFileSync } from 'node:child_process';
 import { loadContent } from '../scripts/content-pages.mjs';
 
@@ -22,6 +23,25 @@ build({ FITA_LOCALE: 'en' });
 const PAGES = ['index.html', 'space.html', 'privacy.html', 'consent.html', 'terms.html', '404.html'];
 const ru = Object.fromEntries(PAGES.map((f) => [f, read('_site', f)]));
 const en = Object.fromEntries(PAGES.map((f) => [f, read('_site-en', f)]));
+
+test('built short invite redirects preserve campaign tags and anchors, with the path code taking priority', () => {
+  for (const site of [ru, en]) {
+    const script = [...site['404.html'].matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).find(s => s.includes('location.replace'));
+    assert.ok(script, '404 redirect exists in both builds');
+    for (const [input, expected] of [
+      ['/r/SPRING26?utm_source=Telegram&utm_medium=post&utm_campaign=launch&utm_term=fit&utm_content=bio&ref=WRONG#download', '/?utm_source=Telegram&utm_medium=post&utm_campaign=launch&utm_term=fit&utm_content=bio&ref=SPRING26#download'],
+      ['/r/SPRING26/', '/?ref=SPRING26'],
+      ['/space/?utm_source=telegram#download', '/space?utm_source=telegram#download'],
+      ['/r/invalid-code?utm_source=telegram', null],
+    ]) {
+      let redirected = null;
+      const url = new URL(input, 'https://appfita.ru');
+      const location = {pathname:url.pathname,search:url.search,hash:url.hash,replace:value=>{redirected=value;}};
+      vm.runInNewContext(script, {location,URLSearchParams});
+      assert.equal(redirected, expected, input);
+    }
+  }
+});
 
 test('контент: короткие EN-сниппеты и единый русский бренд', () => {
   for (const file of fs.readdirSync(path.join(ROOT, '_site-en')).filter(f => f.endsWith('.html'))) {

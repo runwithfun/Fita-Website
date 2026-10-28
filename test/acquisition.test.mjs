@@ -6,15 +6,16 @@ const code=fs.readFileSync(new URL('../analytics.js',import.meta.url),'utf8');
 const product='fita', host='appfita.ru', apiName=product.toUpperCase()+'_ANALYTICS';
 const source=p=>p.utm_source??p.source;
 const storage=()=>{const m=new Map();return{getItem:k=>m.get(k)??null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)}};
-function page(search='',session=storage(),now=1700000000000) {
+function page(search='',session=storage(),now=1700000000000,providerToken='') {
   const calls=[],timers=[],handlers={};let seq=0;
   const loc=new URL('https://'+host+'/'+search);
   const doc={readyState:'complete',referrer:'',title:'Home',visibilityState:'visible',documentElement:{scrollHeight:1000},currentScript:{getAttribute:k=>({'data-api':'https://api.appfita.ru','data-collect':'1'})[k]},querySelectorAll:()=>[],querySelector:()=>null,addEventListener:(n,f)=>{handlers[n]=f}};
   const win={document:doc,location:loc,localStorage:storage(),sessionStorage:session,URL,URLSearchParams,navigator:{language:'en'},screen:{width:100,height:100},innerWidth:100,innerHeight:100,history:{pushState(){},replaceState(){}},addEventListener:(n,f)=>{handlers[n]=f},crypto:{randomUUID:()=>`00000000-0000-4000-8000-${String(++seq).padStart(12,'0')}`},setTimeout:f=>{timers.push(f);return timers.length},fetch:async(url,opts)=>{calls.push(JSON.parse(opts.body));return{status:204}}};
   const clock=class extends Date{static now(){return now}};
-  vm.runInNewContext(code,{window:win,URL,URLSearchParams,Date:clock,Intl,Uint8Array,Blob,setTimeout:win.setTimeout,clearTimeout(){}});
+  const configured=code.replace("var APP_STORE_PROVIDER_TOKEN = '';",'var APP_STORE_PROVIDER_TOKEN = '+JSON.stringify(providerToken)+';');
+  vm.runInNewContext(configured,{window:win,URL,URLSearchParams,Date:clock,Intl,Uint8Array,Blob,setTimeout:win.setTimeout,clearTimeout(){}});
   const flush=async()=>{let guard=0;while(timers.length&&guard++<10){timers.shift()();await Promise.resolve()}};
-  return{win,flush,calls,events:()=>calls.flatMap(c=>c.events),navigate:s=>{win.location=new URL('https://'+host+'/'+s);handlers.popstate?.()}};
+  return{win,flush,calls,events:()=>calls.flatMap(c=>c.events),advance:ms=>{now+=ms},click:(href,eventType='click',button=0)=>{const a=typeof href==='string'?{href}:href;handlers[eventType]?.({type:eventType,button,target:{closest:()=>a},preventDefault(){throw new Error('Navigation must not be blocked')}});return a;},navigate:s=>{win.location=new URL('https://'+host+'/'+s);handlers.popstate?.()}};
 }
 test('all five safe UTM tags reach events and persist across navigation',async()=>{
   const session=storage(),a=page('?utm_source=Telegram&utm_medium=Post&utm_campaign=Launch&utm_term=Fitness&utm_content=Bio',session);
@@ -37,4 +38,71 @@ if(product!=='fita')test('SPA query-only arrivals count and page_leave keeps its
   const a=page('?utm_source=one');await a.flush();a.navigate('?utm_source=two');await a.flush();
   const events=a.events();assert.equal(events.filter(e=>e.name==='page_view').length,2);
   assert.equal(source(events.find(e=>e.name==='page_leave').properties),'one');assert.equal(source(events.at(-1).properties),'two');
+});
+
+test('only FITA downloads count, with a bounded store property and no outbound URL',async()=>{
+  const p=page();await p.flush();
+  for(const href of ['https://apps.apple.com/app/id123','https://apps.apple.com/app/id67948483280','https://apps.apple.com.evil.test/app/id6794848328','http://apps.apple.com/app/id6794848328','https://user@apps.apple.com/app/id6794848328','https://releases.appfita.ru.evil.test/'])p.click(href);
+  p.click('https://apps.apple.com/ru/app/fita/id6794848328');
+  p.click('https://releases.appfita.ru/#v1');await p.flush();
+  const clicks=p.events().filter(e=>e.name==='download_clicked');
+  assert.deepEqual(clicks.map(e=>e.properties.store),['app_store','apk']);
+  assert.ok(clicks.every(e=>!('href' in e.properties)));
+});
+test('App Store links stay byte-for-byte unchanged without a provider token or campaign',async()=>{
+  for(const [search,token] of [['?utm_source=telegram&utm_campaign=launch',''],['?utm_source=telegram','bad-token'],['','123456']]){
+    const p=page(search,storage(),1700000000000,token);await p.flush();
+    const href='https://apps.apple.com/app/id6794848328?mt=8&pt=old&ct=existing#details';
+    assert.equal(p.click(href).href,href);
+  }
+});
+test('App Store campaign decoration uses the session campaign, preserves query and hash, and expires',async()=>{
+  const session=storage(),landing=page('?utm_source=Telegram&utm_campaign=Launch',session);await landing.flush();
+  const p=page('',session,1700000001000,'123456');await p.flush();
+  const a={href:'https://apps.apple.com/app/id6794848328?mt=8#details'},original=a.href;
+  p.click(a);const url=new URL(a.href);
+  assert.equal(url.searchParams.get('pt'),'123456');assert.equal(url.searchParams.get('ct'),'telegram-launch-21beacb3');
+  assert.equal(url.searchParams.get('mt'),'8');assert.equal(url.hash,'#details');assert.equal(url.searchParams.has('utm_source'),false);
+  p.advance(31*60000);p.click(a);await p.flush();assert.equal(a.href,original);
+  assert.equal(p.events().at(-1).properties.source,undefined);
+  const long=page('?utm_source='+('s'.repeat(64))+'&utm_campaign='+('c'.repeat(64)),storage(),1700000000000,'123');await long.flush();
+  const ct=new URL(long.click('https://apps.apple.com/app/id6794848328').href).searchParams.get('ct');
+  assert.equal(ct.length,40);assert.match(ct,/^[a-z0-9_.-]+$/);
+  const variant=page('?utm_source='+('s'.repeat(64))+'&utm_campaign=different',storage(),1700000000000,'123');await variant.flush();
+  assert.notEqual(new URL(variant.click('https://apps.apple.com/app/id6794848328').href).searchParams.get('ct'),ct);
+});
+test('APK links carry only the five safe session tags, preserve referral codes and stop carrying expired tags',async()=>{
+  const p=page('?utm_source=Telegram&utm_medium=Social&utm_campaign=Launch&utm_content=Bio&utm_term=Fitness&email=person%40example.com');await p.flush();
+  const a={href:'https://releases.appfita.ru/?ref=ABCD2345&utm_source=old&UTM_CAMPAIGN=old#android'};
+  const original=a.href;p.click(a);const url=new URL(a.href);
+  assert.deepEqual([...url.searchParams.entries()],[['ref','ABCD2345'],['utm_source','telegram'],['utm_medium','social'],['utm_campaign','launch'],['utm_term','fitness'],['utm_content','bio']]);
+  assert.equal(url.hash,'#android');assert.doesNotMatch(a.href,/example|email|UTM_CAMPAIGN|old/);
+  p.advance(31*60000);p.click(a);assert.equal(a.href,original);
+});
+test('a fresh referral without its own tags clears the former campaign before server resolution',async()=>{
+  const session=storage(),old=page('?utm_source=telegram&utm_campaign=old',session);await old.flush();
+  const invite=page('?ref=SPRING26',session,1700000001000);await invite.flush();
+  const props=invite.events()[0].properties;
+  assert.equal(props.referral_code,'SPRING26');assert.equal(props.source,undefined);assert.equal(props.campaign,undefined);
+  assert.equal(invite.click('https://releases.appfita.ru/').href,'https://releases.appfita.ru/');
+  const explicit=page('?ref=SPRING26&utm_source=partner',session,1700000002000);await explicit.flush();
+  assert.equal(explicit.events()[0].properties.source,'partner');
+  assert.equal(explicit.events()[0].properties.campaign,undefined);
+});
+test('Apple campaign tokens distinguish joined-label collisions and source-only vs campaign-only visits',async()=>{
+  const tokens=[];
+  for(const search of ['?utm_source=partner-one&utm_campaign=launch','?utm_source=partner&utm_campaign=one-launch','?utm_source=telegram','?utm_campaign=telegram']){
+    const p=page(search,storage(),1700000000000,'123456');await p.flush();
+    tokens.push(new URL(p.click('https://apps.apple.com/app/id6794848328').href).searchParams.get('ct'));
+  }
+  assert.equal(new Set(tokens).size,4);
+  assert.ok(tokens.every(ct=>ct.length<=40&&/^[a-z0-9_.-]+$/.test(ct)));
+});
+test('middle-click downloads are decorated and counted; context-menu clicks are ignored',async()=>{
+  const p=page('?utm_source=telegram&utm_campaign=launch',storage(),1700000000000,'123456');await p.flush();
+  const href='https://apps.apple.com/app/id6794848328';
+  assert.equal(p.click(href,'auxclick',2).href,href);
+  const a=p.click(href,'auxclick',1);await p.flush();
+  assert.equal(new URL(a.href).searchParams.get('ct'),'telegram-launch-21beacb3');
+  assert.equal(p.events().filter(e=>e.name==='download_clicked').length,1);
 });
