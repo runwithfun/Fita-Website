@@ -213,7 +213,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -409,7 +409,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -521,9 +521,9 @@
           "heading": "Как включить Apple Health и Health Connect?",
           "paragraphs": [],
           "steps": [
-            "На iPhone открой «Здоровье» и найдите Zepp среди приложений с доступом. Разреши предложенные категории записи.",
+            "На iPhone открой «Здоровье» и найди Zepp среди приложений с доступом. Разреши предложенные категории записи.",
             "Синхронизируй Amazfit с Zepp, затем проверь свежую запись в Apple Health или Health Connect.",
-            "Подключите Фита к соответствующему хранилищу и разреши чтение нужных типов."
+            "Подключи Фиту к соответствующему хранилищу и разреши чтение нужных типов."
           ]
         },
         {
@@ -642,7 +642,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -686,7 +686,7 @@
       }
     ],
     "ru": {
-      "title": "Samsung Health: Health Connect, Apple Health и Фита",
+      "title": "Samsung Health и Фита через Health Connect",
       "description": "Galaxy Watch и Samsung Health в Фите через Health Connect. Настрой сон, шаги, пульс и тренировки и обсуждай свою динамику с ИИ.",
       "h1": "Samsung и Фита",
       "lead": "Galaxy Watch и Samsung Health в Фите через Health Connect. Настрой сон, шаги, пульс и тренировки и обсуждай свою динамику с ИИ.",
@@ -753,7 +753,7 @@
             "Открой Samsung Health → Settings → Health Connect.",
             "При первом запуске нажми Get started; выбери разрешённые типы и подтверди Allow.",
             "Открой Samsung Health и синхронизируй часы; затем проверь новые данные в Health Connect.",
-            "Разреши Фита читать нужные категории Health Connect. Если разрешения выдавались из настроек Android, Samsung рекомендует после этого запустить Samsung Health."
+            "Разреши Фите читать нужные категории Health Connect. Если разрешения выдавались из настроек Android, Samsung рекомендует после этого запустить Samsung Health."
           ]
         },
         {
@@ -785,7 +785,7 @@
       ]
     },
     "en": {
-      "title": "Samsung Health to Health Connect or Apple Health | FITA",
+      "title": "Samsung Health to Health Connect: FITA Setup",
       "description": "Connect Galaxy Watch and Samsung Health to FITA through Health Connect. Set up sleep, steps, heart rate and workout sharing.",
       "h1": "Samsung & FITA",
       "lead": "Connect Galaxy Watch and Samsung Health to FITA through Health Connect. Set up sleep, steps, heart rate and workout sharing.",
@@ -863,7 +863,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -980,7 +980,7 @@
           "paragraphs": [],
           "steps": [
             "На iPhone: Google Health → Connections → Apps and services → Apple Health → Get started; подтверди согласие и разрешения.",
-            "На Android: Google Health → Connections → Partner apps → Sync your favorite health apps → Set up; выполните предложенную настройку и выдайте разрешения.",
+            "На Android: Google Health → Connections → Partner apps → Sync your favorite health apps → Set up; выполни предложенную настройку и выдай разрешения.",
             "Для проверки Android-соединения открой Connections → Partner apps → Manage Health Connect.",
             "Проверь новую запись в системном хранилище, затем разреши Фита её чтение."
           ]
@@ -1092,7 +1092,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -1202,7 +1202,7 @@
           "steps": [
             "На iPhone: вкладка You → значок настроек → Manage Apps and Devices → Health → «+» → Connect; разреши Workouts & Routes.",
             "В этом же разделе Health включи Send to Health для направления Strava → Apple Health.",
-            "На Android: You → настройки → Manage Apps and Devices → Health Connect; выполните предложенное подключение.",
+            "На Android: You → настройки → Manage Apps and Devices → Health Connect; выполни предложенное подключение.",
             "Проверь запись после нового занятия и разреши Фита читать нужную категорию."
           ]
         },
@@ -1313,7 +1313,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],

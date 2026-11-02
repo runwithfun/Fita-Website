@@ -109,9 +109,9 @@ const PAGES = [
     fonts: 'doc',
     legal: true,
     en: { title: 'Privacy Policy (in Russian) — FITA', description: 'FITA privacy policy: how the app processes and protects personal and health data. The document is available in Russian.' },
-    title: 'Политика конфиденциальности — ФИТА',
+    title: 'Политика конфиденциальности — Фита',
     description:
-      'Как приложение ФИТА обрабатывает и защищает персональные данные и данные о здоровье: состав данных, цели, сроки хранения и права пользователя.',
+      'Как приложение Фита обрабатывает и защищает персональные данные и данные о здоровье: состав данных, цели, сроки хранения и права пользователя.',
   },
   {
     file: 'consent.html',
@@ -121,9 +121,9 @@ const PAGES = [
     fonts: 'doc',
     legal: true,
     en: { title: 'Consent to personal data processing (in Russian) — FITA', description: 'Consent to personal data processing for FITA app users. The document is available in Russian.' },
-    title: 'Согласие на обработку персональных данных — ФИТА',
+    title: 'Согласие на обработку персональных данных — Фита',
     description:
-      'Текст согласия на обработку персональных данных пользователей приложения ФИТА: перечень данных, цели, действия с ними и порядок отзыва.',
+      'Текст согласия на обработку персональных данных пользователей приложения Фита: перечень данных, цели, действия с ними и порядок отзыва.',
   },
   {
     file: 'terms.html',
@@ -133,9 +133,9 @@ const PAGES = [
     fonts: 'doc',
     legal: true,
     en: { title: 'Terms of Use (in Russian) — FITA', description: 'FITA terms of use and community rules. The document is available in Russian.' },
-    title: 'Условия использования — ФИТА',
+    title: 'Условия использования — Фита',
     description:
-      'Условия использования приложения ФИТА и правила сообщества: клубы, события, контент пользователей и ответственность сторон.',
+      'Условия использования приложения Фита и правила сообщества: клубы, события, контент пользователей и ответственность сторон.',
   },
   {
     file: '404.html',
@@ -143,7 +143,7 @@ const PAGES = [
     view: 'view-404',
     keep: ['view-404'],
     fonts: 'doc',
-    title: 'Страница не найдена — ФИТА',
+    title: 'Страница не найдена — Фита',
     description: 'Такой страницы нет.',
     noindex: true,
     en: { title: 'Page not found — FITA', description: 'This page does not exist.' },

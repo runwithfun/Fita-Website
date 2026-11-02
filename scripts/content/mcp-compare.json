@@ -34,7 +34,7 @@
         "url": "https://releases.appfita.ru"
       },
       {
-        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "label": "FITA on the App Store",
         "url": "https://apps.apple.com/ru/app/id6794848328"
       },
       {
@@ -124,7 +124,7 @@
         },
         {
           "q": "Где доступны ассистенты?",
-          "a": "Доступ зависит от страны и аккаунта; Россия не входит в официальные списки ChatGPT и Claude."
+          "a": "Доступ зависит от страны и аккаунта."
         }
       ]
     },
@@ -210,7 +210,7 @@
         },
         {
           "q": "Where are the assistants available?",
-          "a": "Availability depends on country and account; Russia is outside the official supported-country lists for ChatGPT and Claude."
+          "a": "Availability depends on your country and account."
         }
       ]
     }
@@ -234,7 +234,7 @@
         "url": "https://releases.appfita.ru"
       },
       {
-        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "label": "FITA on the App Store",
         "url": "https://apps.apple.com/ru/app/id6794848328"
       },
       {
@@ -246,7 +246,7 @@
       "title": "Apple Health и Health Connect в ChatGPT — Фита MCP",
       "description": "Подключи Фиту к ChatGPT: сон, пульс, HRV, тренировки и готовность в одном диалоге. Пошаговая настройка MCP для iPhone и Android.",
       "h1": "Твои данные здоровья в ChatGPT",
-      "lead": "Обсуждай свой сон, пульс, HRV и готовность прямо в ChatGPT. Фита передаёт выбранные данные Apple Health или Health Connect через MCP — без скриншотов и ручных выгрузок.",
+      "lead": "Добавь Фиту один раз в веб-версии ChatGPT, выбери её через @ в новом диалоге и обсуждай сон, пульс, HRV и готовность. Фита передаёт выбранные данные Apple Health или Health Connect через MCP — без скриншотов и ручных выгрузок.",
       "sections": [
         {
           "heading": "Что даёт Фита в ChatGPT?",
@@ -292,8 +292,8 @@
         {
           "heading": "О чём спросить в первом диалоге?",
           "paragraphs": [
-            "Ты: «Посмотри мой сон, пульс и тренировки за неделю. Что изменилось и на что обратить внимание сегодня?»",
-            "Условный пример ответа: «После двух интенсивных тренировок сон стал короче, а пульс покоя — выше твоего обычного уровня. Покажу эти дни рядом с готовностью, чтобы было проще выбрать нагрузку»."
+            "Ты: «@Фита Собери сон, пульс покоя и тренировки за семь дней в одну таблицу и отметь, что изменилось».",
+            "Условный пример ответа: «Вот неделя одной таблицей. Две самые короткие ночи пришлись сразу на две самые тяжёлые тренировки, а пульс покоя в те утра был выше твоей базы»."
           ]
         },
         {
@@ -306,7 +306,7 @@
         {
           "heading": "Как подготовить свежую сводку?",
           "paragraphs": [
-            "Открой Фиту на телефоне после синхронизации часов. В начале разговора попроси показать время данных, а затем выбери период и вопрос — например, сон и тренировки за неделю."
+            "Открой Фиту на телефоне после синхронизации часов. В ChatGPT выбери Фиту через @, попроси показать время данных, а затем выбери период и вопрос."
           ]
         }
       ],
@@ -325,7 +325,7 @@
         },
         {
           "q": "Где доступны ассистенты?",
-          "a": "Доступ зависит от страны и аккаунта; Россия не входит в официальные списки ChatGPT и Claude."
+          "a": "Доступ зависит от страны и аккаунта."
         }
       ]
     },
@@ -333,7 +333,7 @@
       "title": "Apple Health & Health Connect in ChatGPT | FITA",
       "description": "Connect FITA to ChatGPT for sleep, heart rate, HRV, workouts and readiness in one conversation. Step-by-step MCP setup for iPhone and Android.",
       "h1": "Your health data in ChatGPT",
-      "lead": "Discuss your sleep, heart rate, HRV and readiness directly in ChatGPT. FITA brings your chosen Apple Health or Health Connect data through MCP, without screenshots or manual exports.",
+      "lead": "Add FITA once in ChatGPT on the web, pick it with @ in a new conversation and discuss your sleep, heart rate, HRV and readiness. FITA brings your chosen Apple Health or Health Connect data through MCP, without screenshots or manual exports.",
       "sections": [
         {
           "heading": "What does FITA bring to ChatGPT?",
@@ -379,8 +379,8 @@
         {
           "heading": "What can you ask first?",
           "paragraphs": [
-            "You: “Look at my sleep, heart rate and workouts this week. What changed, and what should I pay attention to today?”",
-            "Illustrative reply: “After two intense workouts, your sleep was shorter and resting heart rate was above your usual baseline. I’ll put those days next to readiness to help you choose today’s training focus.”"
+            "You: “@FITA Put my last seven days of sleep, resting heart rate and workouts into one table and mark what changed.”",
+            "Illustrative reply: “Here’s the week in one table. Your two shortest nights came right after your two hardest workouts, and resting heart rate was above your baseline on both mornings.”"
           ]
         },
         {
@@ -393,7 +393,7 @@
         {
           "heading": "How do you start with fresh data?",
           "paragraphs": [
-            "Open FITA after your watch syncs. Ask the assistant for the data update time, then choose a period and a question, such as sleep and workouts over the last week."
+            "Open FITA after your watch syncs. In ChatGPT, select FITA with @, ask for the data update time, then choose a period and a question."
           ]
         }
       ],
@@ -412,7 +412,7 @@
         },
         {
           "q": "Where are the assistants available?",
-          "a": "Availability depends on country and account; Russia is outside the official supported-country lists for ChatGPT and Claude."
+          "a": "Availability depends on your country and account."
         }
       ]
     }
@@ -440,7 +440,7 @@
         "url": "https://releases.appfita.ru"
       },
       {
-        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "label": "FITA on the App Store",
         "url": "https://apps.apple.com/ru/app/id6794848328"
       },
       {
@@ -452,7 +452,7 @@
       "title": "Apple Health и Health Connect в Claude — Фита MCP",
       "description": "Подключи Фиту к Claude: сон, пульс, HRV, тренировки и готовность в одном диалоге. Пошаговая настройка MCP для iPhone и Android.",
       "h1": "Твои данные здоровья в Claude",
-      "lead": "Обсуждай свой сон, пульс, HRV и готовность прямо в Claude. Фита передаёт выбранные данные Apple Health или Health Connect через MCP — без скриншотов и ручных выгрузок.",
+      "lead": "Добавь Фиту в Customize → Connectors, даже на Claude Free, и обсуждай сон, пульс, HRV и готовность. Фита передаёт выбранные данные Apple Health или Health Connect через MCP — без скриншотов и ручных выгрузок.",
       "sections": [
         {
           "heading": "Что даёт Фита в Claude?",
@@ -498,8 +498,8 @@
         {
           "heading": "О чём спросить в первом диалоге?",
           "paragraphs": [
-            "Ты: «Посмотри мой сон, пульс и тренировки за неделю. Что изменилось и на что обратить внимание сегодня?»",
-            "Условный пример ответа: «После двух интенсивных тренировок сон стал короче, а пульс покоя — выше твоего обычного уровня. Покажу эти дни рядом с готовностью, чтобы было проще выбрать нагрузку»."
+            "Ты: «Разбери сегодняшнюю готовность по шагам: какие показатели повлияли сильнее всего и что поменять в тренировке?»",
+            "Условный пример ответа: «Сильнее всего повлиял сон: ты спал меньше своей цели. HRV близок к базе, пульс покоя чуть выше обычного, поэтому сегодня я бы оставил лёгкую тренировку»."
           ]
         },
         {
@@ -512,7 +512,7 @@
         {
           "heading": "Как подготовить свежую сводку?",
           "paragraphs": [
-            "Открой Фиту на телефоне после синхронизации часов. В начале разговора попроси показать время данных, а затем выбери период и вопрос — например, сон и тренировки за неделю."
+            "Открой Фиту на телефоне после синхронизации часов. В Claude включи коннектор для разговора, попроси показать время данных, а затем выбери период и вопрос."
           ]
         }
       ],
@@ -531,7 +531,7 @@
         },
         {
           "q": "Где доступны ассистенты?",
-          "a": "Доступ зависит от страны и аккаунта; Россия не входит в официальные списки ChatGPT и Claude."
+          "a": "Доступ зависит от страны и аккаунта."
         }
       ]
     },
@@ -539,7 +539,7 @@
       "title": "Apple Health & Health Connect in Claude | FITA",
       "description": "Connect FITA to Claude for sleep, heart rate, HRV, workouts and readiness in one conversation. Step-by-step MCP setup for iPhone and Android.",
       "h1": "Your health data in Claude",
-      "lead": "Discuss your sleep, heart rate, HRV and readiness directly in Claude. FITA brings your chosen Apple Health or Health Connect data through MCP, without screenshots or manual exports.",
+      "lead": "Add FITA under Customize → Connectors, even on Claude Free, and discuss your sleep, heart rate, HRV and readiness. FITA brings your chosen Apple Health or Health Connect data through MCP, without screenshots or manual exports.",
       "sections": [
         {
           "heading": "What does FITA bring to Claude?",
@@ -585,8 +585,8 @@
         {
           "heading": "What can you ask first?",
           "paragraphs": [
-            "You: “Look at my sleep, heart rate and workouts this week. What changed, and what should I pay attention to today?”",
-            "Illustrative reply: “After two intense workouts, your sleep was shorter and resting heart rate was above your usual baseline. I’ll put those days next to readiness to help you choose today’s training focus.”"
+            "You: “Explain today’s readiness step by step: which readings moved it most, and what would you change in today’s training?”",
+            "Illustrative reply: “Sleep moved it most: you slept under your goal. HRV is close to your baseline and resting heart rate is slightly up, so I’d keep today’s session easy.”"
           ]
         },
         {
@@ -599,7 +599,7 @@
         {
           "heading": "How do you start with fresh data?",
           "paragraphs": [
-            "Open FITA after your watch syncs. Ask the assistant for the data update time, then choose a period and a question, such as sleep and workouts over the last week."
+            "Open FITA after your watch syncs. In Claude, enable the connector for the conversation, ask for the data update time, then choose a period and a question."
           ]
         }
       ],
@@ -618,7 +618,7 @@
         },
         {
           "q": "Where are the assistants available?",
-          "a": "Availability depends on country and account; Russia is outside the official supported-country lists for ChatGPT and Claude."
+          "a": "Availability depends on your country and account."
         }
       ]
     }
@@ -682,7 +682,7 @@
         "url": "https://releases.appfita.ru"
       },
       {
-        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "label": "FITA on the App Store",
         "url": "https://apps.apple.com/ru/app/id6794848328"
       },
       {
@@ -701,7 +701,7 @@
     "ru": {
       "title": "Фита, Welltory, WHOOP, Zepp и Huawei Health — сравнение",
       "description": "Сравни 5 приложений: MCP, русский ИИ-агент, часы и кольца, сон и готовность. Фита объединяет твои данные и бесплатна в закрытой бете.",
-      "h1": "Твои устройства. Твоя Фита.",
+      "h1": "Фита, Welltory, WHOOP, Zepp и Huawei Health",
       "lead": "Фита объединяет данные твоих часов и колец, помогает разобраться в здоровье на русском и открывает выбранную сводку любимому ИИ-ассистенту через MCP. Бесплатно в закрытой бете.",
       "sections": [
         {
@@ -800,8 +800,8 @@
     "en": {
       "title": "FITA vs Welltory, WHOOP, Zepp & Huawei Health",
       "description": "Compare 5 health apps on MCP, AI conversations, devices and cost. FITA brings your watch and ring data together, free during closed beta.",
-      "h1": "Your devices. Your FITA.",
-      "lead": "FITA brings your watch and ring data together, helps you explore health with a Russian-language AI agent and shares your chosen snapshot with an MCP assistant. Free during closed beta.",
+      "h1": "FITA vs Welltory, WHOOP, Zepp and Huawei Health",
+      "lead": "FITA brings your watch and ring data together, helps you explore health with an AI agent and shares your chosen snapshot with an MCP assistant. Free during closed beta.",
       "sections": [
         {
           "heading": "What should you compare?",
@@ -928,7 +928,7 @@
         "url": "https://releases.appfita.ru"
       },
       {
-        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "label": "FITA on the App Store",
         "url": "https://apps.apple.com/ru/app/id6794848328"
       },
       {
@@ -938,9 +938,9 @@
     ],
     "ru": {
       "title": "Альтернатива Welltory — бесплатно, свои часы и Фита",
-      "description": "Фита — бесплатная альтернатива Welltory в закрытой бете: твои часы и кольца, сон, пульс, готовность, ИИ-агент на русском и MCP.",
-      "h1": "Альтернатива Welltory",
-      "lead": "Фита — бесплатная в закрытой бете альтернатива Welltory с твоими часами и кольцами, ИИ-агентом на русском и MCP. Обсуждай сон, пульс, HRV и готовность без покупки отдельного устройства.",
+      "description": "Фита — бесплатная в закрытой бете альтернатива Welltory: HRV рядом со сном, пульсом и тренировками с твоих часов, ИИ-агент на русском и MCP.",
+      "h1": "Альтернатива Welltory на твоих часах",
+      "lead": "Фита бесплатна в закрытой бете и показывает HRV рядом со сном, пульсом и тренировками с твоих часов или кольца: ИИ-агент на русском и MCP.",
       "sections": [
         {
           "heading": "Чем Фита отличается от Welltory?",
@@ -978,16 +978,17 @@
           }
         },
         {
-          "heading": "Что ты получишь в Фите?",
+          "heading": "Как Фита использует HRV?",
           "paragraphs": [
-            "Собери сон, пульс и тренировки в одном разговоре. Сравни неделю с личной базой, посмотри готовность на сегодня или попроси объяснить изменения простыми словами. Фита использует данные устройств, которые у тебя уже есть."
+            "Welltory строится вокруг аналитики HRV и может снимать показатели через подключённые устройства и камеру телефона. Фита читает HRV с часов или кольца через Apple Health или Health Connect: отдельно измерять ничего не нужно.",
+            "В готовности Фиты 0–100 HRV даёт до 45 очков, сон до 35, пульс покоя до 20. Попроси объяснить простыми словами, что повлияло на неё сегодня."
           ]
         },
         {
           "heading": "О чём спросить в первом диалоге?",
           "paragraphs": [
-            "Ты: «Посмотри мой сон, пульс и тренировки за неделю. Что изменилось и на что обратить внимание сегодня?»",
-            "Условный пример ответа: «После двух интенсивных тренировок сон стал короче, а пульс покоя — выше твоего обычного уровня. Покажу эти дни рядом с готовностью, чтобы было проще выбрать нагрузку»."
+            "Ты: «Как мой HRV соотносится с базой на этой неделе и что было со сном в дни, когда он падал?»",
+            "Условный пример ответа: «Два утра HRV был ниже твоей базы, и оба раза после короткой ночи. В остальные дни он держался близко к обычному уровню»."
           ]
         },
         {
@@ -1014,6 +1015,10 @@
           "a": "Используй текущие часы или кольцо с экспортом данных в Apple Health или Health Connect."
         },
         {
+          "q": "Нужно ли мерить камерой телефона?",
+          "a": "Нет. Фита читает HRV с часов или кольца через Apple Health или Health Connect."
+        },
+        {
           "q": "Можно пользоваться Фитой вместе с Welltory?",
           "a": "Да. Оставь привычное приложение, подключи системные данные и обсуждай их в Фите."
         },
@@ -1029,9 +1034,9 @@
     },
     "en": {
       "title": "Free Welltory Alternative With Your Watch | FITA",
-      "description": "Use your watch or ring with FITA: sleep, heart rate, HRV, readiness, a Russian-language AI agent and MCP. Free during closed beta.",
-      "h1": "A Welltory alternative",
-      "lead": "FITA is a free-during-beta Welltory alternative built around the watch or ring you already own, a Russian-language AI agent and MCP. Explore sleep, heart rate, HRV and readiness in one conversation.",
+      "description": "See HRV next to sleep, heart rate and workouts from your watch or ring: FITA adds an AI agent and MCP. Free during closed beta.",
+      "h1": "The Welltory alternative built around your watch",
+      "lead": "FITA is free during closed beta and puts your HRV next to sleep, heart rate and workouts from the watch or ring you already own, with MCP for your AI assistant.",
       "sections": [
         {
           "heading": "How does FITA compare with Welltory?",
@@ -1069,16 +1074,17 @@
           }
         },
         {
-          "heading": "What do you get with FITA?",
+          "heading": "How does FITA use your HRV?",
           "paragraphs": [
-            "Bring sleep, heart rate and workouts into one conversation. Compare a week with your baseline, explore today’s readiness or ask for a plain-language explanation. FITA uses data from the devices you already have."
+            "Welltory centres on HRV analytics and can take readings through connected devices and the phone camera. FITA reads HRV from your watch or ring through Apple Health or Health Connect, so there’s nothing extra to measure.",
+            "FITA’s 0–100 readiness gives HRV up to 45 points, sleep up to 35 and resting heart rate up to 20. Ask for a plain-language explanation of what moved it today."
           ]
         },
         {
           "heading": "What can you ask first?",
           "paragraphs": [
-            "You: “Look at my sleep, heart rate and workouts this week. What changed, and what should I pay attention to today?”",
-            "Illustrative reply: “After two intense workouts, your sleep was shorter and resting heart rate was above your usual baseline. I’ll put those days next to readiness to help you choose today’s training focus.”"
+            "You: “How does my HRV compare with my baseline this week, and what happened to my sleep on the low days?”",
+            "Illustrative reply: “HRV was under your baseline on two mornings, and both followed short nights. On the other days it stayed close to your usual level.”"
           ]
         },
         {
@@ -1103,6 +1109,10 @@
         {
           "q": "Do I need a new watch?",
           "a": "Use your existing watch or ring with Apple Health or Health Connect export."
+        },
+        {
+          "q": "Do I need to measure with the phone camera?",
+          "a": "No. FITA reads HRV from your watch or ring through Apple Health or Health Connect."
         },
         {
           "q": "Can I keep Welltory alongside FITA?",
@@ -1138,7 +1148,7 @@
         "url": "https://releases.appfita.ru"
       },
       {
-        "label": "FITA: Russian App Store listing, ID 6794848328",
+        "label": "FITA on the App Store",
         "url": "https://apps.apple.com/ru/app/id6794848328"
       },
       {
@@ -1148,9 +1158,9 @@
     ],
     "ru": {
       "title": "Альтернатива WHOOP — бесплатно, свои часы и Фита",
-      "description": "Фита — бесплатная альтернатива WHOOP в закрытой бете: твои часы и кольца, сон, пульс, готовность, ИИ-агент на русском и MCP.",
-      "h1": "Альтернатива WHOOP",
-      "lead": "Фита — бесплатная в закрытой бете альтернатива WHOOP с твоими часами и кольцами, ИИ-агентом на русском и MCP. Обсуждай сон, пульс, HRV и готовность без покупки отдельного устройства.",
+      "description": "Фита — бесплатная в закрытой бете альтернатива WHOOP: без браслета и членства от $199 в год, твои часы и кольца, ИИ-агент на русском и MCP.",
+      "h1": "Альтернатива WHOOP для часов, которые у тебя уже есть",
+      "lead": "Фита бесплатна в закрытой бете и работает с часами и кольцами, которые у тебя уже есть: ИИ-агент на русском и MCP. Без браслета и членства: WHOOP стоит от $199 в год в США.",
       "sections": [
         {
           "heading": "Чем Фита отличается от WHOOP?",
@@ -1188,16 +1198,17 @@
           }
         },
         {
-          "heading": "Что ты получишь в Фите?",
+          "heading": "Что меняется без браслета?",
           "paragraphs": [
-            "Собери сон, пульс и тренировки в одном разговоре. Сравни неделю с личной базой, посмотри готовность на сегодня или попроси объяснить изменения простыми словами. Фита использует данные устройств, которые у тебя уже есть."
+            "WHOOP продаёт членство со своим браслетом и считает сон, нагрузку и восстановление. Фите новое устройство не нужно: она читает часы или кольцо, которые ты уже носишь, через Apple Health или Health Connect и даёт готовность 0–100 по HRV, сну и пульсу покоя.",
+            "Уже носишь WHOOP? Можно не снимать: сон и тренировки попадут в Фиту через Apple Health или Health Connect, и их легко сравнить в одном разговоре."
           ]
         },
         {
           "heading": "О чём спросить в первом диалоге?",
           "paragraphs": [
-            "Ты: «Посмотри мой сон, пульс и тренировки за неделю. Что изменилось и на что обратить внимание сегодня?»",
-            "Условный пример ответа: «После двух интенсивных тренировок сон стал короче, а пульс покоя — выше твоего обычного уровня. Покажу эти дни рядом с готовностью, чтобы было проще выбрать нагрузку»."
+            "Ты: «Успевает ли мой сон за тренировками на этой неделе и как лучше тренироваться сегодня: тяжело или легко?»",
+            "Условный пример ответа: «После двух самых тяжёлых тренировок сна было меньше твоей цели, и готовность сегодня ниже. Я бы оставил лёгкую тренировку, а тяжёлую вернул после полноценной ночи»."
           ]
         },
         {
@@ -1224,6 +1235,10 @@
           "a": "Используй текущие часы или кольцо с экспортом данных в Apple Health или Health Connect."
         },
         {
+          "q": "Есть ли в Фите Strain и Recovery?",
+          "a": "Это собственные показатели WHOOP. В Фите своя готовность 0–100 по HRV, сну и пульсу покоя."
+        },
+        {
           "q": "Можно пользоваться Фитой вместе с WHOOP?",
           "a": "Да. Оставь привычное приложение, подключи системные данные и обсуждай их в Фите."
         },
@@ -1239,9 +1254,9 @@
     },
     "en": {
       "title": "Free WHOOP Alternative With Your Watch | FITA",
-      "description": "Use your watch or ring with FITA: sleep, heart rate, HRV, readiness, a Russian-language AI agent and MCP. Free during closed beta.",
-      "h1": "A WHOOP alternative",
-      "lead": "FITA is a free-during-beta WHOOP alternative built around the watch or ring you already own, a Russian-language AI agent and MCP. Explore sleep, heart rate, HRV and readiness in one conversation.",
+      "description": "Skip the band and the $199/year membership: FITA uses your watch or ring for sleep, HRV and readiness, with an AI agent and MCP. Free in closed beta.",
+      "h1": "The WHOOP alternative for the watch you already own",
+      "lead": "FITA is free during closed beta and works with the watch or ring you already own, with MCP for your AI assistant. No band and no membership: WHOOP starts at $199 a year in the US.",
       "sections": [
         {
           "heading": "How does FITA compare with WHOOP?",
@@ -1279,16 +1294,17 @@
           }
         },
         {
-          "heading": "What do you get with FITA?",
+          "heading": "What changes when you leave the band?",
           "paragraphs": [
-            "Bring sleep, heart rate and workouts into one conversation. Compare a week with your baseline, explore today’s readiness or ask for a plain-language explanation. FITA uses data from the devices you already have."
+            "WHOOP sells a membership with its own band and scores sleep, Strain and Recovery. FITA needs no new device: it reads the watch or ring you already wear through Apple Health or Health Connect and gives you a 0–100 readiness from HRV, sleep and resting heart rate.",
+            "Already wearing WHOOP? It can keep running: its sleep and workouts reach FITA through Apple Health or Health Connect, so you can compare them in one conversation."
           ]
         },
         {
           "heading": "What can you ask first?",
           "paragraphs": [
-            "You: “Look at my sleep, heart rate and workouts this week. What changed, and what should I pay attention to today?”",
-            "Illustrative reply: “After two intense workouts, your sleep was shorter and resting heart rate was above your usual baseline. I’ll put those days next to readiness to help you choose today’s training focus.”"
+            "You: “Is my sleep keeping up with my training this week, and should today be hard or easy?”",
+            "Illustrative reply: “Your sleep fell short of your goal on the two nights after your hardest workouts, and readiness is lower today. I’d keep this session easy and go hard again after a full night.”"
           ]
         },
         {
@@ -1313,6 +1329,10 @@
         {
           "q": "Do I need a new watch?",
           "a": "Use your existing watch or ring with Apple Health or Health Connect export."
+        },
+        {
+          "q": "Does FITA show Strain and Recovery?",
+          "a": "Those are WHOOP’s own scores. FITA has its own 0–100 readiness from HRV, sleep and resting heart rate."
         },
         {
           "q": "Can I keep WHOOP alongside FITA?",

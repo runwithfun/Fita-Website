@@ -31,7 +31,7 @@
       }
     ],
     "ru": {
-      "title": "Apple Watch: Apple Health, Health Connect и Фита",
+      "title": "Apple Watch и Фита через Apple Health",
       "description": "Apple Watch и Фита: сон, пульс и HRV через Apple Health. Подключи часы, выбери категории и обсуждай здоровье с ИИ на русском.",
       "h1": "Apple Watch и Фита",
       "lead": "Apple Watch и Фита: сон, пульс и HRV через Apple Health. Подключи часы, выбери категории и обсуждай здоровье с ИИ на русском.",
@@ -95,9 +95,9 @@
           "heading": "Как настроить запись и доступ на iPhone?",
           "paragraphs": [],
           "steps": [
-            "На iPhone открой Watch → All Watches → Add Watch и завершите сопряжение по подсказкам Apple.",
+            "На iPhone открой Watch → All Watches → Add Watch и заверши сопряжение по подсказкам Apple.",
             "В «Здоровье» открой профиль → Devices → Apple Watch → Privacy Settings и включи Fitness Tracking, если шаги не записываются.",
-            "Для сна включи Track Sleep with Apple Watch при настройке сна в «Здоровье»; заряжайте часы перед ночью и носите их во время сна.",
+            "Для сна включи Track Sleep with Apple Watch при настройке сна в «Здоровье»; заряди часы перед ночью и носи их во время сна.",
             "В «Здоровье»: профиль → Privacy → Apps → Фита. Разреши доступ к нужным категориям, если Фита уже запросила его."
           ]
         },
@@ -130,7 +130,7 @@
       ]
     },
     "en": {
-      "title": "Apple Watch to Apple Health and Health Connect: FITA",
+      "title": "Connect Apple Watch to FITA via Apple Health",
       "description": "Connect Apple Watch to FITA through Apple Health. Bring sleep, heart rate, HRV and workouts into one AI conversation.",
       "h1": "Apple Watch & FITA",
       "lead": "Connect Apple Watch to FITA through Apple Health. Bring sleep, heart rate, HRV and workouts into one AI conversation.",
@@ -209,7 +209,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -318,7 +318,7 @@
           "paragraphs": [],
           "steps": [
             "Garmin Connect → More → Settings → Connect Apps → Apple Health в Available Apps → Connect with Apple Health.",
-            "Выбери категории и нажми Allow. Разрешайте те данные, которыми хотите делиться.",
+            "Выбери категории и нажми Allow: разреши те данные, которыми хочешь делиться.",
             "Для проверки Apple Health → Summary → фото профиля → Apps and Services в Privacy → Connect. Проверь переключатели.",
             "Снова синхронизируй часы, оставив Garmin Connect открытым, и проверь одну свежую запись в «Здоровье»."
           ]
@@ -361,7 +361,7 @@
       ]
     },
     "en": {
-      "title": "Garmin to Apple Health and Health Connect: what exports",
+      "title": "Garmin to Apple Health and Health Connect: Setup | FITA",
       "description": "Connect Garmin to FITA with Apple Health or Health Connect. Bring sleep, steps, heart rate and workouts into one AI conversation.",
       "h1": "Garmin & FITA",
       "lead": "Connect Garmin to FITA with Apple Health or Health Connect. Bring sleep, steps, heart rate and workouts into one AI conversation.",
@@ -449,7 +449,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -675,7 +675,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -723,7 +723,7 @@
       }
     ],
     "ru": {
-      "title": "WHOOP: Apple Health и Health Connect — что передаётся",
+      "title": "WHOOP: Apple Health и Health Connect для Фиты",
       "description": "Подключи WHOOP к Фите: сон, тренировки и пульс через Apple Health или Health Connect. Настрой обмен и обсуждай данные с ИИ.",
       "h1": "WHOOP и Фита",
       "lead": "Подключи WHOOP к Фите: сон, тренировки и пульс через Apple Health или Health Connect. Настрой обмен и обсуждай данные с ИИ.",
@@ -789,7 +789,7 @@
           "steps": [
             "WHOOP → More → App Settings → Integrations → Apple Health → Connect.",
             "Выбери Turn on all либо отдельные категории и нажми Allow.",
-            "Чтобы пересмотреть доступ: Apple Health → профиль → Apps → WHOOP; измените категории.",
+            "Чтобы пересмотреть доступ: Apple Health → профиль → Apps → WHOOP; измени категории.",
             "Отдельно убедитесь, что включена запись нужного типа, а не только его чтение WHOOP."
           ]
         },
@@ -831,7 +831,7 @@
       ]
     },
     "en": {
-      "title": "WHOOP to Apple Health and Health Connect: export guide",
+      "title": "WHOOP to Apple Health and Health Connect: Setup | FITA",
       "description": "Connect WHOOP to FITA through Apple Health or Health Connect. Set up sleep and workout sharing, then explore your health data with AI.",
       "h1": "WHOOP & FITA",
       "lead": "Connect WHOOP to FITA through Apple Health or Health Connect. Set up sleep and workout sharing, then explore your health data with AI.",
@@ -919,7 +919,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -1159,7 +1159,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -1298,7 +1298,7 @@
       ]
     },
     "en": {
-      "title": "COROS to Apple Health and Health Connect: verified exports",
+      "title": "COROS to Apple Health and Health Connect: Setup | FITA",
       "description": "Connect COROS to FITA through Apple Health or Health Connect. Step-by-step setup for heart rate, sleep, steps and distance sharing.",
       "h1": "COROS & FITA",
       "lead": "Connect COROS to Apple Health on iPhone or Health Connect on Android. FITA brings the available records together for conversations about sleep, activity and training.",
@@ -1365,7 +1365,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
@@ -1477,7 +1477,7 @@
       ]
     },
     "en": {
-      "title": "Suunto to Apple Health and Health Connect: what is verified",
+      "title": "Suunto to Apple Health and Health Connect: Setup | FITA",
       "description": "Connect Suunto to FITA with Apple Health on iPhone or Health Sync and Health Connect on Android. Follow the short setup guide.",
       "h1": "Suunto & FITA",
       "lead": "Connect Suunto to Apple Health on iPhone. On Android, use Health Sync to share data with Health Connect, then explore your workouts in FITA.",
@@ -1513,7 +1513,7 @@
         {
           "heading": "What comes next in FITA?",
           "paragraphs": [
-            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your Russian-language AI companion. MCP also shares your chosen snapshot with an external assistant."
+            "Allow FITA to read your chosen categories. Bring sleep, heart rate and workouts together, follow your personal trends and talk with your AI companion. MCP also shares your chosen snapshot with an external assistant."
           ]
         }
       ],
