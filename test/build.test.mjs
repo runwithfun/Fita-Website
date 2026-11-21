@@ -1,6 +1,6 @@
 // Сборка обеих версий: русская (appfita.ru, _site) и английская (fita.fit,
 // _site-en). Проверяем SEO-разметку, ссылки, аналитику и что в английской
-// версии не осталось русского вне текста правовых документов.
+// версии не осталось русского (правовые документы там — английская редакция).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -83,19 +83,23 @@ test('английская версия: lang, canonical, OG, hreflang, JSON-LD'
   assert.match(en['404.html'], /<meta name="robots" content="noindex">/);
 });
 
-test('английская версия: правовые документы русские, с пометкой и canonical на appfita.ru', () => {
+test('English build: legal documents are English, canonical on fita.fit, listed in the sitemap', () => {
   for (const f of ['privacy', 'consent', 'terms']) {
     const h = en[`${f}.html`];
-    assert.ok(h.includes(`<link rel="canonical" href="https://appfita.ru/${f}">`), f);
-    assert.match(h, new RegExp(`<div id="view-${f}" lang="ru" class="view`), f);
-    assert.match(h, /This document is available in Russian only/, f);
+    assert.match(h, /<html lang="en">/, f);
+    assert.ok(h.includes(`<link rel="canonical" href="https://fita.fit/${f}">`), f);
+    assert.ok(h.includes(`<meta property="og:url" content="https://fita.fit/${f}">`), f);
+    assert.doesNotMatch(h, /<title>[^<]*in Russian/, f);
+    assert.doesNotMatch(h, /Russian only|<div id="view-[a-z]+" lang="ru"/, f);
     assert.doesNotMatch(h, /rel="alternate" hreflang/, f);
-    // сам документ — дословно русский текст из исходника
-    const doc = (s) => s.slice(s.indexOf('<main class="policy">'), s.indexOf('<footer'));
-    assert.equal(doc(h), doc(ru[`${f}.html`]), f);
+    // the document body is the English edition from i18n/legal/en
+    const doc = (s) => s.slice(s.indexOf('<main class="policy">'), s.indexOf('</main>') + '</main>'.length);
+    assert.equal(doc(h), fs.readFileSync(path.join(ROOT, 'i18n', 'legal', 'en', `${f}.html`), 'utf8').trim(), f);
+    assert.ok(!CYR.test(doc(h)), f);
   }
   const sitemap = read('_site-en', 'sitemap.xml');
-  assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]), ['https://fita.fit/', 'https://fita.fit/space', ...loadContent(ROOT).map(p => `https://fita.fit/${p.slug}`)]);
+  assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]), ['https://fita.fit/', 'https://fita.fit/space', 'https://fita.fit/privacy', 'https://fita.fit/consent', 'https://fita.fit/terms', ...loadContent(ROOT).map(p => `https://fita.fit/${p.slug}`)]);
+  assert.match(sitemap, /<loc>https:\/\/fita\.fit\/privacy<\/loc><lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/);
 });
 
 test('текстовая карта: те же канонические URL, что в XML, на обоих доменах', () => {
@@ -111,10 +115,9 @@ test('текстовая карта: те же канонические URL, ч�
   }
 });
 
-test('английская версия: ни одного русского слова вне правовых документов', () => {
+test('английская версия: ни одного русского слова', () => {
   for (const f of PAGES) {
     const visible = en[f]
-      .replace(/<div id="view-[a-z]+" lang="ru"[\s\S]*?(?=<footer class="site-footer">)/, '')
       .replace(/data:[a-z/+]+;base64,[A-Za-z0-9+/=]+/g, '');
     assert.ok(!CYR.test(visible), `${f}: ${(visible.match(/[^<>"]*[А-Яа-яЁё][^<>"]*/) || [''])[0].slice(0, 80)}`);
   }
@@ -138,7 +141,9 @@ const EN_STORE = 'https://apps.apple.com/app/fita/id6794848328';
 test('ссылки: английская версия ведёт туда же, что русская; App Store — без страны', () => {
   for (const f of PAGES) {
     const own = (h) => !h.startsWith('https://fita.fit') && !h.startsWith('https://appfita.ru');
-    assert.deepEqual(hrefs(en[f]).filter(own), hrefs(ru[f]).filter(own).map((h) => (h === RU_STORE ? EN_STORE : h)), f);
+    // the English privacy policy credits the DB-IP country database
+    const enOnly = (h) => !(f === 'privacy.html' && h === 'https://db-ip.com/');
+    assert.deepEqual(hrefs(en[f]).filter(own).filter(enOnly), hrefs(ru[f]).filter(own).map((h) => (h === RU_STORE ? EN_STORE : h)), f);
     assert.ok(!en[f].includes(RU_STORE), f);
   }
   assert.ok(hrefs(ru['index.html']).includes(RU_STORE));
