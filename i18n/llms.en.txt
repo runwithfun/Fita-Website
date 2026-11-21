@@ -44,10 +44,10 @@ iPhone (iOS 16 and later) — in the App Store: https://apps.apple.com/app/fita/
 - [Download for Android, Windows, macOS, Linux](https://releases.appfita.ru/): closed beta builds
 - [Russian version](https://appfita.ru/)
 
-## Legal (in Russian)
+## Legal
 
 - [Privacy Policy](https://fita.fit/privacy)
-- [Consent to personal data processing](https://fita.fit/consent)
+- [Consent to Processing of Personal and Health Data](https://fita.fit/consent)
 - [Terms of Use](https://fita.fit/terms)
 
 ## Contact

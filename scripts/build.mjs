@@ -108,7 +108,7 @@ const PAGES = [
     keep: ['view-privacy'],
     fonts: 'doc',
     legal: true,
-    en: { title: 'Privacy Policy (in Russian) — FITA', description: 'FITA privacy policy: how the app processes and protects personal and health data. The document is available in Russian.' },
+    en: { title: 'Privacy Policy — FITA', description: 'How FITA collects, uses and protects personal and health data: what we process, why, where it is stored and your rights.' },
     title: 'Политика конфиденциальности — Фита',
     description:
       'Как приложение Фита обрабатывает и защищает персональные данные и данные о здоровье: состав данных, цели, сроки хранения и права пользователя.',
@@ -120,7 +120,7 @@ const PAGES = [
     keep: ['view-consent'],
     fonts: 'doc',
     legal: true,
-    en: { title: 'Consent to personal data processing (in Russian) — FITA', description: 'Consent to personal data processing for FITA app users. The document is available in Russian.' },
+    en: { title: 'Consent to Data Processing — FITA', description: 'Consent to processing of personal and health data for FITA users: what data, for what purposes, and how to withdraw consent.' },
     title: 'Согласие на обработку персональных данных — Фита',
     description:
       'Текст согласия на обработку персональных данных пользователей приложения Фита: перечень данных, цели, действия с ними и порядок отзыва.',
@@ -132,7 +132,7 @@ const PAGES = [
     keep: ['view-terms'],
     fonts: 'doc',
     legal: true,
-    en: { title: 'Terms of Use (in Russian) — FITA', description: 'FITA terms of use and community rules. The document is available in Russian.' },
+    en: { title: 'Terms of Use — FITA', description: 'FITA terms of use and community rules: accounts, user content, zero tolerance for abuse, moderation, the AI coach and liability.' },
     title: 'Условия использования — Фита',
     description:
       'Условия использования приложения Фита и правила сообщества: клубы, события, контент пользователей и ответственность сторон.',
@@ -402,8 +402,9 @@ if (!EN && HREFLANG) {
   if (!footer.includes('English version')) throw new Error('index.html: нет </nav> в подвале');
 }
 
-// Английская версия: перевод всего, кроме текста правовых документов — они
-// остаются русскими с пометкой на английском (lang="ru" у блока документа).
+// English build: everything is translated. Legal documents are separate English
+// texts in i18n/legal/en/<name>.html (a global edition, not a word-for-word
+// translation of the Russian one); they replace <main class="policy">.
 const LEGAL_VIEWS = PAGES.filter((p) => p.legal).map((p) => p.view);
 if (EN) {
   // комментарии HTML и CSS — русские пояснения для разработчиков, на fita.fit им не место
@@ -420,13 +421,14 @@ if (EN) {
       views[id] = translateHtml(v, tr);
       continue;
     }
-    // текст документа — дословно из исходника, переводится только шапка
-    const end = views[id].indexOf('</header>') + '</header>'.length;
-    if (end < '</header>'.length) throw new Error(`#${id}: нет <header>`);
-    views[id] =
-      translateHtml(noComments(views[id].slice(0, end)), tr).replace(`<div id="${id}" `, `<div id="${id}" lang="ru" `) +
-      '\n<p class="lang-note" lang="en" style="margin:8px 24px 0;align-self:center;max-width:720px;padding:10px 16px;border:1px solid var(--rule);border-radius:12px;font-family:var(--mono);font-size:12.5px;line-height:1.6;color:var(--ink2);text-align:center">This document is available in Russian only. The Russian text below is the official version.</p>\n' +
-      views[id].slice(end);
+    // the header goes through the dictionary, the document body is the English edition
+    const start = v.indexOf('<main class="policy">');
+    const end = v.indexOf('</main>', start) + '</main>'.length;
+    if (start < 0 || end < '</main>'.length) throw new Error(`#${id}: нет <main class="policy">`);
+    const name = id.replace('view-', '');
+    const doc = fs.readFileSync(path.join(ROOT, 'i18n', 'legal', 'en', `${name}.html`), 'utf8').trim();
+    if (!doc.startsWith('<main class="policy">') || !doc.endsWith('</main>')) throw new Error(`i18n/legal/en/${name}.html: нужен один <main class="policy">`);
+    views[id] = translateHtml(v.slice(0, start), tr) + doc + translateHtml(v.slice(end), tr);
   }
 }
 
@@ -513,8 +515,7 @@ const known = [...PAGES, ...CONTENT_ROUTES].filter((p) => p.path && p.path !== '
 const slashRedirect = `<script>(function(){var k=${JSON.stringify(known)},p=location.pathname.replace(/\\/+$/,''),r=p.match(/^\\/r\\/([A-Za-z0-9]{4,16})$/);if(r){var q=new URLSearchParams(location.search);q.set('ref',r[1]);location.replace('/?'+q.toString()+location.hash);}else if(p!==location.pathname&&k.indexOf(p)>=0)location.replace(p+location.search+location.hash);})();</script>`;
 
 function headFor(page) {
-  // Правовые документы английской версии — копия русских: canonical на appfita.ru.
-  const url = page.path ? `${EN && page.legal ? RU_SITE : SITE}${page.path}` : null;
+  const url = page.path ? `${SITE}${page.path}` : null;
   const { title, description } = T(page);
   const meta = [
     `<title>${esc(title)}</title>`,
@@ -582,7 +583,7 @@ for (const page of PAGES) {
   const h1 = (html.match(/<h1[\s>]/g) || []).length;
   if (h1 !== 1) throw new Error(`${page.file}: h1 должен быть ровно один, а их ${h1}`);
   if (EN) html = html.replaceAll(RU_APP_STORE, APP_STORE);
-  if (EN) residual(page.file, html.replace(/<div id="view-[a-z]+" lang="ru"[\s\S]*?(?=<footer class="site-footer">)/, ''));
+  if (EN) residual(page.file, html);
   fs.writeFileSync(path.join(OUT, page.file), html);
 }
 
@@ -598,8 +599,7 @@ fs.appendFileSync(path.join(OUT, 'llms.txt'), `\n## ${EN ? 'Tools, device guides
 if (EN) fs.writeFileSync(path.join(OUT, 'spa.js'), minifyJs(fs.readFileSync(path.join(ROOT, 'spa.js'), 'utf8')));
 else fs.copyFileSync(path.join(ROOT, 'spa.js'), path.join(OUT, 'spa.js'));
 
-// Английская версия: ни одной непереведённой строки — ни в HTML (кроме
-// текста правовых документов), ни в собранных скриптах.
+// Английская версия: ни одной непереведённой строки — ни в HTML, ни в собранных скриптах.
 function residual(name, text) {
   const left = text.replace(/data:[a-z/+]+;base64,[A-Za-z0-9+/=]+/g, '').match(/[^<>"'`]*[А-Яа-яЁё][^<>"'`]*/g);
   if (left) residualErrors.push(`${name}: ${left.slice(0, 5).map((s) => s.trim().slice(0, 80)).join(' | ')}`);
@@ -622,7 +622,8 @@ if (EN) {
 // lastmod должен меняться, только когда меняется страница: дату сборки
 // Google считает недостоверной и перестаёт учитывать lastmod у всего сайта.
 //
-// Правовые страницы берут дату из «Редакция от ДД.ММ.ГГГГ». Для главной
+// Правовые страницы берут дату из «Редакция от ДД.ММ.ГГГГ» (English legal pages:
+// <time datetime> in <p class="date">). Для главной
 // и «Пространства» сравниваем видимый текст (+ title и description) новой
 // сборки с тем, что сейчас на сайте: совпал — оставляем lastmod из живого
 // sitemap, нет — ставим текущее время. Если сайт недоступен (сборка без
@@ -666,6 +667,8 @@ async function lastmod(page) {
   if (page.content) return page.updated;
   const m = views[page.view].match(/Редакция от (\d{2})\.(\d{2})\.(\d{4})/);
   if (m) return `${m[3]}-${m[2]}-${m[1]}`;
+  const t = page.legal && views[page.view].match(/<p class="date">[^<]*<time datetime="(\d{4}-\d{2}-\d{2})">/);
+  if (t) return t[1];
   const url = `${SITE}${page.path}`;
   const live = liveLastmod.has(url) ? await fetchText(url) : null;
   if (!live) return gitDate(['index.html', 'spa.js', 'assets']);
@@ -674,7 +677,7 @@ async function lastmod(page) {
 }
 
 const urls = [];
-const sitemapPages = [...PAGES, ...CONTENT_ROUTES].filter((x) => x.path && !(EN && x.legal));
+const sitemapPages = [...PAGES, ...CONTENT_ROUTES].filter((x) => x.path);
 for (const p of sitemapPages) {
   const mod = await lastmod(p);
   urls.push(`  <url><loc>${SITE}${p.path}</loc><lastmod>${mod}</lastmod></url>`);
