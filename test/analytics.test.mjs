@@ -348,3 +348,11 @@ test('fita.fit: ?ref= reaches analytics and the app link on api.fita.fit; /r/<co
   assert.equal((await load({ url: 'https://www.fita.fit/?ref=WXYZ2345', api: 'https://api.fita.fit' })).events()[0].properties.referral_code, 'WXYZ2345');
   assert.equal((await load({ url: 'https://fita.fit/r/ABCD2345', api: 'https://api.fita.fit' })).calls.length, 0);
 });
+
+test('download clicks count only the exact releases origin', async () => {
+  const p = await load({ url: 'https://fita.fit/', api: 'https://api.fita.fit' });
+  for (const href of ['http://releases.appfita.ru/', 'https://releases.appfita.ru:8443/', 'https://releases.appfita.ru.evil.test/', 'https://x@releases.appfita.ru/']) p.click(href);
+  p.click('https://releases.appfita.ru/#v2.1');
+  await p.runTimers();
+  assert.deepEqual(p.events().filter((e) => e.name === 'download_clicked').map((e) => e.properties.store), ['apk']);
+});

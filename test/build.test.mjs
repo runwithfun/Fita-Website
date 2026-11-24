@@ -11,7 +11,7 @@ import { loadContent } from '../scripts/content-pages.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const build = (env = {}) =>
-  execFileSync(process.execPath, ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, FITA_LOCALE: '', FITA_HREFLANG: '', FITA_APP_REFERRAL_LINK: '', FITA_ANALYTICS: '', FITA_API_ORIGIN: '', FITA_BUILD_OFFLINE: '1', ...env }, stdio: 'pipe' });
+  execFileSync(process.execPath, ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, FITA_LOCALE: '', FITA_HREFLANG: '', FITA_APP_REFERRAL_LINK: '', FITA_ANALYTICS: '', FITA_API_ORIGIN: '', FITA_RELEASES_ORIGIN: '', FITA_BUILD_OFFLINE: '1', ...env }, stdio: 'pipe' });
 const read = (dir, f) => fs.readFileSync(path.join(ROOT, dir, f), 'utf8');
 const CYR = /[А-Яа-яЁё]/;
 const hrefs = (html) => [...new Set([...html.matchAll(/<(?:a|link)\b[^>]*?\shref="([^"]+)"/g)].map((m) => m[1]).filter((h) => !h.startsWith('/assets/') && !h.startsWith('/favicon')))].sort();
@@ -189,6 +189,15 @@ test('переключатели сборки: hreflang в русской, сб�
   for (const env of [{ FITA_API_ORIGIN: 'https://api.appfita.ru' }, { FITA_APP_REFERRAL_LINK: 'https://link.appfita.ru/r/{code}' }]) {
     assert.throws(() => build({ FITA_LOCALE: 'en', ...env }), /appfita\.ru hosts are closed/, JSON.stringify(env));
   }
+  // one setting moves every download link, the JSON-LD and the download click detection
+  build({ FITA_LOCALE: 'en', FITA_RELEASES_ORIGIN: 'https://releases.fita.fit' });
+  const all = allText('_site-en');
+  assert.doesNotMatch(all, /releases\.appfita\.ru/);
+  assert.ok(hrefs(read('_site-en', 'index.html')).includes('https://releases.fita.fit/'));
+  assert.deepEqual(jsonLd(read('_site-en', 'index.html'))['@graph'].find((n) => n['@type'] === 'MobileApplication').downloadUrl, [EN_STORE, 'https://releases.fita.fit/']);
+  assert.match(read('_site-en', scriptTag(read('_site-en', 'index.html'), 'analytics').match(/src="\/([^"]+)"/)[1]), /origin==="https:\/\/releases\.fita\.fit"/);
+  assert.ok(read('_site-en', 'llms.txt').includes('https://releases.fita.fit/'));
+  assert.throws(() => build({ FITA_RELEASES_ORIGIN: 'https://releases.fita.fit/' }), /FITA_RELEASES_ORIGIN/);
   build(); // вернуть обычные сборки
   build({ FITA_LOCALE: 'en' });
 });

@@ -345,7 +345,8 @@
     try {
       var url = new w.URL(a.href, loc.href);
       if (url.protocol !== 'https:' || url.username || url.password || url.port) return null;
-      if (url.hostname === 'releases.appfita.ru') return 'apk';
+      // The build swaps this origin for FITA_RELEASES_ORIGIN (scripts/build.mjs).
+      if (url.origin === 'https://releases.appfita.ru') return 'apk';
       if (url.hostname === 'apps.apple.com' && /\/id6794848328\/?$/.test(url.pathname)) return 'app_store';
     } catch (e) {}
     return null;

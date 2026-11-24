@@ -66,6 +66,15 @@ if (EN && /appfita\.ru/.test(API_ORIGIN + APP_REFERRAL_LINK)) {
   throw new Error('FITA_API_ORIGIN / FITA_APP_REFERRAL_LINK: appfita.ru hosts are closed, use https://api.fita.fit');
 }
 
+// Download page (GitHub Pages of runwithfun/FITA-Releases). One setting for both
+// builds; the sources keep the current host and the build swaps it in every output
+// (links, link text, JSON-LD, llms.txt, the banner script, analytics.js).
+const LEGACY_RELEASES_HOST = 'releases.appfita.ru';
+const RELEASES_ORIGIN = process.env.FITA_RELEASES_ORIGIN || `https://${LEGACY_RELEASES_HOST}`;
+if (!/^https:\/\/[a-z0-9.-]+$/.test(RELEASES_ORIGIN)) throw new Error(`FITA_RELEASES_ORIGIN: bare https origin expected, got ${RELEASES_ORIGIN}`);
+const RELEASES_HOST = RELEASES_ORIGIN.slice('https://'.length);
+const withReleases = (text) => (RELEASES_HOST === LEGACY_RELEASES_HOST ? text : text.replaceAll(LEGACY_RELEASES_HOST, RELEASES_HOST));
+
 // keep — какие view попадают в HTML страницы. Раньше на / и /space лежали оба
 // view (главная и «Пространство»): у обеих страниц был одинаковый текст и два
 // h1, поисковики видели дубли. Теперь на каждой только свой; переход между
@@ -191,6 +200,7 @@ const hash = (buf) => crypto.createHash('sha256').update(buf).digest('hex').slic
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 function writeHashed(dir, base, ext, content) {
+  if (typeof content === 'string') content = withReleases(content);
   const name = `${base}.${hash(content)}.${ext}`;
   fs.mkdirSync(path.join(OUT, dir), { recursive: true });
   fs.writeFileSync(path.join(OUT, dir, name), content);
@@ -491,7 +501,7 @@ function jsonLd() {
         inLanguage: 'ru',
         url: `${SITE}/`,
         installUrl: APP_STORE,
-        downloadUrl: [APP_STORE, 'https://releases.appfita.ru/'],
+        downloadUrl: [APP_STORE, `${RELEASES_ORIGIN}/`],
         sameAs: [APP_STORE],
         isAccessibleForFree: true,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'RUB' },
@@ -591,17 +601,18 @@ for (const page of PAGES) {
   if (h1 !== 1) throw new Error(`${page.file}: h1 должен быть ровно один, а их ${h1}`);
   if (EN) html = html.replaceAll(RU_APP_STORE, APP_STORE);
   if (EN) residual(page.file, html.replace(/<div id="view-[a-z]+" lang="ru"[\s\S]*?(?=<footer class="site-footer">)/, ''));
-  fs.writeFileSync(path.join(OUT, page.file), html);
+  fs.writeFileSync(path.join(OUT, page.file), withReleases(html));
 }
 
 for (const page of CONTENT) {
   const html = renderContent(page, { lang: LOCALE, site: SITE, pages: CONTENT, fontHead: fontHead.app, cssUrl: contentCss, jsUrl: calculatorJs, analyticsTag });
   if ((html.match(/<h1[\s>]/g) || []).length !== 1) throw new Error(`${page.slug}: expected one h1`);
   if (EN) residual(`${page.slug}.html`, html);
-  fs.writeFileSync(path.join(OUT, `${page.slug}.html`), html);
+  fs.writeFileSync(path.join(OUT, `${page.slug}.html`), withReleases(html));
 }
 const contentIndex = CONTENT.map(page => `- [${page[LOCALE].h1}](${SITE}/${page.slug}): ${page[LOCALE].description}`).join('\n');
 fs.appendFileSync(path.join(OUT, 'llms.txt'), `\n## ${EN ? 'Tools, device guides and MCP' : 'Инструменты, устройства и MCP'}\n\n${contentIndex}\n`);
+fs.writeFileSync(path.join(OUT, 'llms.txt'), withReleases(fs.readFileSync(path.join(OUT, 'llms.txt'), 'utf8')));
 
 if (EN) fs.writeFileSync(path.join(OUT, 'spa.js'), minifyJs(fs.readFileSync(path.join(ROOT, 'spa.js'), 'utf8')));
 else fs.copyFileSync(path.join(ROOT, 'spa.js'), path.join(OUT, 'spa.js'));
