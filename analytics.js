@@ -18,7 +18,7 @@
  * по факту регистрации в приложении.
  *
  * Настройка — атрибуты тега, их ставит scripts/build.mjs:
- *   data-api="https://api.appfita.ru"  — ядро (нужно и referral.js: resolve кода);
+ *   data-api="https://api.fita.fit"    — ядро (нужно и referral.js: resolve кода);
  *   data-collect="1"                   — включить отправку (в превью-сборке нет).
  * Плюс отправка идёт только с боевых хостов (HOSTS): localhost и превью молчат.
  */

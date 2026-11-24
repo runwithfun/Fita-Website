@@ -45,17 +45,25 @@ const APP_STORE_ID = '6794848328';
 //   FITA_API_ORIGIN — ядро FITA, куда идут события и resolve кода приглашения;
 //   FITA_ANALYTICS=0 — собрать без отправки событий (превью, локальная проверка);
 //   FITA_APP_REFERRAL_LINK — шаблон ссылки «Открыть в приложении»,
-//     https://link.appfita.ru/r/{code}. По умолчанию выключено: включать только
+//     https://api.fita.fit/r/{code}. По умолчанию выключено: включать только
 //     после выхода версии приложения, которая разбирает /r/<code>, и после
 //     обновления AASA/assetlinks в ядре. Иначе кнопка открывает приложение,
 //     которое ссылку не понимает, или возвращает браузер обратно на сайт.
 // Даже со включённой отправкой analytics.js молчит не на боевых хостах.
-const API_ORIGIN = process.env.FITA_API_ORIGIN || 'https://api.appfita.ru';
+//
+// The FITA core moved to api.fita.fit; api/mcp/link.appfita.ru are closed (410).
+// The English site defaults to the new origin and refuses any appfita.ru host.
+// The Russian build keeps its previous default until it is switched on purpose.
+const RETIRED_HOST = /(^|[/.@])(api|mcp|link)\.appfita\.ru\b/;
+const API_ORIGIN = process.env.FITA_API_ORIGIN || (EN ? 'https://api.fita.fit' : 'https://api.appfita.ru');
 const COLLECT = process.env.FITA_ANALYTICS !== '0';
 const APP_REFERRAL_LINK = process.env.FITA_APP_REFERRAL_LINK || '';
 if (!/^https:\/\/[a-z0-9.-]+(:\d+)?$/.test(API_ORIGIN)) throw new Error(`FITA_API_ORIGIN: нужен https-origin без пути, а не ${API_ORIGIN}`);
 if (APP_REFERRAL_LINK && !/^https:\/\/[^"<>\s?#]+\{code\}$/.test(APP_REFERRAL_LINK)) {
   throw new Error('FITA_APP_REFERRAL_LINK: нужен https-шаблон, оканчивающийся на {code}, без query');
+}
+if (EN && /appfita\.ru/.test(API_ORIGIN + APP_REFERRAL_LINK)) {
+  throw new Error('FITA_API_ORIGIN / FITA_APP_REFERRAL_LINK: appfita.ru hosts are closed, use https://api.fita.fit');
 }
 
 // keep — какие view попадают в HTML страницы. Раньше на / и /space лежали оба
@@ -614,6 +622,17 @@ if (EN) {
   fs.rmSync(path.join(ROOT, 'i18n', 'en.missing.json'), { force: true });
   if (badMarkup.length) throw new Error(`i18n/en.json: перевод не прошёл проверку:\n${[...new Set(badMarkup)].slice(0, 10).join('\n')}`);
   if (residualErrors.length) throw new Error(`в английской сборке остался русский текст:\n${residualErrors.join('\n')}`);
+  // No closed core host may reach fita.fit: not in pages, scripts, llms.txt or robots.
+  const retired = [];
+  const scan = (dir) => {
+    for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, f.name);
+      if (f.isDirectory()) scan(p);
+      else if (/\.(html|js|txt|xml|json|css)$/.test(f.name) && RETIRED_HOST.test(fs.readFileSync(p, 'utf8'))) retired.push(path.relative(OUT, p));
+    }
+  };
+  scan(OUT);
+  if (retired.length) throw new Error(`closed appfita.ru hosts in the English build: ${retired.slice(0, 10).join(', ')}`);
   const unused = Object.keys(DICT).filter((k) => !used.has(k));
   if (unused.length) console.warn(`i18n/en.json: не используются ${unused.length} строк: ${unused.slice(0, 10).join(' | ')}`);
 }
