@@ -333,3 +333,26 @@ test('недействительный код забывается, без ко�
   assert.equal(none.box, null);
   assert.ok(!none.calls.some((c) => c.url.includes('/resolve/')));
 });
+
+test('fita.fit: ?ref= reaches analytics and the app link on api.fita.fit; /r/<code> is left to 404.html', async () => {
+  const p = referralPage('https://fita.fit/?ref=abcd2345&utm_source=Telegram', () => ({ status: 204 }), { 'data-app-link': 'https://api.fita.fit/r/{code}' }, { api: 'https://api.fita.fit' });
+  await p.runTimers(); await tick();
+  const events = p.events();
+  assert.deepEqual(events.map((e) => [e.name, e.properties.referral_code]), [['page_view', 'ABCD2345'], ['referral_link_opened', 'ABCD2345']]);
+  assert.ok(p.calls.every((c) => c.url.startsWith('https://api.fita.fit/v1/')));
+  assert.ok(p.calls.some((c) => c.url === 'https://api.fita.fit/v1/referrals/resolve/ABCD2345' && c.opts.credentials === 'omit'));
+  const vid = p.win.FITA_ANALYTICS.visitorId();
+  assert.deepEqual(p.links().map((a) => a.attrs.href), [`https://api.fita.fit/r/ABCD2345?visitor_id=${vid}`]);
+  assert.match(text(p.box), /ABCD2345/);
+  // the www host collects too; the short /r/<code> path itself is never tracked
+  assert.equal((await load({ url: 'https://www.fita.fit/?ref=WXYZ2345', api: 'https://api.fita.fit' })).events()[0].properties.referral_code, 'WXYZ2345');
+  assert.equal((await load({ url: 'https://fita.fit/r/ABCD2345', api: 'https://api.fita.fit' })).calls.length, 0);
+});
+
+test('download clicks count only the exact releases origin', async () => {
+  const p = await load({ url: 'https://fita.fit/', api: 'https://api.fita.fit' });
+  for (const href of ['http://releases.appfita.ru/', 'https://releases.appfita.ru:8443/', 'https://releases.appfita.ru.evil.test/', 'https://x@releases.appfita.ru/']) p.click(href);
+  p.click('https://releases.appfita.ru/#v2.1');
+  await p.runTimers();
+  assert.deepEqual(p.events().filter((e) => e.name === 'download_clicked').map((e) => e.properties.store), ['apk']);
+});

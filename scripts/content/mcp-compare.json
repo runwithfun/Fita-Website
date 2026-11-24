@@ -177,7 +177,7 @@
           "steps": [
             "Sign in to FITA on your phone and allow the Apple Health or Health Connect categories you want.",
             "Open AI assistant access in your profile and enable sharing.",
-            "Copy the MCP address shown in FITA: https://mcp.appfita.ru.",
+            "Copy the MCP address shown in FITA: https://mcp.fita.fit.",
             "Add the connector in your assistant and authorise with the email you use for FITA."
           ]
         },

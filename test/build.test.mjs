@@ -11,7 +11,7 @@ import { loadContent } from '../scripts/content-pages.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const build = (env = {}) =>
-  execFileSync(process.execPath, ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, FITA_LOCALE: '', FITA_HREFLANG: '', FITA_APP_REFERRAL_LINK: '', FITA_ANALYTICS: '', FITA_BUILD_OFFLINE: '1', ...env }, stdio: 'pipe' });
+  execFileSync(process.execPath, ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, FITA_LOCALE: '', FITA_HREFLANG: '', FITA_APP_REFERRAL_LINK: '', FITA_ANALYTICS: '', FITA_API_ORIGIN: '', FITA_RELEASES_ORIGIN: '', FITA_BUILD_OFFLINE: '1', ...env }, stdio: 'pipe' });
 const read = (dir, f) => fs.readFileSync(path.join(ROOT, dir, f), 'utf8');
 const CYR = /[А-Яа-яЁё]/;
 const hrefs = (html) => [...new Set([...html.matchAll(/<(?:a|link)\b[^>]*?\shref="([^"]+)"/g)].map((m) => m[1]).filter((h) => !h.startsWith('/assets/') && !h.startsWith('/favicon')))].sort();
@@ -163,9 +163,9 @@ test('английская версия не обещает английское
 });
 
 test('аналитика и приглашения одинаковы в обеих версиях: тот же сборщик, кнопка приложения выключена', () => {
-  for (const site of [ru, en]) {
+  for (const [site, api] of [[ru, 'https://api.appfita.ru'], [en, 'https://api.fita.fit']]) {
     for (const f of ['index.html', 'space.html']) {
-      assert.match(scriptTag(site[f], 'analytics'), /data-api="https:\/\/api\.appfita\.ru" data-collect="1"/, f);
+      assert.ok(scriptTag(site[f], 'analytics').includes(`data-api="${api}" data-collect="1"`), f);
     }
     assert.ok(scriptTag(site['index.html'], 'referral'));
     assert.doesNotMatch(scriptTag(site['index.html'], 'referral'), /data-app-link/);
@@ -181,12 +181,51 @@ test('переключатели сборки: hreflang в русской, сб�
   build({ FITA_HREFLANG: '1' });
   assert.ok(read('_site', 'index.html').includes('<link rel="alternate" hreflang="en" href="https://fita.fit/">'));
   assert.doesNotMatch(read('_site', 'privacy.html'), /hreflang/);
-  build({ FITA_LOCALE: 'en', FITA_ANALYTICS: '0', FITA_APP_REFERRAL_LINK: 'https://link.appfita.ru/r/{code}' });
+  build({ FITA_LOCALE: 'en', FITA_ANALYTICS: '0', FITA_APP_REFERRAL_LINK: 'https://api.fita.fit/r/{code}' });
   const h = read('_site-en', 'index.html');
   assert.doesNotMatch(scriptTag(h, 'analytics'), /data-collect/);
-  assert.match(scriptTag(h, 'referral'), /data-app-link="https:\/\/link\.appfita\.ru\/r\/\{code\}"/);
+  assert.match(scriptTag(h, 'referral'), /data-app-link="https:\/\/api\.fita\.fit\/r\/\{code\}"/);
+  // closed appfita.ru core hosts are refused for the English site
+  for (const env of [{ FITA_API_ORIGIN: 'https://api.appfita.ru' }, { FITA_APP_REFERRAL_LINK: 'https://link.appfita.ru/r/{code}' }]) {
+    assert.throws(() => build({ FITA_LOCALE: 'en', ...env }), /appfita\.ru hosts are closed/, JSON.stringify(env));
+  }
+  // one setting moves every download link, the JSON-LD and the download click detection
+  build({ FITA_LOCALE: 'en', FITA_RELEASES_ORIGIN: 'https://releases.fita.fit' });
+  const all = allText('_site-en');
+  assert.doesNotMatch(all, /releases\.appfita\.ru/);
+  assert.ok(hrefs(read('_site-en', 'index.html')).includes('https://releases.fita.fit/'));
+  assert.deepEqual(jsonLd(read('_site-en', 'index.html'))['@graph'].find((n) => n['@type'] === 'MobileApplication').downloadUrl, [EN_STORE, 'https://releases.fita.fit/']);
+  assert.match(read('_site-en', scriptTag(read('_site-en', 'index.html'), 'analytics').match(/src="\/([^"]+)"/)[1]), /origin==="https:\/\/releases\.fita\.fit"/);
+  assert.ok(read('_site-en', 'llms.txt').includes('https://releases.fita.fit/'));
+  assert.throws(() => build({ FITA_RELEASES_ORIGIN: 'https://releases.fita.fit/' }), /FITA_RELEASES_ORIGIN/);
   build(); // вернуть обычные сборки
   build({ FITA_LOCALE: 'en' });
+});
+
+function allText(dir) {
+  const out = [];
+  const walk = (d) => {
+    for (const f of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, f.name);
+      if (f.isDirectory()) walk(p);
+      else if (/\.(html|js|txt|xml|json|css)$/.test(f.name)) out.push(fs.readFileSync(p, 'utf8'));
+    }
+  };
+  walk(path.join(ROOT, dir));
+  return out.join('\n');
+}
+
+test('fita.fit has no closed appfita.ru host: only the Russian site, the support mailbox and the releases page', () => {
+  const all = allText('_site-en'); // the default English build left by the previous test
+  assert.doesNotMatch(all, /\b(api|mcp|link)\.appfita\.ru/);
+  // Allowed: links to the Russian site (hreflang, legal canonicals, "Russian version"), the
+  // support mailbox, the site's own host list in analytics.js and the releases page.
+  const left = new Set([...all.matchAll(/[a-z0-9@.:/-]*appfita\.ru[^"'<>\s)]*/g)]
+    .map((m) => m[0].replace(/\.$/, '').replace(/^mailto:/, '').replace(/^(https:\/\/appfita\.ru\/)[a-z0-9-]+$/, '$1<page>')));
+  assert.deepEqual([...left].filter((u) => !/^(https:\/\/)?releases\.appfita\.ru(\/|$)/.test(u)).sort(),
+    ['appfita.ru', 'https://appfita.ru/', 'https://appfita.ru/<page>', 'support@appfita.ru', 'www.appfita.ru'].sort());
+  assert.match(read('_site-en', 'mcp.html'), /https:\/\/mcp\.fita\.fit/);
+  assert.match(read('_site-en', 'training-readiness.html'), /href="https:\/\/fita\.fit\/"/);
 });
 
 const CONTENT_PAGES = loadContent(ROOT);

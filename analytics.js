@@ -18,7 +18,7 @@
  * по факту регистрации в приложении.
  *
  * Настройка — атрибуты тега, их ставит scripts/build.mjs:
- *   data-api="https://api.appfita.ru"  — ядро (нужно и referral.js: resolve кода);
+ *   data-api="https://api.fita.fit"    — ядро (нужно и referral.js: resolve кода);
  *   data-collect="1"                   — включить отправку (в превью-сборке нет).
  * Плюс отправка идёт только с боевых хостов (HOSTS): localhost и превью молчат.
  */
@@ -345,7 +345,8 @@
     try {
       var url = new w.URL(a.href, loc.href);
       if (url.protocol !== 'https:' || url.username || url.password || url.port) return null;
-      if (url.hostname === 'releases.appfita.ru') return 'apk';
+      // The build swaps this origin for FITA_RELEASES_ORIGIN (scripts/build.mjs).
+      if (url.origin === 'https://releases.appfita.ru') return 'apk';
       if (url.hostname === 'apps.apple.com' && /\/id6794848328\/?$/.test(url.pathname)) return 'app_store';
     } catch (e) {}
     return null;
